@@ -2,7 +2,11 @@
   "name": "poc-playwright-typescript-gui-api",
   "version": "1.0.0",
   "main": "index.js",
-  "scripts": {},
+  "scripts": {
+    "test": "playwright test --headed",
+    "test-headless": "playwright test",
+    "test-tag": "playwright test --grep %npm_config_tag% --headed"
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",
