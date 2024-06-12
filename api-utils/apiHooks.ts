@@ -33,7 +33,5 @@ export class ApiHooks {
 
     // Posting new space
     const response = await request.post(postSpaceEndpoint, { headers: { Authorization: apiKey }, data: newSpaceBody });
-
-    console.log(await response.json())
   }
 }
