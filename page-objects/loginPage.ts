@@ -14,11 +14,8 @@ export class LoginPage {
   }
 
   async loginAsUser() {
-    let username: string;
-    let password: string;
-
-    process.env.USER_NAME === undefined ? username = '' : username = process.env.USER_NAME
-    process.env.PASSWORD === undefined ? password = '' : password = process.env.PASSWORD
+    let username: string = process.env.USER_NAME as string;
+    let password: string = process.env.PASSWORD as string;;
 
     await this.emailField.fill(username)
     await this.passwordField.fill(password)

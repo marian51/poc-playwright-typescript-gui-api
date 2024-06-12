@@ -1,6 +1,5 @@
 import { test as setup, expect } from '@playwright/test';
 import { PageManager } from '../page-objects/pageManager';
-import Auth from '../utils/auth';
 
 const authFile = 'playwright/.auth/user-session.json';
 
@@ -9,9 +8,8 @@ setup('authenticate', async ({ page }) => {
   const mainPageDynamicUrl = /https:\/\/app.clickup.com\/\d+\/*/;
 
   await page.goto('/login');
-  // await pm.loginPage.loginAsUser();
-  await Auth.loginAsUser(page);
+  await pm.loginPage.loginAsUser();
   await page.waitForURL(mainPageDynamicUrl);
 
   await page.context().storageState({ path: authFile });
-})
+});
