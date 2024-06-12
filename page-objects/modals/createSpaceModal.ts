@@ -15,17 +15,17 @@ export class CreateSpaceModal {
         this.continueButton = this.page.getByTestId("create-space-details__continue-button");
     }
 
-    typeSpaceName = async (newSpaceName: string) => {
+    async typeSpaceName (newSpaceName: string) {
         await this.nameInput.waitFor();
         await this.nameInput.fill(newSpaceName);
     };
 
-    clickOnContinueButton = async () => {
+    async clickOnContinueButton () {
         await this.continueButton.waitFor();
         await this.continueButton.click();
     };
 
-    clickOnButton = async (buttonName: string) => {
+    async clickOnButton (buttonName: string) {
         this.button = this.modalContainer.getByRole("button", { name: buttonName });
         await this.button.waitFor()
         await this.button.click()

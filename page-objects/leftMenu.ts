@@ -11,13 +11,13 @@ export class LeftMenu {
         this.leftSideBar = this.page.locator("cu-simple-bar");
     }
 
-    clickOnElement = async (elementName: string) => {
+    async clickOnElement (elementName: string) {
         this.menuElement = this.leftSideBar.getByRole('treeitem', { name: elementName })
         await this.menuElement.waitFor()
         await this.menuElement.click()
     };
 
-    assertElementIsVisible = async (elementName: string) => {
+    async assertElementIsVisible (elementName: string) {
         this.menuElement = this.leftSideBar.getByRole('treeitem', { name: elementName })
         await this.menuElement.waitFor()
         await expect(this.menuElement).toBeVisible()
