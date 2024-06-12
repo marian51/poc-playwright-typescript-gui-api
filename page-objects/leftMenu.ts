@@ -17,9 +17,21 @@ export class LeftMenu {
     await this.menuElement.click();
   }
 
+  async rightClickOnElement(elementName: string) {
+    this.menuElement = this.leftSideBar.getByRole("treeitem", { name: elementName });
+    await this.menuElement.waitFor();
+    await this.menuElement.click({ button: "right" });
+  }
+
   async assertElementIsVisible(elementName: string) {
     this.menuElement = this.leftSideBar.getByRole("treeitem", { name: elementName });
     await this.menuElement.waitFor();
     await expect(this.menuElement).toBeVisible();
+  }
+
+  async assertElementIsNotVisible(elementName: string) {
+    this.menuElement = this.leftSideBar.getByRole("treeitem", { name: elementName });
+    await this.menuElement.waitFor({state: 'detached'});
+    await expect(this.menuElement).toBeHidden();
   }
 }
