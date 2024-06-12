@@ -3,17 +3,20 @@ import { ExpandableTopBarPage } from '../page-objects/expandableTopBarPage';
 import { CreateTaskModalPage } from '../page-objects/modals/createTaskModalPage';
 
 test.describe('Tasks feature tests', () => {
-  test('Create new task', async ({ page }) => {
+  test.only('Create new task', async ({ page }) => {
     const expandableTopBarPage = new ExpandableTopBarPage(page);
     await page.goto('/');
     await page.waitForSelector('[data-test=create-task-menu__new-task-button][cu3-size=small]');
     
     await expandableTopBarPage.clickAddTaskButton();
     const createTaskModalPage = new CreateTaskModalPage(page);
+    // TODO: figure out better waits
     await page.waitForSelector('[data-test="draft-view__quick-create-create"]');
     await page.waitForSelector('[data-test="draft-view__title-task"]');
 
     await createTaskModalPage.fillTaskNameField('Test Task');
+
+    // TODO: fix description field, add assertion
     await createTaskModalPage.fillDescriptionField('My description');
     await createTaskModalPage.clickCreateTaskButton();
   });
