@@ -3,7 +3,7 @@ import { LeftMenu } from "../page-objects/leftMenu";
 import { CreateSpaceModal } from "../page-objects/modals/createSpaceModal";
 import { ApiHooks } from "../api-utils/apiHooks";
 
-test.only(
+test(
   "Basic test for checking if creating new space works correct",
   {
     tag: "@space",
