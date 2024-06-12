@@ -9,18 +9,18 @@ test.only(
     tag: "@space",
   },
   async ({ page, request }) => {
-    const leftMenu = new LeftMenu(page)
-    const createSpaceModal = new CreateSpaceModal(page)
-    const newSpaceName = "GUI TEST new space"
+    const leftMenu = new LeftMenu(page);
+    const createSpaceModal = new CreateSpaceModal(page);
+    const newSpaceName = "GUI TEST new space";
 
-    await page.goto("/")
+    await page.goto("/");
 
-    await leftMenu.clickOnElement("Create Space")
-    await createSpaceModal.typeSpaceName(newSpaceName)
-    await createSpaceModal.clickOnContinueButton()
-    await createSpaceModal.clickOnButton("Create Space")
-    await leftMenu.assertElementIsVisible(newSpaceName)
+    await leftMenu.clickOnElement("Create Space");
+    await createSpaceModal.typeSpaceName(newSpaceName);
+    await createSpaceModal.clickOnContinueButton();
+    await createSpaceModal.clickOnButton("Create Space");
+    await leftMenu.assertElementIsVisible(newSpaceName);
 
-    await ApiHooks.deleteSpaceByName(request, newSpaceName)
+    await ApiHooks.deleteSpaceByName(request, newSpaceName);
   }
 );
