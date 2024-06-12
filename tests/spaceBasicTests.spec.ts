@@ -2,7 +2,7 @@ import test from "@playwright/test";
 import { LeftMenu } from "../page-objects/leftMenu";
 import { CreateSpaceModal } from "../page-objects/modals/createSpaceModal";
 
-test.only(
+test(
     "Basic test for checking if creating new space works correct",
     {
         tag: "@space",
