@@ -10,6 +10,6 @@ export class ExpandableTopBarPage {
   }
 
   async clickAddTaskButton() {
-    this.addTaskButton.click();
+    await this.addTaskButton.click();
   }
 }

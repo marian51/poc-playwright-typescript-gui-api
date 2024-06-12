@@ -14,14 +14,14 @@ export class CreateTaskModalPage {
   }
 
   async fillTaskNameField(taskName: string) {
-    this.taskNameField.fill(taskName);
+    await this.taskNameField.fill(taskName);
   }
 
   async fillDescriptionField(taskDescription: string) {
-    this.taskNameField.fill(taskDescription);
+    await this.taskDescriptionField.fill(taskDescription);
   }
 
   async clickCreateTaskButton() {
-    this.createTaskButton.click();
+    await this.createTaskButton.click();
   }
 }
