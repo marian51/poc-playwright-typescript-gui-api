@@ -1,4 +1,5 @@
 import { Locator, Page } from "@playwright/test"
+import dotenv from 'dotenv';
 import user from "../playwright/.auth/user.json"
 
 export class LoginPage {
@@ -15,8 +16,14 @@ export class LoginPage {
   }
 
   async loginAsUser() {
-    await this.emailField.fill(user.username)
-    await this.passwordField.fill(user.password)
+    let username: string;
+    let password: string;
+
+    process.env.USER_NAME === undefined ? username = '' : username = process.env.USER_NAME
+    process.env.PASSWORD === undefined ? password = '' : password = process.env.PASSWORD
+    
+    await this.emailField.fill(username)
+    await this.passwordField.fill(password)
     await this.loginButton.click({ force: true })
   }
 }
