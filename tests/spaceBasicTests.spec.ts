@@ -19,7 +19,5 @@ test.only(
         await createSpaceModal.clickOnContinueButton()
         await createSpaceModal.clickOnButton("Create Space")
         await leftMenu.assertElementIsVisible(newSpaceName)
-
-        await page.pause()
     }
 );
