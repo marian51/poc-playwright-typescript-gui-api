@@ -4,12 +4,12 @@ import { PageManager } from '../page-objects/pageManager';
 const authFile = 'playwright/.auth/user-session.json';
 
 setup('authenticate', async ({ page }) => {
+  const pm = new PageManager(page);
+  const mainPageDynamicUrl = /https:\/\/app.clickup.com\/\d+\/*/;
+
   await page.goto('/login');
-  const pm = new PageManager(page)
-  await pm.loginPage.loginAsUser()
+  await pm.loginPage.loginAsUser();
+  await page.waitForURL(mainPageDynamicUrl);
 
-  // TODO: use something better
-  await page.waitForURL('https://app.clickup.com/9015725111/v/l/8cp231q-375')
-
-  await page.context().storageState({ path: authFile })
+  await page.context().storageState({ path: authFile });
 })
