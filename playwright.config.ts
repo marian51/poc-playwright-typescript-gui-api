@@ -14,7 +14,7 @@ dotenv.config()
 export default defineConfig({
   testDir: './tests',
   /* Run tests in files in parallel */
-  fullyParallel: true,
+  fullyParallel: false,
   /* Fail the build on CI if you accidentally left test.only in the source code. */
   forbidOnly: !!process.env.CI,
   /* Retry on CI only */
@@ -30,6 +30,9 @@ export default defineConfig({
 
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
     trace: 'retain-on-failure',
+
+    /* Change the attribute by which method 'page.getByTestId(...)' looks for elements. See https://playwright.dev/docs/locators#set-a-custom-test-id-attribute*/
+    testIdAttribute: 'data-test'
   },
 
   /* Configure projects for major browsers */
