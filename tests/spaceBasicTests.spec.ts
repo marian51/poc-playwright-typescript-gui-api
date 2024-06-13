@@ -75,3 +75,27 @@ test(
     await ApiHooks.deleteSpaceByName(request, renamedSpaceName);
   }
 );
+
+test(
+  "Basic test for checking if creating new space with the same name is not allowed",
+  {
+    tag: "@space",
+  },
+  async ({ page, request }) => {
+    const leftMenu = new LeftMenu(page);
+    const createSpaceModal = new CreateSpaceModal(page);
+    const newSpaceName = "GUI TEST new space";
+
+    await ApiHooks.createSpaceByName(request, newSpaceName);
+    await page.goto("/");
+
+    await leftMenu.clickOnElement("Create Space");
+    await createSpaceModal.typeSpaceName(newSpaceName);
+    await createSpaceModal.assertNameInputHasError();
+    await createSpaceModal.assertErrorMessageIsDisplayed();
+    await createSpaceModal.clickOnContinueButton();
+    await createSpaceModal.assertModalWindowIsVisible();
+
+    await ApiHooks.deleteSpaceByName(request, newSpaceName);
+  }
+);
