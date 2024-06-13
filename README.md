@@ -23,9 +23,17 @@ To run this project, you need to install:
 
 ### Before running
 
-- *content will be added here in the future*
+- Reading sensitive data in the project, such as login data (username, password, API key etc.) is done by using the [`➡️dotnev`](https://github.com/motdotla/dotenv) tool. The data is read from `.env` file located in the project's root folder. This file is ignored by git for security reasons and is not in the project. This file has to be added from another source, or created yourself.
+
+  List of variables read from `.env` file:
+  - `USER_NAME`
+  - `PASSWORD`
+  - `API_KEY`
+  - `BASE_TEAM_ID` 
 
 ## Running tests
+
+### Basic way to run tests
 
 The basic command to run tests is:
 
@@ -35,3 +43,25 @@ npx playwright test
 The command above will run all tests (or only tests marked as `.only`, see [Playwright's documentation](https://playwright.dev/docs/api/class-test#test-only) for details).
 
 This basic command can take different arguments and parameters - see [Playwright's documentation](https://playwright.dev/docs/test-cli#introduction) for details.
+
+### Custom running scripts
+
+In the `package.json` file, the `scripts` field contains predefined scripts. These are aliases for longer configurations of run commands and so are possible:
+
+- To run all tests **in headed mode**:
+
+  ```bash
+  npm test
+  ```
+
+- To run all tests **in headless mode**:
+
+  ```bash
+  npm run test-headless
+  ```
+
+- To run only tests with specified tag `tag_name`:
+  
+  ```bash
+  npm run test-tag --tag="tag_name"
+  ```
