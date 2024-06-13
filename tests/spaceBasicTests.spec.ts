@@ -38,9 +38,8 @@ test(
     const spaceContextMenu = new SpaceContextMenu(page);
     const newSpaceName = "GUI TEST new space";
 
-    await page.goto("/");
-
     await ApiHooks.createSpaceByName(request, newSpaceName);
+    await page.goto("/");
 
     await leftMenu.rightClickOnElement(newSpaceName);
     await spaceContextMenu.clickOnOption('Delete')
