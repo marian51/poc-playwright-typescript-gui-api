@@ -4,7 +4,12 @@ import { CreateTaskModalPage } from '../page-objects/modals/createTaskModalPage'
 import { ProjectMainView } from '../page-objects/projectMainView';
 import { TaskConextMenu } from '../page-objects/context-menus/taskContextMenu';
 
-test.describe.serial('Tasks feature tests', () => {
+test.describe.serial(
+  'Tasks feature tests',
+  {
+    tag: "@task",
+  },
+  () => {
   // TODO: implement faker
   const taskName = 'Test Task';
   
