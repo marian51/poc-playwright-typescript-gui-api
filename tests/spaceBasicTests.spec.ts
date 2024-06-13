@@ -54,7 +54,7 @@ test(
 test(
   "Basic test for checking if renaming existing space works correct",
   {
-    tag: ["@space", "@this"],
+    tag: "@space",
   },
   async ({ page, request }) => {
     const leftMenu = new LeftMenu(page);
