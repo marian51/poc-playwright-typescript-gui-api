@@ -91,6 +91,7 @@ test(
 
     await ApiHooks.createSpaceByName(request, newSpaceName);
     await page.goto("/");
+    await page.locator("cu-web-push-notification-banner").waitFor();
 
     await leftMenu.clickOnElement("Create Space");
     await createSpaceModal.typeSpaceName(newSpaceName);
