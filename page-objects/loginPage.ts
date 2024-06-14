@@ -6,7 +6,7 @@ export class LoginPage {
   readonly emailField: Locator
   readonly passwordField: Locator
 
-  constructor (page: Page) {
+  constructor(page: Page) {
     this.page = page
     this.emailField = page.locator('[data-test="login-email-input"]')
     this.passwordField = page.locator('[data-test="login-password-input"]')

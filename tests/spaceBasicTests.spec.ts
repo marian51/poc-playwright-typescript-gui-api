@@ -3,7 +3,7 @@ import { LeftMenu } from "../page-objects/leftMenu";
 import { CreateSpaceModal } from "../page-objects/modals/createSpaceModal";
 import { ApiHooks } from "../api-utils/apiHooks";
 import { DeleteSpaceModal } from "../page-objects/modals/deleteSpaceModal";
-import { SpaceContextMenu } from "../page-objects/contextMenus/spaceContextMenu";
+import { SpaceContextMenu } from "../page-objects/context-menus/spaceContextMenu";
 import { EditSpaceNameModal } from "../page-objects/modals/editSpaceNameModal";
 
 test(
