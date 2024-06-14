@@ -40,6 +40,7 @@ test.describe.serial(
     await editTaskModal.changeTaskStatusToInProgress();
     await editTaskModal.close();
 
+    await projectMainView.assertTaskIsInProgress(taskName);
   });
 
   test('Delete a task', async ({ page }) => {

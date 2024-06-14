@@ -8,6 +8,7 @@ export class ProjectMainView {
   private taskRowContainer: Locator;
   private taskContextMenuButton: Locator;
   private taskLink: Locator;
+  private taskStatus: Locator;
   
   constructor(page: Page) {
     this.page = page
@@ -37,5 +38,16 @@ export class ProjectMainView {
     this.expectedTask = this.dashboard.getByRole('link', { name: taskName });
     await this.expectedTask.waitFor({ state: 'detached' });
     await expect(this.expectedTask).toBeHidden();
+  }
+
+  async assertTaskIsInProgress(taskName: string) {
+    this.taskRowContainer = this.dashboard.getByTestId('task-row__container__' + taskName);
+    this.taskStatus = this.taskRowContainer.getByTestId('task-row-status__badge');
+
+    // TODO: expected dictionary
+    await expect(this.taskStatus).toHaveText('in progress')
+
+    // locator('[data-test="task-row__status-col__in progress"]')
+    // .getByLabel('Change status for Test Task')
   }
 }
