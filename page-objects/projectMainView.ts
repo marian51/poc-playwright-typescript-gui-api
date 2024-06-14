@@ -10,12 +10,12 @@ export class ProjectMainView {
   
   constructor(page: Page) {
     this.page = page
-    this.dashboard = page.locator('[data-test="dashboard-table-list-group__body"]');
+    this.dashboard = page.getByTestId('dashboard-table-list-group__body');
   }
 
   async openTaskContextMenu(taskName: string) {
     this.taskRowContainer = this.dashboard.getByTestId('task-row__container__' + taskName);
-    this.taskContextMenuButton = this.taskRowContainer.locator('[data-test="task-row-menu__ellipsis-v3-button"]');
+    this.taskContextMenuButton = this.taskRowContainer.getByTestId('task-row-menu__ellipsis-v3-button');
     await this.taskContextMenuButton.waitFor();
     await this.taskContextMenuButton.click();
   }

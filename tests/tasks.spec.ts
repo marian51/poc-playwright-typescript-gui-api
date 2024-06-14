@@ -1,6 +1,6 @@
 import { test } from '@playwright/test'
-import { ExpandableTopBarPage } from '../page-objects/expandableTopBarPage';
-import { CreateTaskModalPage } from '../page-objects/modals/createTaskModalPage';
+import { ExpandableTopBarPage } from '../page-objects/expandableTopBar';
+import { CreateTaskModalPage } from '../page-objects/modals/createTaskModal';
 import { ProjectMainView } from '../page-objects/projectMainView';
 import { TaskConextMenu } from '../page-objects/context-menus/taskContextMenu';
 
@@ -12,29 +12,30 @@ test.describe.serial(
   () => {
   // TODO: implement faker
   const taskName = 'Test Task';
+  const taskDescription = 'My description'
   
   test('Create new task', async ({ page }) => {
     await page.goto('/');
 
     const expandableTopBarPage = new ExpandableTopBarPage(page);
-    await expandableTopBarPage.clickAddTaskButton();
-    
     const createTaskModalPage = new CreateTaskModalPage(page);
-    await createTaskModalPage.fillTaskNameField('Test Task');
-    await createTaskModalPage.fillDescriptionField('My description');
+    const projectMainView = new ProjectMainView(page);
+    
+    await expandableTopBarPage.clickAddTaskButton();
+    await createTaskModalPage.fillTaskNameField(taskName);
+    await createTaskModalPage.fillDescriptionField(taskDescription);
     await createTaskModalPage.clickCreateTaskButton();
 
-    const projectMainView = new ProjectMainView(page);
     await projectMainView.assertTaskIsVisible(taskName);
   });
 
-  test('Delete a task', async ({ page }) =>{
+  test('Delete a task', async ({ page }) => {
     await page.goto('/');
 
     const projectMainView = new ProjectMainView(page);
-    await projectMainView.openTaskContextMenu(taskName);
-
     const taskContextMenuButton = new TaskConextMenu(page);
+    
+    await projectMainView.openTaskContextMenu(taskName);
     await taskContextMenuButton.clickDeleteButton();
 
     await projectMainView.assertTaskIsNotVisible(taskName);
