@@ -13,19 +13,19 @@ export class DeleteSpaceModal {
     this.deleteButton = this.modalContainer.getByTestId("confirmation-modal__confirm-button");
   }
 
-  async typeSpaceName (spaceName: string) {
-    await this.modalContainer.waitFor()
-    await this.spaceNameInput.waitFor()
-    await this.spaceNameInput.fill(spaceName)
+  async typeSpaceName(spaceName: string) {
+    await this.modalContainer.waitFor();
+    await this.spaceNameInput.waitFor();
+    await this.spaceNameInput.fill(spaceName);
   }
 
   async clickOnDeleteButton() {
-    await this.modalContainer.waitFor()
-    await this.deleteButton.waitFor()
-    await this.deleteButton.click()
+    await this.modalContainer.waitFor();
+    await this.deleteButton.waitFor();
+    await this.deleteButton.click();
   }
 
   async waitForDeleting() {
-    await this.modalContainer.waitFor({state: 'detached'})
+    await this.modalContainer.waitFor({ state: "detached" });
   }
 }
