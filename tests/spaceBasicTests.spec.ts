@@ -135,10 +135,9 @@ test(
 test(
   "Basic End-2-End test for checking if creating, renaming and deleting existing space works correct",
   {
-    tag: ["@space", "@e2e"]
+    tag: ["@space", "@e2e"],
   },
-  async ({page}) => {
-
+  async ({ page }) => {
     const leftMenu = new LeftMenu(page);
     const createSpaceModal = new CreateSpaceModal(page);
     const spaceContextMenu = new SpaceContextMenu(page);
@@ -174,5 +173,5 @@ test(
     await deleteSpaceModal.waitForDeleting();
 
     await leftMenu.assertElementIsNotVisible(renamedSpaceName);
-  }
-)
+  },
+);
