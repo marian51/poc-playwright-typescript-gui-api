@@ -34,4 +34,15 @@ export class ApiHooks {
     // Posting new space
     const response = await request.post(postSpaceEndpoint, { headers: { Authorization: apiKey }, data: newSpaceBody });
   }
+
+  public static async createNewTask(request: APIRequestContext, taskName: string) {
+    const taskListId: string = process.env.TASK_LIST_ID as string;
+    const createTaskEndpoint: string = `https://api.clickup.com/api/v2/list/${taskListId}/task`;
+
+    const newTaskBody = {
+      name: taskName,
+    };
+
+    await request.post(createTaskEndpoint);
+  }
 }

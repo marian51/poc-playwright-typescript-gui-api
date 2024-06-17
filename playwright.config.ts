@@ -32,7 +32,12 @@ export default defineConfig({
     trace: 'retain-on-failure',
 
     /* Change the attribute by which method 'page.getByTestId(...)' looks for elements. See https://playwright.dev/docs/locators#set-a-custom-test-id-attribute*/
-    testIdAttribute: 'data-test'
+    testIdAttribute: 'data-test',
+
+    /* Authorization header for all API requests */
+    extraHTTPHeaders: {
+      'Authorization': `${process.env.API_KEY}`,
+    }
   },
 
   /* Configure projects for major browsers */
