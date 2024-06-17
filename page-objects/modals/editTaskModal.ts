@@ -9,6 +9,7 @@ export class EditTaskModal {
 
   constructor(page: Page) {
     this.page = page;
+    this.taskNameInput = page.getByTestId("task-title__text-area");
     this.taskStatusButton = page.getByTestId("status-button-badge__body");
     this.statusInProgress = page.getByTestId("status-list__type__custom");
     this.closeButton = page.getByTestId("task-close-v3");
@@ -18,6 +19,10 @@ export class EditTaskModal {
     // TODO: handle multiple tasks with the same name
     await this.taskStatusButton.click();
     await this.statusInProgress.click();
+  }
+
+  async changeTaskName(newTaskName: string) {
+    await this.taskNameInput.fill(newTaskName);
   }
 
   async close() {

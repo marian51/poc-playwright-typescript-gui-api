@@ -13,7 +13,8 @@ test.describe.serial(
   () => {
   // TODO: implement faker
   const taskName = 'Test Task';
-  const taskDescription = 'My description'
+  const changedTaskName = 'Changed task name';
+  const taskDescription = 'My description';
   
   test('Create new task', async ({ page }) => {
     await page.goto('/');
@@ -30,7 +31,7 @@ test.describe.serial(
     await projectMainView.assertTaskIsVisible(taskName);
   });
 
-  test.only('Edit task', async ({ page }) => {
+  test('Change task status to in progress', async ({ page }) => {
     await page.goto('/');
 
     const projectMainView = new ProjectMainView(page);
@@ -43,15 +44,28 @@ test.describe.serial(
     await projectMainView.assertTaskIsInProgress(taskName);
   });
 
+  test('Change task name', async ({ page }) => {
+    await page.goto('/');
+
+    const projectMainView = new ProjectMainView(page);
+    const editTaskModal = new EditTaskModal(page);
+
+    await projectMainView.openTaskModal(taskName);
+    await editTaskModal.changeTaskName(changedTaskName);
+    await editTaskModal.close();
+
+    await projectMainView.assertTaskIsVisible(changedTaskName);
+  });
+
   test('Delete a task', async ({ page }) => {
     await page.goto('/');
 
     const projectMainView = new ProjectMainView(page);
     const taskContextMenuButton = new TaskConextMenu(page);
     
-    await projectMainView.openTaskContextMenu(taskName);
+    await projectMainView.openTaskContextMenu(changedTaskName);
     await taskContextMenuButton.clickDeleteButton();
 
-    await projectMainView.assertTaskIsNotVisible(taskName);
+    await projectMainView.assertTaskIsNotVisible(changedTaskName);
   });
 });

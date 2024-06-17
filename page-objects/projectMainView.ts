@@ -46,8 +46,5 @@ export class ProjectMainView {
 
     // TODO: expected dictionary
     await expect(this.taskStatus).toHaveText('in progress')
-
-    // locator('[data-test="task-row__status-col__in progress"]')
-    // .getByLabel('Change status for Test Task')
   }
 }
