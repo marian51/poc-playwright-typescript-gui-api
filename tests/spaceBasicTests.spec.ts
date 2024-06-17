@@ -103,3 +103,30 @@ test(
     await ApiHooks.deleteSpaceByName(request, newSpaceName);
   }
 );
+
+test(
+  "Basic test for checking if duplicating existing space works correct",
+  {
+    tag: "@space @this",
+  },
+  async ({ page, request }) => {
+    const leftMenu = new LeftMenu(page);
+    const spaceContextMenu = new SpaceContextMenu(page);
+    const duplicateSpaceModal = new DuplicateSpaceModal(page);
+    const newSpaceName = "GUI TEST new space";
+    const duplicatedSpaceName = "GUI TEST duplicated space";
+
+    await ApiHooks.createSpaceByName(request, newSpaceName);
+    await page.goto("/");
+    await page.locator("cu-web-push-notification-banner").waitFor();
+
+    await leftMenu.rightClickOnElement(newSpaceName);
+    await spaceContextMenu.clickOnOption("Duplicate");
+    await duplicateSpaceModal.typeSpaceName(duplicatedSpaceName);
+    await duplicateSpaceModal.clickOnDuplicateButton();
+    await leftMenu.assertElementIsVisible(duplicatedSpaceName);
+
+    await ApiHooks.deleteSpaceByName(request, newSpaceName);
+    await ApiHooks.deleteSpaceByName(request, duplicatedSpaceName);
+  },
+);
