@@ -4,6 +4,7 @@ import { CreateTaskModalPage } from "../page-objects/modals/createTaskModal";
 import { ProjectMainView } from "../page-objects/projectMainView";
 import { TaskConextMenu } from "../page-objects/context-menus/taskContextMenu";
 import { EditTaskModal } from "../page-objects/modals/editTaskModal";
+import { ApiHooks } from "../api-utils/apiHooks";
 
 test.describe.serial(
   "Tasks feature tests",
@@ -44,7 +45,8 @@ test.describe.serial(
       await projectMainView.assertTaskIsInProgress(taskName);
     });
 
-    test("Change task name", async ({ page }) => {
+    test("Change task name", async ({ page, request }) => {
+      await ApiHooks.createNewTask(request, taskName);
       await page.goto("/");
 
       const projectMainView = new ProjectMainView(page);

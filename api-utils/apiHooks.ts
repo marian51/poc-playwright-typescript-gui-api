@@ -37,12 +37,13 @@ export class ApiHooks {
 
   public static async createNewTask(request: APIRequestContext, taskName: string) {
     const taskListId: string = process.env.TASK_LIST_ID as string;
+    const apiKey: string = process.env.API_KEY as string;
     const createTaskEndpoint: string = `https://api.clickup.com/api/v2/list/${taskListId}/task`;
 
     const newTaskBody = {
       name: taskName,
     };
 
-    await request.post(createTaskEndpoint);
+    await request.post(createTaskEndpoint, { headers: { Authorization: apiKey }, data: newTaskBody });
   }
 }
