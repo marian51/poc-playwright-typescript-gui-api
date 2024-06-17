@@ -16,13 +16,11 @@ export class ProjectMainView {
   async openTaskContextMenu(taskName: string) {
     this.taskRowContainer = this.dashboard.getByTestId('task-row__container__' + taskName);
     this.taskContextMenuButton = this.taskRowContainer.getByTestId('task-row-menu__ellipsis-v3-button');
-    await this.taskContextMenuButton.waitFor();
     await this.taskContextMenuButton.click();
   }
 
   async assertTaskIsVisible(taskName: string) {
     this.expectedTask = this.dashboard.getByRole('link', { name: taskName });
-    await this.expectedTask.waitFor();
     await expect(this.expectedTask).toBeVisible();
   }
   
