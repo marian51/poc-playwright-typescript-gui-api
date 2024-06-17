@@ -5,6 +5,7 @@ import { ApiHooks } from "../api-utils/apiHooks";
 import { DeleteSpaceModal } from "../page-objects/modals/deleteSpaceModal";
 import { SpaceContextMenu } from "../page-objects/context-menus/spaceContextMenu";
 import { EditSpaceNameModal } from "../page-objects/modals/editSpaceNameModal";
+import { DuplicateSpaceModal } from "../page-objects/modals/duplicateSpaceModal";
 
 test(
   "Basic test for checking if creating new space works correct",
@@ -26,7 +27,7 @@ test(
     await leftMenu.assertElementIsVisible(newSpaceName);
 
     await ApiHooks.deleteSpaceByName(request, newSpaceName);
-  }
+  },
 );
 
 test(
@@ -45,12 +46,12 @@ test(
     await page.locator("cu-web-push-notification-banner").waitFor();
 
     await leftMenu.rightClickOnElement(newSpaceName);
-    await spaceContextMenu.clickOnOption('Delete')
+    await spaceContextMenu.clickOnOption("Delete");
     await deleteSpaceModal.typeSpaceName(newSpaceName);
     await deleteSpaceModal.clickOnDeleteButton();
     await deleteSpaceModal.waitForDeleting();
     await leftMenu.assertElementIsNotVisible(newSpaceName);
-  }
+  },
 );
 
 test(
@@ -76,7 +77,7 @@ test(
     await leftMenu.assertElementIsVisible(renamedSpaceName);
 
     await ApiHooks.deleteSpaceByName(request, renamedSpaceName);
-  }
+  },
 );
 
 test(
@@ -101,7 +102,7 @@ test(
     await createSpaceModal.assertModalWindowIsVisible();
 
     await ApiHooks.deleteSpaceByName(request, newSpaceName);
-  }
+  },
 );
 
 test(
