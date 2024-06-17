@@ -156,7 +156,7 @@ test(
     await createSpaceModal.clickOnContinueButton();
     await createSpaceModal.clickOnButton("Create Space");
 
-    await leftMenu.assertElementIsVisible("newSpaceName");
+    await leftMenu.assertElementIsVisible(newSpaceName);
 
     // Rename existing space
     await leftMenu.rightClickOnElement(newSpaceName);
