@@ -1,71 +1,72 @@
-import { test } from '@playwright/test'
-import { ExpandableTopBarPage } from '../page-objects/expandableTopBar';
-import { CreateTaskModalPage } from '../page-objects/modals/createTaskModal';
-import { ProjectMainView } from '../page-objects/projectMainView';
-import { TaskConextMenu } from '../page-objects/context-menus/taskContextMenu';
-import { EditTaskModal } from '../page-objects/modals/editTaskModal';
+import { test } from "@playwright/test";
+import { ExpandableTopBarPage } from "../page-objects/expandableTopBar";
+import { CreateTaskModalPage } from "../page-objects/modals/createTaskModal";
+import { ProjectMainView } from "../page-objects/projectMainView";
+import { TaskConextMenu } from "../page-objects/context-menus/taskContextMenu";
+import { EditTaskModal } from "../page-objects/modals/editTaskModal";
 
 test.describe.serial(
-  'Tasks feature tests',
+  "Tasks feature tests",
   {
     tag: "@task",
   },
   () => {
-  // TODO: implement faker
-  const taskName = 'Test Task';
-  const changedTaskName = 'Changed task name';
-  const taskDescription = 'My description';
-  
-  test('Create new task', async ({ page }) => {
-    await page.goto('/');
+    // TODO: implement faker
+    const taskName = "Test Task";
+    const changedTaskName = "Changed task name";
+    const taskDescription = "My description";
 
-    const expandableTopBarPage = new ExpandableTopBarPage(page);
-    const createTaskModalPage = new CreateTaskModalPage(page);
-    const projectMainView = new ProjectMainView(page);
-    
-    await expandableTopBarPage.clickAddTaskButton();
-    await createTaskModalPage.fillTaskNameField(taskName);
-    await createTaskModalPage.fillDescriptionField(taskDescription);
-    await createTaskModalPage.clickCreateTaskButton();
+    test("Create new task", async ({ page }) => {
+      await page.goto("/");
 
-    await projectMainView.assertTaskIsVisible(taskName);
-  });
+      const expandableTopBarPage = new ExpandableTopBarPage(page);
+      const createTaskModalPage = new CreateTaskModalPage(page);
+      const projectMainView = new ProjectMainView(page);
 
-  test('Change task status to in progress', async ({ page }) => {
-    await page.goto('/');
+      await expandableTopBarPage.clickAddTaskButton();
+      await createTaskModalPage.fillTaskNameField(taskName);
+      await createTaskModalPage.fillDescriptionField(taskDescription);
+      await createTaskModalPage.clickCreateTaskButton();
 
-    const projectMainView = new ProjectMainView(page);
-    const editTaskModal = new EditTaskModal(page);
+      await projectMainView.assertTaskIsVisible(taskName);
+    });
 
-    await projectMainView.openTaskModal(taskName);
-    await editTaskModal.changeTaskStatusToInProgress();
-    await editTaskModal.close();
+    test("Change task status to in progress", async ({ page }) => {
+      await page.goto("/");
 
-    await projectMainView.assertTaskIsInProgress(taskName);
-  });
+      const projectMainView = new ProjectMainView(page);
+      const editTaskModal = new EditTaskModal(page);
 
-  test('Change task name', async ({ page }) => {
-    await page.goto('/');
+      await projectMainView.openTaskModal(taskName);
+      await editTaskModal.changeTaskStatusToInProgress();
+      await editTaskModal.close();
 
-    const projectMainView = new ProjectMainView(page);
-    const editTaskModal = new EditTaskModal(page);
+      await projectMainView.assertTaskIsInProgress(taskName);
+    });
 
-    await projectMainView.openTaskModal(taskName);
-    await editTaskModal.changeTaskName(changedTaskName);
-    await editTaskModal.close();
+    test("Change task name", async ({ page }) => {
+      await page.goto("/");
 
-    await projectMainView.assertTaskIsVisible(changedTaskName);
-  });
+      const projectMainView = new ProjectMainView(page);
+      const editTaskModal = new EditTaskModal(page);
 
-  test('Delete a task', async ({ page }) => {
-    await page.goto('/');
+      await projectMainView.openTaskModal(taskName);
+      await editTaskModal.changeTaskName(changedTaskName);
+      await editTaskModal.close();
 
-    const projectMainView = new ProjectMainView(page);
-    const taskContextMenuButton = new TaskConextMenu(page);
-    
-    await projectMainView.openTaskContextMenu(changedTaskName);
-    await taskContextMenuButton.clickDeleteButton();
+      await projectMainView.assertTaskIsVisible(changedTaskName);
+    });
 
-    await projectMainView.assertTaskIsNotVisible(changedTaskName);
-  });
-});
+    test("Delete a task", async ({ page }) => {
+      await page.goto("/");
+
+      const projectMainView = new ProjectMainView(page);
+      const taskContextMenuButton = new TaskConextMenu(page);
+
+      await projectMainView.openTaskContextMenu(changedTaskName);
+      await taskContextMenuButton.clickDeleteButton();
+
+      await projectMainView.assertTaskIsNotVisible(changedTaskName);
+    });
+  }
+);
