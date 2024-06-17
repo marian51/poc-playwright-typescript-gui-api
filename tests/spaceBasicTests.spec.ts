@@ -131,3 +131,48 @@ test(
     await ApiHooks.deleteSpaceByName(request, duplicatedSpaceName);
   },
 );
+
+test(
+  "Basic End-2-End test for checking if creating, renaming and deleting existing space works correct",
+  {
+    tag: ["@space", "@e2e"]
+  },
+  async ({page}) => {
+
+    const leftMenu = new LeftMenu(page);
+    const createSpaceModal = new CreateSpaceModal(page);
+    const spaceContextMenu = new SpaceContextMenu(page);
+    const editSpaceNameModal = new EditSpaceNameModal(page);
+    const deleteSpaceModal = new DeleteSpaceModal(page);
+    const newSpaceName = "GUI TEST new space";
+    const renamedSpaceName = "RENAMED GUI TEST new space";
+
+    await page.goto("/");
+    await page.locator("cu-web-push-notification-banner").waitFor();
+
+    // Create new space
+    await leftMenu.clickOnElement("Create Space");
+    await createSpaceModal.typeSpaceName(newSpaceName);
+    await createSpaceModal.clickOnContinueButton();
+    await createSpaceModal.clickOnButton("Create Space");
+
+    await leftMenu.assertElementIsVisible("newSpaceName");
+
+    // Rename existing space
+    await leftMenu.rightClickOnElement(newSpaceName);
+    await spaceContextMenu.clickOnOption("Rename");
+    await editSpaceNameModal.typeSpaceName(renamedSpaceName);
+    await editSpaceNameModal.clickOnSaveButton();
+
+    await leftMenu.assertElementIsVisible(renamedSpaceName);
+
+    // Deleting renamed space
+    await leftMenu.rightClickOnElement(renamedSpaceName);
+    await spaceContextMenu.clickOnOption("Delete");
+    await deleteSpaceModal.typeSpaceName(renamedSpaceName);
+    await deleteSpaceModal.clickOnDeleteButton();
+    await deleteSpaceModal.waitForDeleting();
+
+    await leftMenu.assertElementIsNotVisible(renamedSpaceName);
+  }
+)
