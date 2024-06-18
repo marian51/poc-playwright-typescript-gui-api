@@ -1,4 +1,5 @@
 import { APIRequestContext, APIResponse } from "@playwright/test";
+import { ApiUtils } from "./apiUtils";
 
 export class ApiHooks {
   // TODO: get last created task id from response
@@ -54,15 +55,10 @@ export class ApiHooks {
 
   public static async deleteTask(request: APIRequestContext, taskName: string) {
     const apiKey: string = process.env.API_KEY as string;
-    const deleteTaskEndpoint: string = `https://api.clickup.com/api/v2/task/${ApiHooks.lastCreatedTaskId}`;
-    // const getTasksEndpoint: string = `https://api.clickup.com/api/v2/list/{list_id}/task`;
-
-    // await request.get(getTasksEndpoint);
+    const taskId = await ApiUtils.getTaskIdFromBaseList(request, taskName);
+    const deleteTaskEndpoint: string = `https://api.clickup.com/api/v2/task/${taskId}`;
+    
     await request.delete(deleteTaskEndpoint, { headers: { Authorization: apiKey, "Content-Type": "application/json" } });
   }
 
-  // Obtains id of a base list for task tests - Team Space/Projects/Project 1
-  public static async getTaskListId(request: APIRequestContext) {
-    // TODO: implement
-  }
 }

@@ -17,8 +17,7 @@ test.describe(
     const changedTaskName = faker.word.noun();
     const taskDescription = faker.lorem.sentence();
 
-
-    test("Create new task", async ({ page, request }) => {
+    test.only("Create new task", async ({ page, request }) => {
       await page.goto("/");
 
       const expandableTopBarPage = new ExpandableTopBarPage(page);
@@ -34,7 +33,7 @@ test.describe(
       await ApiHooks.deleteTask(request, taskName);
     });
 
-    test.only("Change task status to in progress", async ({ page, request }) => {
+    test("Change task status to in progress", async ({ page, request }) => {
       await ApiHooks.createNewTask(request, taskName);
       await page.goto("/");
 
@@ -49,7 +48,7 @@ test.describe(
       await ApiHooks.deleteTask(request, taskName);
     });
 
-    test.only("Change task name", async ({ page, request }) => {
+    test("Change task name", async ({ page, request }) => {
       await ApiHooks.createNewTask(request, taskName);
       await page.goto("/");
 
@@ -61,7 +60,7 @@ test.describe(
       await editTaskModal.close();
 
       await projectMainView.assertTaskIsVisible(changedTaskName);
-      await ApiHooks.deleteTask(request, taskName);
+      await ApiHooks.deleteTask(request, changedTaskName);
     });
 
     test("Delete a task", async ({ page, request }) => {
@@ -71,10 +70,10 @@ test.describe(
       const projectMainView = new ProjectMainView(page);
       const taskContextMenuButton = new TaskConextMenu(page);
 
-      await projectMainView.openTaskContextMenu(changedTaskName);
+      await projectMainView.openTaskContextMenu(taskName);
       await taskContextMenuButton.clickDeleteButton();
 
-      await projectMainView.assertTaskIsNotVisible(changedTaskName);
+      await projectMainView.assertTaskIsNotVisible(taskName);
     });
   }
 );
