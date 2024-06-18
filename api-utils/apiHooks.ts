@@ -2,7 +2,7 @@ import { APIRequestContext, APIResponse } from "@playwright/test";
 
 export class ApiHooks {
   // TODO: get last created task id from response
-  private static taskToDeleteId: APIResponse;
+  private static lastCreatedTaskId: APIResponse;
 
   public static async deleteSpaceByName(request: APIRequestContext, spaceName: string) {
     const teamId: string = process.env.BASE_TEAM_ID as string;
@@ -39,6 +39,7 @@ export class ApiHooks {
   }
 
   public static async createNewTask(request: APIRequestContext, taskName: string) {
+    // TODO: [Optional] Obtain taskListId via API instead of .env
     const taskListId: string = process.env.TASK_LIST_ID as string;
     const apiKey: string = process.env.API_KEY as string;
     const createTaskEndpoint: string = `https://api.clickup.com/api/v2/list/${taskListId}/task`;
@@ -48,13 +49,20 @@ export class ApiHooks {
     };
 
     const response = await request.post(createTaskEndpoint, { headers: { Authorization: apiKey }, data: newTaskBody });
-    ApiHooks.taskToDeleteId = (await response.json()).id;
+    ApiHooks.lastCreatedTaskId = (await response.json()).id;
   }
 
   public static async deleteTask(request: APIRequestContext, taskName: string) {
     const apiKey: string = process.env.API_KEY as string;
-    const deleteTaskEndpoint: string = `https://api.clickup.com/api/v2/task/${ApiHooks.taskToDeleteId}`;
+    const deleteTaskEndpoint: string = `https://api.clickup.com/api/v2/task/${ApiHooks.lastCreatedTaskId}`;
+    // const getTasksEndpoint: string = `https://api.clickup.com/api/v2/list/{list_id}/task`;
 
-    await request.delete(deleteTaskEndpoint, { headers: { Authorization: apiKey, 'Content-Type': 'application/json' } })
+    // await request.get(getTasksEndpoint);
+    await request.delete(deleteTaskEndpoint, { headers: { Authorization: apiKey, "Content-Type": "application/json" } });
+  }
+
+  // Obtains id of a base list for task tests - Team Space/Projects/Project 1
+  public static async getTaskListId(request: APIRequestContext) {
+    // TODO: implement
   }
 }

@@ -6,7 +6,7 @@ import { TaskConextMenu } from "../page-objects/context-menus/taskContextMenu";
 import { EditTaskModal } from "../page-objects/modals/editTaskModal";
 import { ApiHooks } from "../api-utils/apiHooks";
 
-test.describe.serial(
+test.describe(
   "Tasks feature tests",
   {
     tag: "@task",
@@ -17,7 +17,15 @@ test.describe.serial(
     const changedTaskName = "Changed task name";
     const taskDescription = "My description";
 
-    test("Create new task", async ({ page }) => {
+    // test.beforeEach(async ({ request }) => {
+    //   await ApiHooks.createNewTask(request, taskName);
+    // });
+
+    // test.afterEach(async ({ request }) => {
+    //   await ApiHooks.deleteTask(request, taskName);
+    // });
+
+    test("Create new task", async ({ page, request }) => {
       await page.goto("/");
 
       const expandableTopBarPage = new ExpandableTopBarPage(page);
@@ -30,9 +38,11 @@ test.describe.serial(
       await createTaskModalPage.clickCreateTaskButton();
 
       await projectMainView.assertTaskIsVisible(taskName);
+      await ApiHooks.deleteTask(request, taskName);
     });
 
-    test("Change task status to in progress", async ({ page }) => {
+    test.only("Change task status to in progress", async ({ page, request }) => {
+      await ApiHooks.createNewTask(request, taskName);
       await page.goto("/");
 
       const projectMainView = new ProjectMainView(page);
@@ -43,6 +53,7 @@ test.describe.serial(
       await editTaskModal.close();
 
       await projectMainView.assertTaskIsInProgress(taskName);
+      await ApiHooks.deleteTask(request, taskName);
     });
 
     test.only("Change task name", async ({ page, request }) => {
@@ -60,7 +71,8 @@ test.describe.serial(
       await ApiHooks.deleteTask(request, taskName);
     });
 
-    test("Delete a task", async ({ page }) => {
+    test("Delete a task", async ({ page, request }) => {
+      await ApiHooks.createNewTask(request, taskName);
       await page.goto("/");
 
       const projectMainView = new ProjectMainView(page);
