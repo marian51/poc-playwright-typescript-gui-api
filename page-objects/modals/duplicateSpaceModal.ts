@@ -14,12 +14,10 @@ export class DuplicateSpaceModal {
   }
 
   async typeSpaceName(newSpaceName: string) {
-    await this.nameInput.waitFor();
     await this.nameInput.fill(newSpaceName);
   }
 
   async clickOnDuplicateButton() {
-    await this.duplicateButton.waitFor();
     await this.duplicateButton.click();
   }
 }

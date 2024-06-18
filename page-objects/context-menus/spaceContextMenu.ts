@@ -13,7 +13,6 @@ export class SpaceContextMenu {
 
   async clickOnOption(optionName: string) {
     this.menuOption = this.menuContainer.getByRole('link', { name: optionName })
-    await this.menuOption.waitFor();
     await this.menuOption.click();
   }
 }
