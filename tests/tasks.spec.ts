@@ -5,6 +5,7 @@ import { ProjectMainView } from "../page-objects/projectMainView";
 import { TaskConextMenu } from "../page-objects/context-menus/taskContextMenu";
 import { EditTaskModal } from "../page-objects/modals/editTaskModal";
 import { ApiHooks } from "../api-utils/apiHooks";
+import { faker } from '@faker-js/faker';
 
 test.describe(
   "Tasks feature tests",
@@ -12,18 +13,10 @@ test.describe(
     tag: "@task",
   },
   () => {
-    // TODO: implement faker
-    const taskName = "Test Task";
-    const changedTaskName = "Changed task name";
-    const taskDescription = "My description";
+    const taskName = faker.word.verb();
+    const changedTaskName = faker.word.noun();
+    const taskDescription = faker.lorem.sentence();
 
-    // test.beforeEach(async ({ request }) => {
-    //   await ApiHooks.createNewTask(request, taskName);
-    // });
-
-    // test.afterEach(async ({ request }) => {
-    //   await ApiHooks.deleteTask(request, taskName);
-    // });
 
     test("Create new task", async ({ page, request }) => {
       await page.goto("/");

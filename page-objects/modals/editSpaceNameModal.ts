@@ -14,15 +14,11 @@ export class EditSpaceNameModal {
   }
 
   async typeSpaceName(spaceName: string) {
-    await this.modalContainer.waitFor();
-    await this.spaceNameInput.waitFor();
     await this.spaceNameInput.clear();
     await this.spaceNameInput.fill(spaceName);
   }
 
   async clickOnSaveButton() {
-    await this.modalContainer.waitFor();
-    await this.saveButton.waitFor();
     await this.saveButton.click();
   }
 
