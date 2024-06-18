@@ -149,7 +149,7 @@ test.describe(
 test.describe(
   "Basic UI end-to-end tests of space functionalities",
   {
-    tag: ["@space", "e2e"],
+    tag: ["@space", "@e2e"],
     annotation: [
       {
         type: "issue",
