@@ -45,7 +45,7 @@ test.describe.serial(
       await projectMainView.assertTaskIsInProgress(taskName);
     });
 
-    test("Change task name", async ({ page, request }) => {
+    test.only("Change task name", async ({ page, request }) => {
       await ApiHooks.createNewTask(request, taskName);
       await page.goto("/");
 
@@ -57,6 +57,7 @@ test.describe.serial(
       await editTaskModal.close();
 
       await projectMainView.assertTaskIsVisible(changedTaskName);
+      await ApiHooks.deleteTask(request, taskName);
     });
 
     test("Delete a task", async ({ page }) => {

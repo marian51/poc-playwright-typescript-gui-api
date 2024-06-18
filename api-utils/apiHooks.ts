@@ -1,6 +1,9 @@
-import { APIRequestContext } from "@playwright/test";
+import { APIRequestContext, APIResponse } from "@playwright/test";
 
 export class ApiHooks {
+  // TODO: get last created task id from response
+  private static taskToDeleteId: APIResponse;
+
   public static async deleteSpaceByName(request: APIRequestContext, spaceName: string) {
     const teamId: string = process.env.BASE_TEAM_ID as string;
     const apiKey: string = process.env.API_KEY as string;
@@ -44,6 +47,14 @@ export class ApiHooks {
       name: taskName,
     };
 
-    await request.post(createTaskEndpoint, { headers: { Authorization: apiKey }, data: newTaskBody });
+    const response = await request.post(createTaskEndpoint, { headers: { Authorization: apiKey }, data: newTaskBody });
+    ApiHooks.taskToDeleteId = (await response.json()).id;
+  }
+
+  public static async deleteTask(request: APIRequestContext, taskName: string) {
+    const apiKey: string = process.env.API_KEY as string;
+    const deleteTaskEndpoint: string = `https://api.clickup.com/api/v2/task/${ApiHooks.taskToDeleteId}`;
+
+    await request.delete(deleteTaskEndpoint, { headers: { Authorization: apiKey, 'Content-Type': 'application/json' } })
   }
 }
