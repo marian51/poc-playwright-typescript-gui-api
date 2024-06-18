@@ -4,6 +4,7 @@ import { CreateTaskModalPage } from "../page-objects/modals/createTaskModal";
 import { ProjectMainView } from "../page-objects/projectMainView";
 import { TaskConextMenu } from "../page-objects/context-menus/taskContextMenu";
 import { EditTaskModal } from "../page-objects/modals/editTaskModal";
+import { faker } from '@faker-js/faker';
 
 test.describe.serial(
   "Tasks feature tests",
@@ -11,10 +12,9 @@ test.describe.serial(
     tag: "@task",
   },
   () => {
-    // TODO: implement faker
-    const taskName = "Test Task";
-    const changedTaskName = "Changed task name";
-    const taskDescription = "My description";
+    const taskName = faker.word.verb();
+    const changedTaskName = faker.word.noun();
+    const taskDescription = faker.lorem.sentence();
 
     test("Create new task", async ({ page }) => {
       await page.goto("/");
