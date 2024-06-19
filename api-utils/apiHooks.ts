@@ -2,9 +2,6 @@ import { APIRequestContext, APIResponse } from "@playwright/test";
 import { ApiUtils } from "./apiUtils";
 
 export class ApiHooks {
-  // TODO: get last created task id from response
-  private static lastCreatedTaskId: APIResponse;
-
   public static async deleteSpaceByName(request: APIRequestContext, spaceName: string) {
     const teamId: string = process.env.BASE_TEAM_ID as string;
     const apiKey: string = process.env.API_KEY as string;
@@ -51,15 +48,13 @@ export class ApiHooks {
     };
 
     const response = await request.post(createTaskEndpoint, { headers: { Authorization: apiKey }, data: newTaskBody });
-    ApiHooks.lastCreatedTaskId = (await response.json()).id;
   }
 
   public static async deleteTask(request: APIRequestContext, taskName: string) {
     const apiKey: string = process.env.API_KEY as string;
     const taskId = await ApiUtils.getTaskIdFromBaseList(request, taskName);
     const deleteTaskEndpoint: string = `https://api.clickup.com/api/v2/task/${taskId}`;
-    
+
     await request.delete(deleteTaskEndpoint, { headers: { Authorization: apiKey, "Content-Type": "application/json" } });
   }
-
 }
