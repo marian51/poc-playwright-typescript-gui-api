@@ -7,13 +7,13 @@ import { EditTaskModal } from "../page-objects/modals/editTaskModal";
 import { ApiHooks } from "../api-utils/apiHooks";
 import { faker } from "@faker-js/faker";
 
-test.describe(
+test.describe.only(
   "Tasks feature tests",
   {
     tag: "@task",
   },
   () => {
-    let taskName = faker.word.verb();
+    const taskName = faker.word.verb();
     const changedTaskName = faker.word.noun();
     const taskDescription = faker.lorem.sentence();
 
@@ -41,6 +41,7 @@ test.describe(
 
       test.afterEach(async ({ request }) => {
         await ApiHooks.deleteTask(request, taskName);
+        await ApiHooks.deleteTask(request, changedTaskName);
       });
 
       test("Change task status to in progress", async ({ page }) => {
@@ -59,7 +60,6 @@ test.describe(
         const editTaskModal = new EditTaskModal(page);
 
         await projectMainView.openTaskModal(taskName);
-        taskName = changedTaskName;
         await editTaskModal.changeTaskName(taskName);
         await editTaskModal.close();
 

@@ -1,7 +1,6 @@
 import { APIRequestContext, APIResponse } from "@playwright/test";
 
 export class ApiUtils {
-
   public static async getSpaceIdByName(request: APIRequestContext, spaceName: string): Promise<string> {
     const apiKey: string = process.env.API_KEY as string;
     const teamId: string = process.env.BASE_TEAM_ID as string;
@@ -46,9 +45,17 @@ export class ApiUtils {
     const getTasksEndpoint: string = `https://api.clickup.com/api/v2/list/${baseListId}/task`;
 
     const getTasksResponse: APIResponse = await request.get(getTasksEndpoint, { headers: { Authorization: apiKey } });
-    const taskId: string = (await getTasksResponse.json()).tasks.filter((task) => task.name === taskName)[0].id;
-    
-    return taskId;
+    try {
+      const taskId: string = (await getTasksResponse.json()).tasks.filter((task) => task.name === taskName)[0].id;
+      return taskId;
+    } catch (error) {
+      if (error instanceof TypeError) {
+        console.error("Task with given name was not found!", error.message);
+      } else {
+        console.error("Unexpected error occurred while trying to obtain an id!", error.message);
+      }
+      return "";
+    }
   }
 
   public static async getBaseFolderId(request: APIRequestContext): Promise<string> {
