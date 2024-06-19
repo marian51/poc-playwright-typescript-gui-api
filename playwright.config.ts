@@ -1,7 +1,7 @@
-import { defineConfig, devices } from '@playwright/test';
-import * as dotenv from 'dotenv'
+import { defineConfig, devices } from "@playwright/test";
+import * as dotenv from "dotenv";
 
-dotenv.config()
+dotenv.config();
 /**
  * Read environment variables from file.
  * https://github.com/motdotla/dotenv
@@ -12,7 +12,7 @@ dotenv.config()
  * See https://playwright.dev/docs/test-configuration.
  */
 export default defineConfig({
-  testDir: './tests',
+  testDir: "./tests",
   /* Run tests in files in parallel */
   fullyParallel: false,
   /* Fail the build on CI if you accidentally left test.only in the source code. */
@@ -22,30 +22,30 @@ export default defineConfig({
   /* Opt out of parallel tests on CI. */
   workers: process.env.CI ? 1 : 1,
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
-  reporter: [['line'], ['html']],
+  reporter: [["line"], ["html"]],
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
     /* Base URL to use in actions like `await page.goto('/')`. */
-    baseURL: 'https://app.clickup.com',
+    baseURL: "https://app.clickup.com",
 
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
-    trace: 'retain-on-failure',
+    trace: "retain-on-failure",
 
     /* Change the attribute by which method 'page.getByTestId(...)' looks for elements. See https://playwright.dev/docs/locators#set-a-custom-test-id-attribute*/
-    testIdAttribute: 'data-test'
+    testIdAttribute: "data-test",
   },
 
   /* Configure projects for major browsers */
   projects: [
-    { name: 'setup', testMatch: /.*\.setup\.ts/ },
+    { name: "setup", testMatch: /.*\.setup\.ts/ },
 
     {
-      name: 'chromium',
+      name: "chromium",
       use: {
-        ...devices['Desktop Chrome'],
-        storageState: 'playwright/.auth/user-session.json',
+        ...devices["Desktop Chrome"],
+        storageState: "playwright/.auth/user-session.json",
       },
-      dependencies: ['setup'],
+      dependencies: ["setup"],
     },
 
     // {

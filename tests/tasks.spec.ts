@@ -4,7 +4,7 @@ import { CreateTaskModalPage } from "../page-objects/modals/createTaskModal";
 import { ProjectMainView } from "../page-objects/projectMainView";
 import { TaskConextMenu } from "../page-objects/context-menus/taskContextMenu";
 import { EditTaskModal } from "../page-objects/modals/editTaskModal";
-import { faker } from '@faker-js/faker';
+import { faker } from "@faker-js/faker";
 
 test.describe.serial(
   "Tasks feature tests",

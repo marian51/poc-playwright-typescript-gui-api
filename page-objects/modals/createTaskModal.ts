@@ -10,11 +10,11 @@ export class CreateTaskModalPage {
 
   constructor(page: Page) {
     this.page = page;
-    this.modalContainer = page.getByTestId('modal__dialog');
-    this.taskNameInput = page.getByTestId('draft-view__title-task');
-    this.addDescriptionButton = page.getByTestId('dropdown-list-item__blank');
-    this.taskDescriptionInput = page.locator('.ql-editor');
-    this.createTaskButton = page.getByTestId('draft-view__quick-create-create');
+    this.modalContainer = page.getByTestId("modal__dialog");
+    this.taskNameInput = page.getByTestId("draft-view__title-task");
+    this.addDescriptionButton = page.getByTestId("dropdown-list-item__blank");
+    this.taskDescriptionInput = page.locator(".ql-editor");
+    this.createTaskButton = page.getByTestId("draft-view__quick-create-create");
   }
 
   async fillTaskNameField(taskName: string) {

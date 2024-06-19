@@ -6,7 +6,7 @@ export class TaskConextMenu {
 
   constructor(page: Page) {
     this.page = page;
-    this.deleteButton = page.getByTestId('quick-actions-menu__delete-task');
+    this.deleteButton = page.getByTestId("quick-actions-menu__delete-task");
   }
 
   async clickDeleteButton() {
