@@ -19,7 +19,7 @@ export class DocView {
     await this.docTitleEditableInput.fill(newDocTitle);
   }
 
-  @logClicking("'Enter' keyboard key")
+  @logClicking("keyboard key")
   async clickKeyBoardKey(keyboardKey: string) {
     await this.docTitleEditableInput.press(keyboardKey);
   }
