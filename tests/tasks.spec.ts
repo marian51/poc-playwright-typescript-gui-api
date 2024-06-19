@@ -43,7 +43,7 @@ test.describe.only(
         await ApiHooks.deleteTask(request, taskName);
       });
 
-      test("Change task status to in progress", async ({ page, request }) => {
+      test("Change task status to in progress", async ({ page }) => {
         const projectMainView = new ProjectMainView(page);
         const editTaskModal = new EditTaskModal(page);
 
@@ -54,7 +54,7 @@ test.describe.only(
         await projectMainView.assertTaskIsInProgress(taskName);
       });
 
-      test("Change task name", async ({ page, request }) => {
+      test("Change task name", async ({ page }) => {
         const projectMainView = new ProjectMainView(page);
         const editTaskModal = new EditTaskModal(page);
 
