@@ -200,29 +200,35 @@ test.describe(
         await page.locator("cu-web-push-notification-banner").waitFor();
 
         // Create new space
-        await leftMenu.clickOnElement("Create Space");
-        await createSpaceModal.typeSpaceName(newSpaceName);
-        await createSpaceModal.clickOnContinueButton();
-        await createSpaceModal.clickOnButton("Create Space");
+        await test.step("Step: Create new space", async () => {
+          await leftMenu.clickOnElement("Create Space");
+          await createSpaceModal.typeSpaceName(newSpaceName);
+          await createSpaceModal.clickOnContinueButton();
+          await createSpaceModal.clickOnButton("Create Space");
 
-        await leftMenu.assertElementIsVisible(newSpaceName);
+          await leftMenu.assertElementIsVisible(newSpaceName);
+        });
 
         // Rename existing space
-        await leftMenu.rightClickOnElement(newSpaceName);
-        await spaceContextMenu.clickOnOption("Rename");
-        await editSpaceNameModal.typeSpaceName(renamedSpaceName);
-        await editSpaceNameModal.clickOnSaveButton();
+        await test.step("Step: Rename creating space", async () => {
+          await leftMenu.rightClickOnElement(newSpaceName);
+          await spaceContextMenu.clickOnOption("Rename");
+          await editSpaceNameModal.typeSpaceName(renamedSpaceName);
+          await editSpaceNameModal.clickOnSaveButton();
 
-        await leftMenu.assertElementIsVisible(renamedSpaceName);
+          await leftMenu.assertElementIsVisible(renamedSpaceName);
+        });
 
         // Deleting renamed space
-        await leftMenu.rightClickOnElement(renamedSpaceName);
-        await spaceContextMenu.clickOnOption("Delete");
-        await deleteSpaceModal.typeSpaceName(renamedSpaceName);
-        await deleteSpaceModal.clickOnDeleteButton();
-        await deleteSpaceModal.waitForDeleting();
+        await test.step("Step: Delete renamed space", async () => {
+          await leftMenu.rightClickOnElement(renamedSpaceName);
+          await spaceContextMenu.clickOnOption("Delete");
+          await deleteSpaceModal.typeSpaceName(renamedSpaceName);
+          await deleteSpaceModal.clickOnDeleteButton();
+          await deleteSpaceModal.waitForDeleting();
 
-        await leftMenu.assertElementIsNotVisible(renamedSpaceName);
+          await leftMenu.assertElementIsNotVisible(renamedSpaceName);
+        });
       }
     );
   }
