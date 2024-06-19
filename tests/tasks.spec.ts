@@ -7,7 +7,7 @@ import { EditTaskModal } from "../page-objects/modals/editTaskModal";
 import { ApiHooks } from "../api-utils/apiHooks";
 import { faker } from "@faker-js/faker";
 
-test.describe.only(
+test.describe(
   "Tasks feature tests",
   {
     tag: "@task",
