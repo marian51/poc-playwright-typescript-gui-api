@@ -23,6 +23,10 @@ test.describe(
       await ApiHooks.createSpaceByName(request, newSpaceName);
     });
 
+    test.afterEach("Prepare environment before tests", async ({ request }) => {
+      await ApiHooks.deleteSpaceByName(request, newSpaceName);
+    });
+
     test(
       "Basic test for creating new doc in existing space",
       {
