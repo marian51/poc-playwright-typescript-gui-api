@@ -7,13 +7,13 @@ import { EditTaskModal } from "../page-objects/modals/editTaskModal";
 import { ApiHooks } from "../api-utils/apiHooks";
 import { faker } from "@faker-js/faker";
 
-test.describe(
+test.describe.only(
   "Tasks feature tests",
   {
     tag: "@task",
   },
   () => {
-    const taskName = faker.word.verb();
+    let taskName = faker.word.verb();
     const changedTaskName = faker.word.noun();
     const taskDescription = faker.lorem.sentence();
 
@@ -33,37 +33,41 @@ test.describe(
       await ApiHooks.deleteTask(request, taskName);
     });
 
-    test("Change task status to in progress", async ({ page, request }) => {
-      await ApiHooks.createNewTask(request, taskName);
-      await page.goto("/");
+    test.describe("Editing existing tasks", () => {
+      test.beforeEach(async ({ page, request }) => {
+        await ApiHooks.createNewTask(request, taskName);
+        await page.goto("/");
+      });
 
-      const projectMainView = new ProjectMainView(page);
-      const editTaskModal = new EditTaskModal(page);
+      test.afterEach(async ({ request }) => {
+        await ApiHooks.deleteTask(request, taskName);
+      });
 
-      await projectMainView.openTaskModal(taskName);
-      await editTaskModal.changeTaskStatusToInProgress();
-      await editTaskModal.close();
+      test("Change task status to in progress", async ({ page, request }) => {
+        const projectMainView = new ProjectMainView(page);
+        const editTaskModal = new EditTaskModal(page);
 
-      await projectMainView.assertTaskIsInProgress(taskName);
-      await ApiHooks.deleteTask(request, taskName);
+        await projectMainView.openTaskModal(taskName);
+        await editTaskModal.changeTaskStatusToInProgress();
+        await editTaskModal.close();
+
+        await projectMainView.assertTaskIsInProgress(taskName);
+      });
+
+      test("Change task name", async ({ page, request }) => {
+        const projectMainView = new ProjectMainView(page);
+        const editTaskModal = new EditTaskModal(page);
+
+        await projectMainView.openTaskModal(taskName);
+        taskName = changedTaskName;
+        await editTaskModal.changeTaskName(taskName);
+        await editTaskModal.close();
+
+        await projectMainView.assertTaskIsVisible(taskName);
+      });
     });
 
-    test("Change task name", async ({ page, request }) => {
-      await ApiHooks.createNewTask(request, taskName);
-      await page.goto("/");
-
-      const projectMainView = new ProjectMainView(page);
-      const editTaskModal = new EditTaskModal(page);
-
-      await projectMainView.openTaskModal(taskName);
-      await editTaskModal.changeTaskName(changedTaskName);
-      await editTaskModal.close();
-
-      await projectMainView.assertTaskIsVisible(changedTaskName);
-      await ApiHooks.deleteTask(request, changedTaskName);
-    });
-
-    test.only("Delete a task", async ({ page, request }) => {
+    test("Delete a task", async ({ page, request }) => {
       await ApiHooks.createNewTask(request, taskName);
       await page.goto("/");
 
