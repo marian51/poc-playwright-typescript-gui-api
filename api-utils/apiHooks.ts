@@ -39,9 +39,10 @@ export class ApiHooks {
     const response = await request.post(postSpaceEndpoint, { headers: { Authorization: apiKey }, data: newSpaceBody });
   }
 
+  // Currently, new tasks are always being created in [Team Space/Projects/Project 1] by default
+  // TODO: Discuss and decide how to handle task creation
   public static async createNewTask(request: APIRequestContext, taskName: string) {
-    // TODO: [Optional] Obtain taskListId via API instead of .env
-    const taskListId: string = process.env.TASK_LIST_ID as string;
+    const taskListId: string = await ApiUtils.getBaseListId(request);
     const apiKey: string = process.env.API_KEY as string;
     const createTaskEndpoint: string = `https://api.clickup.com/api/v2/list/${taskListId}/task`;
 

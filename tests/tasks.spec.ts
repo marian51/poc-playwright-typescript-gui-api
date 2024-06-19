@@ -5,7 +5,7 @@ import { ProjectMainView } from "../page-objects/projectMainView";
 import { TaskConextMenu } from "../page-objects/context-menus/taskContextMenu";
 import { EditTaskModal } from "../page-objects/modals/editTaskModal";
 import { ApiHooks } from "../api-utils/apiHooks";
-import { faker } from '@faker-js/faker';
+import { faker } from "@faker-js/faker";
 
 test.describe(
   "Tasks feature tests",
@@ -17,7 +17,7 @@ test.describe(
     const changedTaskName = faker.word.noun();
     const taskDescription = faker.lorem.sentence();
 
-    test.only("Create new task", async ({ page, request }) => {
+    test("Create new task", async ({ page, request }) => {
       await page.goto("/");
 
       const expandableTopBarPage = new ExpandableTopBarPage(page);
@@ -63,7 +63,7 @@ test.describe(
       await ApiHooks.deleteTask(request, changedTaskName);
     });
 
-    test("Delete a task", async ({ page, request }) => {
+    test.only("Delete a task", async ({ page, request }) => {
       await ApiHooks.createNewTask(request, taskName);
       await page.goto("/");
 

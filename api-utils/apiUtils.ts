@@ -50,4 +50,19 @@ export class ApiUtils {
     
     return taskId;
   }
+
+  public static async getBaseFolderId(request: APIRequestContext): Promise<string> {
+    // TODO: move base names to separate class or dictionary
+    const baseSpaceName: string = "Team Space";
+    const baseFolderName: string = "Projects";
+    return await this.getFolderIdByName(request, baseSpaceName, baseFolderName);
+  }
+
+  public static async getBaseListId(request: APIRequestContext): Promise<string> {
+    // TODO: move base names to separate class or dictionary
+    const baseSpaceName: string = "Team Space";
+    const baseFolderName: string = "Projects";
+    const baseListName: string = "Project 1";
+    return await this.getListIdByName(request, baseSpaceName, baseFolderName, baseListName);
+  }
 }
