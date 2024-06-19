@@ -1,4 +1,5 @@
 import { Locator, Page } from "@playwright/test";
+import { logClickingOnElement, logTyping, logWaiting } from "../../utils/decorators";
 
 export class DeleteSpaceModal {
   private readonly page: Page;
@@ -13,15 +14,18 @@ export class DeleteSpaceModal {
     this.deleteButton = this.modalContainer.getByTestId("confirmation-modal__confirm-button");
   }
 
-  async typeSpaceName (spaceName: string) {
-    await this.spaceNameInput.fill(spaceName)
+  @logTyping("Space name")
+  async typeSpaceName(spaceName: string) {
+    await this.spaceNameInput.fill(spaceName);
   }
 
+  @logClickingOnElement("'Delete' button")
   async clickOnDeleteButton() {
-    await this.deleteButton.click()
+    await this.deleteButton.click();
   }
 
+  @logWaiting("Deleting space")
   async waitForDeleting() {
-    await this.modalContainer.waitFor({state: 'detached'})
+    await this.modalContainer.waitFor({ state: "detached" });
   }
 }

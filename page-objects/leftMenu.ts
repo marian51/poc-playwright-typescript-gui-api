@@ -1,4 +1,5 @@
 import { Locator, Page, expect } from "@playwright/test";
+import { logClicking } from "../utils/decorators";
 
 export class LeftMenu {
   private readonly page: Page;
@@ -11,11 +12,13 @@ export class LeftMenu {
     this.leftSideBar = this.page.locator("cu-simple-bar");
   }
 
+  @logClicking("left menu option")
   async clickOnElement(elementName: string) {
     this.menuElement = this.leftSideBar.getByRole("treeitem", { name: elementName });
     await this.menuElement.click();
   }
 
+  @logClicking("left menu option", "Right")
   async rightClickOnElement(elementName: string) {
     this.menuElement = this.leftSideBar.getByRole("treeitem", { name: elementName });
     await this.menuElement.click({ button: "right" });
@@ -28,7 +31,7 @@ export class LeftMenu {
 
   async assertElementIsNotVisible(elementName: string) {
     this.menuElement = this.leftSideBar.getByRole("treeitem", { name: elementName });
-    await this.menuElement.waitFor({state: 'detached'});
+    await this.menuElement.waitFor({ state: "detached" });
     await expect(this.menuElement).toBeHidden();
   }
 }
