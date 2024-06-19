@@ -18,20 +18,15 @@ export class CreateTaskModalPage {
   }
 
   async fillTaskNameField(taskName: string) {
-    await this.taskNameInput.waitFor();
     await this.taskNameInput.fill(taskName);
   }
 
   async fillDescriptionField(taskDescription: string) {
-    await this.addDescriptionButton.waitFor();
     await this.addDescriptionButton.click();
-
-    await this.taskDescriptionInput.waitFor();
     await this.taskDescriptionInput.fill(taskDescription);
   }
 
   async clickCreateTaskButton() {
-    await this.createTaskButton.waitFor();
     await this.createTaskButton.click();
   }
 }

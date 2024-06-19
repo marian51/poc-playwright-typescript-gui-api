@@ -10,7 +10,6 @@ export class TaskConextMenu {
   }
 
   async clickDeleteButton() {
-    await this.deleteButton.waitFor();
     await this.deleteButton.click();
   }
 }

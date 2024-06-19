@@ -3,6 +3,8 @@ import { ExpandableTopBarPage } from "../page-objects/expandableTopBar";
 import { CreateTaskModalPage } from "../page-objects/modals/createTaskModal";
 import { ProjectMainView } from "../page-objects/projectMainView";
 import { TaskConextMenu } from "../page-objects/context-menus/taskContextMenu";
+import { EditTaskModal } from "../page-objects/modals/editTaskModal";
+import { faker } from "@faker-js/faker";
 
 test.describe.serial(
   "Tasks feature tests",
@@ -10,9 +12,9 @@ test.describe.serial(
     tag: "@task",
   },
   () => {
-    // TODO: implement faker
-    const taskName = "Test Task";
-    const taskDescription = "My description";
+    const taskName = faker.word.verb();
+    const changedTaskName = faker.word.noun();
+    const taskDescription = faker.lorem.sentence();
 
     test("Create new task", async ({ page }) => {
       await page.goto("/");
@@ -29,16 +31,42 @@ test.describe.serial(
       await projectMainView.assertTaskIsVisible(taskName);
     });
 
+    test("Change task status to in progress", async ({ page }) => {
+      await page.goto("/");
+
+      const projectMainView = new ProjectMainView(page);
+      const editTaskModal = new EditTaskModal(page);
+
+      await projectMainView.openTaskModal(taskName);
+      await editTaskModal.changeTaskStatusToInProgress();
+      await editTaskModal.close();
+
+      await projectMainView.assertTaskIsInProgress(taskName);
+    });
+
+    test("Change task name", async ({ page }) => {
+      await page.goto("/");
+
+      const projectMainView = new ProjectMainView(page);
+      const editTaskModal = new EditTaskModal(page);
+
+      await projectMainView.openTaskModal(taskName);
+      await editTaskModal.changeTaskName(changedTaskName);
+      await editTaskModal.close();
+
+      await projectMainView.assertTaskIsVisible(changedTaskName);
+    });
+
     test("Delete a task", async ({ page }) => {
       await page.goto("/");
 
       const projectMainView = new ProjectMainView(page);
       const taskContextMenuButton = new TaskConextMenu(page);
 
-      await projectMainView.openTaskContextMenu(taskName);
+      await projectMainView.openTaskContextMenu(changedTaskName);
       await taskContextMenuButton.clickDeleteButton();
 
-      await projectMainView.assertTaskIsNotVisible(taskName);
+      await projectMainView.assertTaskIsNotVisible(changedTaskName);
     });
-  },
+  }
 );

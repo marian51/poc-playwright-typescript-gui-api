@@ -14,14 +14,10 @@ export class DeleteSpaceModal {
   }
 
   async typeSpaceName(spaceName: string) {
-    await this.modalContainer.waitFor();
-    await this.spaceNameInput.waitFor();
     await this.spaceNameInput.fill(spaceName);
   }
 
   async clickOnDeleteButton() {
-    await this.modalContainer.waitFor();
-    await this.deleteButton.waitFor();
     await this.deleteButton.click();
   }
 

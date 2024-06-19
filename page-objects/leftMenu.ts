@@ -13,19 +13,16 @@ export class LeftMenu {
 
   async clickOnElement(elementName: string) {
     this.menuElement = this.leftSideBar.getByRole("treeitem", { name: elementName });
-    await this.menuElement.waitFor();
     await this.menuElement.click();
   }
 
   async rightClickOnElement(elementName: string) {
     this.menuElement = this.leftSideBar.getByRole("treeitem", { name: elementName });
-    await this.menuElement.waitFor();
     await this.menuElement.click({ button: "right" });
   }
 
   async assertElementIsVisible(elementName: string) {
     this.menuElement = this.leftSideBar.getByRole("treeitem", { name: elementName });
-    await this.menuElement.waitFor();
     await expect(this.menuElement).toBeVisible();
   }
 
