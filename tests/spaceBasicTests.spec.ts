@@ -27,7 +27,7 @@ test(
     await leftMenu.assertElementIsVisible(newSpaceName);
 
     await ApiHooks.deleteSpaceByName(request, newSpaceName);
-  },
+  }
 );
 
 test(
@@ -51,7 +51,7 @@ test(
     await deleteSpaceModal.clickOnDeleteButton();
     await deleteSpaceModal.waitForDeleting();
     await leftMenu.assertElementIsNotVisible(newSpaceName);
-  },
+  }
 );
 
 test(
@@ -77,7 +77,7 @@ test(
     await leftMenu.assertElementIsVisible(renamedSpaceName);
 
     await ApiHooks.deleteSpaceByName(request, renamedSpaceName);
-  },
+  }
 );
 
 test(
@@ -102,7 +102,7 @@ test(
     await createSpaceModal.assertModalWindowIsVisible();
 
     await ApiHooks.deleteSpaceByName(request, newSpaceName);
-  },
+  }
 );
 
 test(
@@ -129,7 +129,7 @@ test(
 
     await ApiHooks.deleteSpaceByName(request, newSpaceName);
     await ApiHooks.deleteSpaceByName(request, duplicatedSpaceName);
-  },
+  }
 );
 
 test(
