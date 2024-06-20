@@ -57,4 +57,20 @@ export class ApiHooks {
 
     await request.delete(deleteTaskEndpoint, { headers: { Authorization: apiKey, "Content-Type": "application/json" } });
   }
+
+  public static async createNewDocInSpace(request: APIRequestContext, docName: string, spaceId: string) {
+    const teamId: string = process.env.BASE_TEAM_ID as string;
+    const apiKey: string = process.env.API_KEY as string;
+    const createDocEndpoint: string = `https://api.clickup.com/api/v3/workspaces/${teamId}/docs`;
+
+    const newDocBody = {
+      name: docName,
+      parent: {
+        id: spaceId,
+        type: 4,
+      },
+    };
+
+    await request.post(createDocEndpoint, { headers: { Authorization: apiKey }, data: newDocBody });
+  }
 }
