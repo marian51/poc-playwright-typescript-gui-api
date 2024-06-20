@@ -27,22 +27,11 @@ export class ProjectMainView {
     await this.taskContextMenuButton.click();
   }
 
-  async assertTaskIsVisible(taskName: string) {
-    this.expectedTask = this.dashboard.getByRole("link", { name: taskName });
-    await expect(this.expectedTask).toBeVisible();
+  async getElementByRole(elementRole, elementName: string): Promise<Locator> {
+    return this.dashboard.getByRole(elementRole, { name: elementName });
   }
 
-  async assertTaskIsNotVisible(taskName: string) {
-    this.expectedTask = this.dashboard.getByRole("link", { name: taskName });
-    await this.expectedTask.waitFor({ state: "detached" });
-    await expect(this.expectedTask).toBeHidden();
-  }
-
-  async assertTaskIsInProgress(taskName: string) {
-    this.taskRowContainer = this.dashboard.getByTestId("task-row__container__" + taskName);
-    this.taskStatus = this.taskRowContainer.getByTestId("task-row-status__badge");
-
-    // TODO: expected dictionary
-    await expect(this.taskStatus).toHaveText("in progress");
+  async getElementByTestId(dataTestId: string, elementName: string = ""): Promise<Locator> {
+    return this.dashboard.getByTestId(dataTestId + elementName);
   }
 }

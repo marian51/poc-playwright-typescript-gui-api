@@ -1,4 +1,4 @@
-import test from "@playwright/test";
+import test, { expect } from "@playwright/test";
 import { LeftMenu } from "../page-objects/leftMenu";
 import { CreateSpaceModal } from "../page-objects/modals/createSpaceModal";
 import { ApiHooks } from "../api-utils/apiHooks";
@@ -40,7 +40,8 @@ test.describe(
         await createSpaceModal.typeSpaceName(newSpaceName);
         await createSpaceModal.clickOnContinueButton();
         await createSpaceModal.clickOnButton("Create Space");
-        await leftMenu.assertElementIsVisible(newSpaceName);
+
+        await expect(await leftMenu.getElementByRole("treeitem", newSpaceName)).toBeVisible();
 
         await ApiHooks.deleteSpaceByName(request, newSpaceName);
       }
@@ -70,7 +71,8 @@ test.describe(
         await deleteSpaceModal.typeSpaceName(newSpaceName);
         await deleteSpaceModal.clickOnDeleteButton();
         await deleteSpaceModal.waitForDeleting();
-        await leftMenu.assertElementIsNotVisible(newSpaceName);
+
+        await expect(await leftMenu.getElementByRole("treeitem", newSpaceName)).toBeHidden();
       }
     );
 
@@ -98,7 +100,8 @@ test.describe(
         await spaceContextMenu.clickOnOption("Rename");
         await editSpaceNameModal.typeSpaceName(renamedSpaceName);
         await editSpaceNameModal.clickOnSaveButton();
-        await leftMenu.assertElementIsVisible(renamedSpaceName);
+
+        await expect(await leftMenu.getElementByRole("treeitem", renamedSpaceName)).toBeVisible();
 
         await ApiHooks.deleteSpaceByName(request, renamedSpaceName);
       }
@@ -124,10 +127,13 @@ test.describe(
 
         await leftMenu.clickOnElement("Create Space");
         await createSpaceModal.typeSpaceName(newSpaceName);
-        await createSpaceModal.assertNameInputHasError();
-        await createSpaceModal.assertErrorMessageIsDisplayed();
         await createSpaceModal.clickOnContinueButton();
-        await createSpaceModal.assertModalWindowIsVisible();
+
+        await expect(createSpaceModal.nameInput).toHaveClass(/error/);
+        await expect(createSpaceModal.nameInput).toHaveCSS("border-color", "rgb(211, 61, 68)");
+        await expect(createSpaceModal.sameNameErrorMessage).toBeVisible();
+        await expect(createSpaceModal.sameNameErrorMessage).toHaveCSS("color", "rgb(177, 58, 65)");
+        await expect(createSpaceModal.modalContainer).toBeVisible();
 
         await ApiHooks.deleteSpaceByName(request, newSpaceName);
       }
@@ -157,7 +163,9 @@ test.describe(
         await spaceContextMenu.clickOnOption("Duplicate");
         await duplicateSpaceModal.typeSpaceName(duplicatedSpaceName);
         await duplicateSpaceModal.clickOnDuplicateButton();
-        await leftMenu.assertElementIsVisible(duplicatedSpaceName);
+
+        await expect(await leftMenu.getElementByRole("treeitem", newSpaceName)).toBeVisible();
+        await expect(await leftMenu.getElementByRole("treeitem", duplicatedSpaceName)).toBeVisible();
 
         await ApiHooks.deleteSpaceByName(request, newSpaceName);
         await ApiHooks.deleteSpaceByName(request, duplicatedSpaceName);
@@ -205,7 +213,7 @@ test.describe(
           await createSpaceModal.clickOnContinueButton();
           await createSpaceModal.clickOnButton("Create Space");
 
-          await leftMenu.assertElementIsVisible(newSpaceName);
+          await expect.soft(await leftMenu.getElementByRole("treeitem", newSpaceName)).toBeVisible();
         });
 
         await test.step("Step: Rename existing space", async () => {
@@ -214,7 +222,7 @@ test.describe(
           await editSpaceNameModal.typeSpaceName(renamedSpaceName);
           await editSpaceNameModal.clickOnSaveButton();
 
-          await leftMenu.assertElementIsVisible(renamedSpaceName);
+          await expect.soft(await leftMenu.getElementByRole("treeitem", renamedSpaceName)).toBeVisible();
         });
 
         await test.step("Step: Delete renamed space", async () => {
@@ -224,7 +232,7 @@ test.describe(
           await deleteSpaceModal.clickOnDeleteButton();
           await deleteSpaceModal.waitForDeleting();
 
-          await leftMenu.assertElementIsNotVisible(renamedSpaceName);
+          await expect.soft(await leftMenu.getElementByRole("treeitem", newSpaceName)).toBeHidden();
         });
       }
     );

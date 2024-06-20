@@ -2,10 +2,10 @@ import { Locator, Page, expect } from "@playwright/test";
 
 export class CreateSpaceModal {
   private readonly page: Page;
-  private readonly modalContainer: Locator;
-  private readonly nameInput: Locator;
   private readonly continueButton: Locator;
-  private readonly sameNameErrorMessage: Locator;
+  public readonly modalContainer: Locator;
+  public readonly nameInput: Locator;
+  public readonly sameNameErrorMessage: Locator;
 
   private button: Locator;
 
@@ -28,19 +28,5 @@ export class CreateSpaceModal {
   async clickOnButton(buttonName: string) {
     this.button = this.modalContainer.getByRole("button", { name: buttonName });
     await this.button.click();
-  }
-
-  async assertNameInputHasError() {
-    await expect(this.nameInput).toHaveClass(/error/);
-    await expect(this.nameInput).toHaveCSS("border-color", "rgb(211, 61, 68)");
-  }
-
-  async assertErrorMessageIsDisplayed() {
-    await expect(this.sameNameErrorMessage).toBeVisible();
-    await expect(this.sameNameErrorMessage).toHaveCSS("color", "rgb(177, 58, 65)");
-  }
-
-  async assertModalWindowIsVisible() {
-    await expect(this.modalContainer).toBeVisible();
   }
 }

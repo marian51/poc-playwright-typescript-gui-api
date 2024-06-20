@@ -1,4 +1,4 @@
-import { test } from "@playwright/test";
+import { expect, test } from "@playwright/test";
 import { ExpandableTopBarPage } from "../page-objects/expandableTopBar";
 import { CreateTaskModalPage } from "../page-objects/modals/createTaskModal";
 import { ProjectMainView } from "../page-objects/projectMainView";
@@ -7,13 +7,13 @@ import { EditTaskModal } from "../page-objects/modals/editTaskModal";
 import { ApiHooks } from "../api-utils/apiHooks";
 import { faker } from "@faker-js/faker";
 
-test.describe.only(
+test.describe(
   "Tasks feature tests",
   {
     tag: "@task",
   },
   () => {
-    const taskName = faker.word.verb();
+    let taskName = faker.word.verb();
     const changedTaskName = faker.word.noun();
     const taskDescription = faker.lorem.sentence();
 
@@ -29,7 +29,8 @@ test.describe.only(
       await createTaskModalPage.fillDescriptionField(taskDescription);
       await createTaskModalPage.clickCreateTaskButton();
 
-      await projectMainView.assertTaskIsVisible(taskName);
+      await expect(await projectMainView.getElementByRole("link", taskName)).toBeVisible();
+
       await ApiHooks.deleteTask(request, taskName);
     });
 
@@ -41,7 +42,7 @@ test.describe.only(
 
       test.afterEach(async ({ request }) => {
         await ApiHooks.deleteTask(request, taskName);
-        await ApiHooks.deleteTask(request, changedTaskName);
+        // await ApiHooks.deleteTask(request, changedTaskName);
       });
 
       test("Change task status to in progress", async ({ page }) => {
@@ -52,7 +53,8 @@ test.describe.only(
         await editTaskModal.changeTaskStatusToInProgress();
         await editTaskModal.close();
 
-        await projectMainView.assertTaskIsInProgress(taskName);
+        const taskStatus = (await projectMainView.getElementByTestId("task-row__container__", taskName)).getByTestId("task-row-status__badge");
+        await expect(taskStatus).toHaveText("in progress");
       });
 
       test("Change task name", async ({ page }) => {
@@ -60,10 +62,11 @@ test.describe.only(
         const editTaskModal = new EditTaskModal(page);
 
         await projectMainView.openTaskModal(taskName);
+        taskName = changedTaskName;
         await editTaskModal.changeTaskName(taskName);
         await editTaskModal.close();
 
-        await projectMainView.assertTaskIsVisible(taskName);
+        await expect(await projectMainView.getElementByRole("link", taskName)).toBeVisible();
       });
     });
 
@@ -77,7 +80,7 @@ test.describe.only(
       await projectMainView.openTaskContextMenu(taskName);
       await taskContextMenuButton.clickDeleteButton();
 
-      await projectMainView.assertTaskIsNotVisible(taskName);
+      await expect(await projectMainView.getElementByRole("link", taskName)).toBeHidden();
     });
   }
 );
