@@ -41,6 +41,7 @@ export default defineConfig({
 
     {
       name: "chromium",
+      testDir: "./tests/gui",
       use: {
         ...devices["Desktop Chrome"],
         storageState: "playwright/.auth/user-session.json",
@@ -50,6 +51,7 @@ export default defineConfig({
 
     // {
     //   name: 'firefox',
+    //   testDir: "./tests/gui",
     //   use: {
     //     ...devices['Desktop Firefox'],
     //     storageState: 'playwright/.auth/user-session.json',
@@ -59,6 +61,7 @@ export default defineConfig({
 
     // {
     //   name: 'webkit',
+    //   testDir: "./tests/gui",
     //   use: {
     //     ...devices['Desktop Safari'],
     //     storageState: 'playwright/.auth/user-session.json',
