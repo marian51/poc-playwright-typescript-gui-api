@@ -8,7 +8,7 @@ import { EditSpaceNameModal } from "../page-objects/modals/editSpaceNameModal";
 import { DuplicateSpaceModal } from "../page-objects/modals/duplicateSpaceModal";
 
 test.describe(
-  "Basic UI tests for checking basic space functionalities",
+  "UI tests for checking basic space functionalities",
   {
     tag: ["@space", "@one"],
     annotation: [
@@ -199,7 +199,6 @@ test.describe(
         await page.goto("/");
         await page.locator("cu-web-push-notification-banner").waitFor();
 
-        // Create new space
         await test.step("Step: Create new space", async () => {
           await leftMenu.clickOnElement("Create Space");
           await createSpaceModal.typeSpaceName(newSpaceName);
@@ -209,8 +208,7 @@ test.describe(
           await leftMenu.assertElementIsVisible(newSpaceName);
         });
 
-        // Rename existing space
-        await test.step("Step: Rename creating space", async () => {
+        await test.step("Step: Rename existing space", async () => {
           await leftMenu.rightClickOnElement(newSpaceName);
           await spaceContextMenu.clickOnOption("Rename");
           await editSpaceNameModal.typeSpaceName(renamedSpaceName);
@@ -219,7 +217,6 @@ test.describe(
           await leftMenu.assertElementIsVisible(renamedSpaceName);
         });
 
-        // Deleting renamed space
         await test.step("Step: Delete renamed space", async () => {
           await leftMenu.rightClickOnElement(renamedSpaceName);
           await spaceContextMenu.clickOnOption("Delete");
