@@ -5,7 +5,8 @@
   "scripts": {
     "test": "playwright test --headed",
     "test-headless": "playwright test",
-    "test-tag": "playwright test --grep %npm_config_tag% --headed"
+    "test-tag": "playwright test --grep %npm_config_tag% --headed",
+    "api": "playwright test --project=api"
   },
   "keywords": [],
   "author": "",

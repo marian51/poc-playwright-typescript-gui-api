@@ -85,6 +85,16 @@ export default defineConfig({
     //   name: 'Google Chrome',
     //   use: { ...devices['Desktop Chrome'], channel: 'chrome' },
     // },
+
+    {
+      name: "api",
+      testDir: "./tests/api",
+      use: {
+        extraHTTPHeaders: {
+          Authorization: `${process.env.API_KEY}`,
+        },
+      },
+    },
   ],
 
   /* Run your local dev server before starting the tests */
