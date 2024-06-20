@@ -5,9 +5,11 @@ import { SpacePlusMenu } from "../page-objects/context-menus/spacePlusMenu";
 import { ApiHooks } from "../api-utils/apiHooks";
 import { DocView } from "../page-objects/docView";
 import { faker } from "@faker-js/faker";
+import { ApiUtils } from "../api-utils/apiUtils";
+import { DocContextMenu } from "../page-objects/context-menus/docContextMenu";
 
 test.describe(
-  "Basic UI tests for checking base doc functionalities",
+  "UI tests for checking basic doc functionalities",
   {
     tag: ["@doc", "@one"],
     annotation: {
@@ -51,6 +53,32 @@ test.describe(
         await docView.clickKeyBoardKey("Enter");
 
         await leftMenu.assertElementIsVisible(newDocName);
+      }
+    );
+
+    test(
+      "Basic test for deleting existing doc in existing space",
+      {
+        tag: "@this", // FIXME remove before committing
+        annotation: {
+          type: "issue",
+          description: "https://github.com/marian51/poc-playwright-typescript-gui-api/issues/68",
+        },
+      },
+      async ({ page, request }) => {
+        const leftMenu = new LeftMenu(page);
+        const docContextMenu = new DocContextMenu(page);
+
+        await ApiHooks.createNewDocInSpace(request, newDocName, await ApiUtils.getSpaceIdByName(request, newSpaceName));
+
+        await page.goto("/");
+        await page.locator("cu-web-push-notification-banner").waitFor();
+
+        await leftMenu.clickOnElement(newSpaceName);
+        await leftMenu.rightClickOnElement(newDocName);
+        await docContextMenu.clickOnOption("Delete");
+
+        await leftMenu.assertElementIsNotVisible(newDocName);
       }
     );
   }
