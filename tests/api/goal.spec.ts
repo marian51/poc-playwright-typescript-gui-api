@@ -18,15 +18,15 @@ test.describe(
         due_date: 1568036964079,
         description: faker.hacker.phrase(),
         multiple_owners: false,
-        owners: [74498810],
+        owners: [process.env.USER_ID],
         color: faker.color.rgb(),
       };
       const response = await request.post(`/api/v2/team/${process.env.BASE_TEAM_ID}/goal`, { data: newGoalBody });
       expect(response).toBeOK();
     });
 
-    test.skip("Update existing goal", async ({ request }) => {
-      const goalId = "GOAL_ID"; // TODO: handle IDs
+    test("Update existing goal", async ({ request }) => {
+      const goalId = process.env.PERMANENT_GOAL_ID;
       const updatedGoalBody = {
         name: faker.animal.bear(),
         color: "#000000",
