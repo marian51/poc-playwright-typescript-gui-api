@@ -3,6 +3,8 @@ import { faker } from "@faker-js/faker";
 import { TopMenu } from "../page-objects/topMenu";
 import { AvatarDropdownMenu } from "../page-objects/avatarDropdownMenu";
 import { Profile } from "../page-objects/profile";
+import { MyWorkTab } from "../page-objects/myWorkTab";
+import { CreateReminderModal } from "../page-objects/modals/createReminderModal";
 
 test.describe.serial(
   "Reminder feature tests",
@@ -10,17 +12,21 @@ test.describe.serial(
     tag: "@reminder",
   },
   () => {
-    const reminderText = faker.word.verb();
+    const reminderName = faker.word.noun();
 
     test("Create new reminder", async ({ page }) => {
-      await page.goto("/");
+      const topMenu = new TopMenu(page);
+      const avatarDropdownMenu = new AvatarDropdownMenu(page);
+      const profile = new Profile(page);
+      const myWorkTab = new MyWorkTab(page);
+      const createReminderModal = new CreateReminderModal(page);
 
-      const topMenuPage = new TopMenu(page);
-      await topMenuPage.clickAvatarIcon();
-      const avatarDropdownMenuPage = new AvatarDropdownMenu(page);
-      await avatarDropdownMenuPage.clickSettings();
-      const profilePage = new Profile(page);
-      await profilePage.clickMyWorkTab();
+      await topMenu.clickAvatarIcon();
+      await avatarDropdownMenu.clickSettings();
+      await profile.clickMyWorkTab();
+      await myWorkTab.hoverTodayListTitle();
+      await myWorkTab.clickCreateReminderButton();
+      await createReminderModal.typeNameInput(reminderName);
     });
   }
 );
