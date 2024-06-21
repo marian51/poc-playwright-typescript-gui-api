@@ -7,20 +7,25 @@ test.describe(
     tag: ["@API", "@Goal"],
   },
   () => {
-    test("API test example", async ({ request }) => {
+    test("Get all non-archived goals", async ({ request }) => {
       const response = await request.get(`/api/v2/team/${process.env.BASE_TEAM_ID}/goal`);
       expect(response).toBeOK();
     });
 
     test("Create new goal", async ({ request }) => {
+      const goalName = faker.person.jobType();
+      const goalDescription = faker.hacker.phrase();
+      const goalColor = faker.color.rgb();
+
       const newGoalBody = {
-        name: faker.person.jobType(),
+        name: goalName,
         due_date: 1568036964079,
-        description: faker.hacker.phrase(),
+        description: goalDescription,
         multiple_owners: false,
         owners: [process.env.USER_ID],
-        color: faker.color.rgb(),
+        color: goalColor,
       };
+
       const response = await request.post(`/api/v2/team/${process.env.BASE_TEAM_ID}/goal`, { data: newGoalBody });
       expect(response).toBeOK();
     });

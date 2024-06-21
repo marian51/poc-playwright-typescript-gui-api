@@ -41,7 +41,7 @@ export default defineConfig({
 
     {
       name: "chromium",
-      testDir: "./tests/gui",
+      testDir: "./tests/GUI",
       use: {
         ...devices["Desktop Chrome"],
         storageState: "playwright/.auth/user-session.json",
@@ -51,7 +51,7 @@ export default defineConfig({
 
     // {
     //   name: 'firefox',
-    //   testDir: "./tests/gui",
+    //   testDir: "./tests/GUI",
     //   use: {
     //     ...devices['Desktop Firefox'],
     //     storageState: 'playwright/.auth/user-session.json',
@@ -61,7 +61,7 @@ export default defineConfig({
 
     // {
     //   name: 'webkit',
-    //   testDir: "./tests/gui",
+    //   testDir: "./tests/GUI",
     //   use: {
     //     ...devices['Desktop Safari'],
     //     storageState: 'playwright/.auth/user-session.json',
@@ -91,7 +91,7 @@ export default defineConfig({
 
     {
       name: "api",
-      testDir: "./tests/api",
+      testDir: "./tests/API",
       use: {
         extraHTTPHeaders: {
           Authorization: `${process.env.API_KEY}`,
