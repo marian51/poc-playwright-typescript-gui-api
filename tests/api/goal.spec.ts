@@ -35,9 +35,23 @@ test.describe(
     });
 
     test.describe("Tests involving deleting Goals", () => {
-      test.skip("Delete a goal", async ({ request }) => {
-        const goalId = "GOAL_ID"; // TODO: handle IDs
-        const response = await request.delete(`/api/v2/goal/${goalId}`);
+      let preparedTaskId: string;
+
+      test.beforeEach(async ({ request }) => {
+        const preparedGoalBody = {
+          name: "",
+          due_date: 1568036964079,
+          description: "",
+          multiple_owners: false,
+          owners: [],
+          color: "",
+        };
+        const response = await request.post(`/api/v2/team/${process.env.BASE_TEAM_ID}/goal`, { data: preparedGoalBody });
+        preparedTaskId = (await response.json()).goal.id;
+      });
+
+      test("Delete a goal", async ({ request }) => {
+        const response = await request.delete(`/api/v2/goal/${preparedTaskId}`);
         expect(response.status()).toEqual(200);
       });
     });
