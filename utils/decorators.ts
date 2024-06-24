@@ -75,6 +75,24 @@ export function logWaiting(message: string) {
   };
 }
 
+export function apiTryCatch(element: string) {
+  return function actualDecorator(originalMethod: any, _context: any) {
+    async function replacementMethod(this: any, ...args: any[]) {
+      try {
+        return await originalMethod.call(this, ...args);
+      } catch (error) {
+        if (error instanceof TypeError) {
+          console.error(`${element} with given name was not found!`, error.message);
+        } else {
+          console.error(`Unexpected error occurred while trying to obtain an id!`, error.message);
+        }
+      }
+    }
+
+    return replacementMethod;
+  };
+}
+
 function getCurrentTimeAndDate() {
   moment.locale("PL");
   const date = moment();

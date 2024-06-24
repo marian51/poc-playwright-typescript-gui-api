@@ -1,17 +1,21 @@
 import { APIRequestContext, APIResponse } from "@playwright/test";
+import { apiTryCatch } from "../utils/decorators";
 
 export class ApiUtils {
+
+  @apiTryCatch("Space")
   public static async getSpaceIdByName(request: APIRequestContext, spaceName: string): Promise<string> {
     const apiKey: string = process.env.API_KEY as string;
     const teamId: string = process.env.BASE_TEAM_ID as string;
     const getSpacesEndpoint: string = `https://api.clickup.com/api/v2/team/${teamId}/space`;
 
     const getSpacesResponse: APIResponse = await request.get(getSpacesEndpoint, { headers: { Authorization: apiKey } });
-    const spaceId: string = (await getSpacesResponse.json()).spaces.filter((space) => space.name === spaceName)[0].id;
+    const spaceId: string = (await getSpacesResponse.json()).spaces.filter((space) => space.name === "spaceName")[0].id;
 
     return spaceId;
   }
 
+  @apiTryCatch("Folder")
   public static async getFolderIdByName(request: APIRequestContext, spaceName: string, folderName: string): Promise<string> {
     const apiKey: string = process.env.API_KEY as string;
     const spaceId: string = await this.getSpaceIdByName(request, spaceName);
@@ -23,6 +27,7 @@ export class ApiUtils {
     return folderId;
   }
 
+  @apiTryCatch("List")
   public static async getListIdByName(request: APIRequestContext, spaceName: string, folderName: string, listName: string): Promise<string> {
     const apiKey: string = process.env.API_KEY as string;
     const folderId: string = await this.getFolderIdByName(request, spaceName, folderName);
