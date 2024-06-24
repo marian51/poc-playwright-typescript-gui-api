@@ -38,7 +38,7 @@ test.describe(
       let preparedGoalId: string;
 
       test.beforeEach(async ({ request }) => {
-        const response = await ApiHooks.createRandomGoal(request);       
+        const response = await ApiHooks.createRandomGoal(request);
         preparedGoalId = (await response.json()).goal.id;
       });
 
@@ -52,7 +52,7 @@ test.describe(
       let preparedGoalId: string;
 
       test.beforeAll(async ({ request }) => {
-        const response = await ApiHooks.createRandomGoal(request);       
+        const response = await ApiHooks.createRandomGoal(request);
         preparedGoalId = (await response.json()).goal.id;
       });
 

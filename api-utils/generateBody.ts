@@ -17,15 +17,4 @@ export class GenerateBody {
 
     return randomGoalBody;
   }
-
-  public static getEmptyGoal() {
-    const emptyGoalBody = {
-      name: "",
-      due_date: 1568036964079,
-      description: "",
-      multiple_owners: false,
-      owners: [],
-      color: "",
-    };
-  }
 }
