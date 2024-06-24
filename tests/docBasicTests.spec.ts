@@ -59,7 +59,6 @@ test.describe(
     test(
       "Basic test for deleting existing doc in existing space",
       {
-        tag: "@this", // FIXME remove before committing
         annotation: {
           type: "issue",
           description: "https://github.com/marian51/poc-playwright-typescript-gui-api/issues/68",
@@ -81,5 +80,30 @@ test.describe(
         await leftMenu.assertElementIsNotVisible(newDocName);
       }
     );
+
+    test(
+      "@this Basic test for duplicating existing doc in existing space",
+      {
+        annotation: {
+          type: "issue",
+          description: "https://github.com/marian51/poc-playwright-typescript-gui-api/issues/68",
+        },
+      },
+      async ({ page, request }) => {
+        const leftMenu = new LeftMenu(page);
+        const docContextMenu = new DocContextMenu(page);
+
+        await ApiHooks.createNewDocInSpace(request, newDocName, await ApiUtils.getSpaceIdByName(request, newSpaceName));
+
+        await page.goto("/");
+        await page.locator("cu-web-push-notification-banner").waitFor();
+
+        await leftMenu.clickOnElement(newSpaceName);
+        await leftMenu.rightClickOnElement(newDocName);
+        await docContextMenu.clickOnOption("Duplicate");
+
+        await leftMenu.assertElementIsVisible(newDocName + " (copy)");
+      }
+    )
   }
 );
