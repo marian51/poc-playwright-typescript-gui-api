@@ -1,4 +1,5 @@
-import { APIRequestContext } from "@playwright/test";
+import { APIRequestContext, APIResponse } from "@playwright/test";
+import { ApiUtils } from "./apiUtils";
 
 export class ApiHooks {
   public static async deleteSpaceByName(request: APIRequestContext, spaceName: string) {
@@ -33,5 +34,27 @@ export class ApiHooks {
 
     // Posting new space
     const response = await request.post(postSpaceEndpoint, { headers: { Authorization: apiKey }, data: newSpaceBody });
+  }
+
+  // Currently, new tasks are always being created in [Team Space/Projects/Project 1] by default
+  // TODO: Discuss and decide how to handle task creation
+  public static async createNewTask(request: APIRequestContext, taskName: string) {
+    const taskListId: string = await ApiUtils.getBaseListId(request);
+    const apiKey: string = process.env.API_KEY as string;
+    const createTaskEndpoint: string = `https://api.clickup.com/api/v2/list/${taskListId}/task`;
+
+    const newTaskBody = {
+      name: taskName,
+    };
+
+    const response = await request.post(createTaskEndpoint, { headers: { Authorization: apiKey }, data: newTaskBody });
+  }
+
+  public static async deleteTask(request: APIRequestContext, taskName: string) {
+    const apiKey: string = process.env.API_KEY as string;
+    const taskId = await ApiUtils.getTaskIdFromBaseList(request, taskName);
+    const deleteTaskEndpoint: string = `https://api.clickup.com/api/v2/task/${taskId}`;
+
+    await request.delete(deleteTaskEndpoint, { headers: { Authorization: apiKey, "Content-Type": "application/json" } });
   }
 }

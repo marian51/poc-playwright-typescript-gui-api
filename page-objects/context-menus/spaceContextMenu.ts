@@ -1,4 +1,5 @@
 import { Locator, Page } from "@playwright/test";
+import { logClicking } from "../../utils/decorators";
 
 export class SpaceContextMenu {
   private readonly page: Page;
@@ -11,6 +12,7 @@ export class SpaceContextMenu {
     this.menuContainer = this.page.getByTestId("project-menu__controls");
   }
 
+  @logClicking("menu option")
   async clickOnOption(optionName: string) {
     this.menuOption = this.menuContainer.getByRole("link", { name: optionName });
     await this.menuOption.click();
