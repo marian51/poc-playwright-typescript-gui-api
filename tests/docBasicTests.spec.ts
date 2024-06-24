@@ -82,7 +82,35 @@ test.describe(
     );
 
     test(
-      "@this Basic test for duplicating existing doc in existing space",
+      "@this Basic test for renaming existing doc in existing space",
+      {
+        annotation: {
+          type: "issue",
+          description: "https://github.com/marian51/poc-playwright-typescript-gui-api/issues/68",
+        },
+      },
+      async ({ page, request }) => {
+        const leftMenu = new LeftMenu(page);
+        const docContextMenu = new DocContextMenu(page);
+        const renamedDocName = faker.commerce.productName();
+
+        await ApiHooks.createNewDocInSpace(request, newDocName, await ApiUtils.getSpaceIdByName(request, newSpaceName));
+
+        await page.goto("/");
+        await page.locator("cu-web-push-notification-banner").waitFor();
+
+        await leftMenu.clickOnElement(newSpaceName);
+        await leftMenu.rightClickOnElement(newDocName);
+        await docContextMenu.clickOnOption("Rename");
+        await leftMenu.typeIntoRenameDocInput(renamedDocName);
+        await leftMenu.clickKeyBoardKey("Enter")
+
+        await leftMenu.assertElementIsVisible(renamedDocName);
+      }
+    );
+
+    test(
+      "Basic test for duplicating existing doc in existing space",
       {
         annotation: {
           type: "issue",
@@ -104,6 +132,6 @@ test.describe(
 
         await leftMenu.assertElementIsVisible(newDocName + " (copy)");
       }
-    )
+    );
   }
 );
