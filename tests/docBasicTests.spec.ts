@@ -21,11 +21,11 @@ test.describe(
     const newSpaceName = "GUI TEST new space";
     const newDocName = faker.commerce.productName();
 
-    test.beforeEach("Prepare environment before tests", async ({ request }) => {
+    test.beforeAll("Prepare environment before tests", async ({ request }) => {
       await ApiHooks.createSpaceByName(request, newSpaceName);
     });
 
-    test.afterEach("Prepare environment before tests", async ({ request }) => {
+    test.afterAll("Prepare environment before tests", async ({ request }) => {
       await ApiHooks.deleteSpaceByName(request, newSpaceName);
     });
 
@@ -37,7 +37,7 @@ test.describe(
           description: "https://github.com/marian51/poc-playwright-typescript-gui-api/issues/68",
         },
       },
-      async ({ page }) => {
+      async ({ page, request }) => {
         const leftMenu = new LeftMenu(page);
         const spaceContextMenu = new SpaceContextMenu(page);
         const spacePlusMenu = new SpacePlusMenu(page);
@@ -53,6 +53,8 @@ test.describe(
         await docView.clickKeyBoardKey("Enter");
 
         await leftMenu.assertElementIsVisible(newDocName);
+
+        await ApiHooks.deleteDocsByName(request, newDocName);
       }
     );
 
@@ -103,9 +105,11 @@ test.describe(
         await leftMenu.rightClickOnElement(newDocName);
         await docContextMenu.clickOnOption("Rename");
         await leftMenu.typeIntoRenameDocInput(renamedDocName);
-        await leftMenu.clickKeyBoardKey("Enter")
+        await leftMenu.clickKeyBoardKey("Enter");
 
         await leftMenu.assertElementIsVisible(renamedDocName);
+
+        await ApiHooks.deleteDocsByName(request, renamedDocName);
       }
     );
 
@@ -128,15 +132,17 @@ test.describe(
         await page.locator("cu-web-push-notification-banner").waitFor();
 
         await leftMenu.clickOnElement(newSpaceName);
-        await page.getByRole("button", {name: "Add List"}).waitFor()
+        await page.getByRole("button", { name: "Add List" }).waitFor();
         await leftMenu.clickOnElement(newDocName);
         await docView.typeDocTitle(renamedDocTitle);
         await docView.clickKeyBoardKey("Enter");
 
         await leftMenu.assertElementIsVisible(renamedDocTitle);
         await leftMenu.assertElementIsNotVisible(newDocName);
+
+        await ApiHooks.deleteDocsByName(request, renamedDocTitle);
       }
-    )
+    );
 
     test(
       "Basic test for creating new doc with the same name",
@@ -164,8 +170,10 @@ test.describe(
         await docView.clickKeyBoardKey("Enter");
 
         await leftMenu.assertElementsAreVisible(newDocName, 2);
+
+        await ApiHooks.deleteDocsByName(request, newDocName);
       }
-    )
+    );
 
     test(
       "Basic test for duplicating existing doc in existing space",
@@ -189,6 +197,9 @@ test.describe(
         await docContextMenu.clickOnOption("Duplicate");
 
         await leftMenu.assertElementIsVisible(newDocName + " (copy)");
+
+        await ApiHooks.deleteDocsByName(request, newDocName);
+        await ApiHooks.deleteDocsByName(request, newDocName + " (copy)");
       }
     );
   }
