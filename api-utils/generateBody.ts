@@ -1,14 +1,15 @@
 import { faker } from "@faker-js/faker";
 
-export class GenerateBody {
+export class GenerateData {
   public static getRandomGoal() {
     const goalName = faker.person.jobType();
     const goalDescription = faker.hacker.phrase();
     const goalColor = faker.color.rgb();
+    const dueDate = new Date(faker.date.future()).valueOf();
 
     const randomGoalBody = {
       name: goalName,
-      due_date: 1568036964079,
+      due_date: dueDate,
       description: goalDescription,
       multiple_owners: false,
       owners: [],
