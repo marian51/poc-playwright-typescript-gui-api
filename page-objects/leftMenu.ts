@@ -11,7 +11,7 @@ export class LeftMenu {
   constructor(page: Page) {
     this.page = page;
     this.leftSideBar = this.page.locator("cu-simple-bar");
-    this.renameInput = this.leftSideBar.getByTestId("nav-editor__input")
+    this.renameInput = this.leftSideBar.getByTestId("nav-editor__input");
   }
 
   @logClicking("left menu option")
@@ -39,6 +39,11 @@ export class LeftMenu {
   async assertElementIsVisible(elementName: string) {
     this.menuElement = this.leftSideBar.getByRole("treeitem", { name: elementName });
     await expect(this.menuElement).toBeVisible();
+  }
+
+  async assertElementsAreVisible(elementsName: string, elementsNumber: number) {
+    this.menuElement = this.leftSideBar.getByRole("treeitem", { name: elementsName });
+    await expect(this.menuElement).toHaveCount(elementsNumber);
   }
 
   async assertElementIsNotVisible(elementName: string) {

@@ -82,7 +82,7 @@ test.describe(
     );
 
     test(
-      "@this Basic test for renaming existing doc in existing space",
+      "Basic test for renaming existing doc in existing space",
       {
         annotation: {
           type: "issue",
@@ -108,6 +108,35 @@ test.describe(
         await leftMenu.assertElementIsVisible(renamedDocName);
       }
     );
+
+    test(
+      "Basic test for creating new doc with the same name",
+      {
+        annotation: {
+          type: "issue",
+          description: "https://github.com/marian51/poc-playwright-typescript-gui-api/issues/68",
+        },
+      },
+      async ({ page, request }) => {
+        const leftMenu = new LeftMenu(page);
+        const spaceContextMenu = new SpaceContextMenu(page);
+        const spacePlusMenu = new SpacePlusMenu(page);
+        const docView = new DocView(page);
+
+        await ApiHooks.createNewDocInSpace(request, newDocName, await ApiUtils.getSpaceIdByName(request, newSpaceName));
+
+        await page.goto("/");
+        await page.locator("cu-web-push-notification-banner").waitFor();
+
+        await leftMenu.rightClickOnElement(newSpaceName);
+        await spaceContextMenu.clickOnOption("Create new");
+        await spacePlusMenu.clickOnOption("Doc");
+        await docView.typeDocTitle(newDocName);
+        await docView.clickKeyBoardKey("Enter");
+
+        await leftMenu.assertElementsAreVisible(newDocName, 2);
+      }
+    )
 
     test(
       "Basic test for duplicating existing doc in existing space",
