@@ -41,6 +41,7 @@ export default defineConfig({
 
     {
       name: "chromium",
+      testDir: "./tests/GUI",
       use: {
         ...devices["Desktop Chrome"],
         storageState: "playwright/.auth/user-session.json",
@@ -50,6 +51,7 @@ export default defineConfig({
 
     // {
     //   name: 'firefox',
+    //   testDir: "./tests/GUI",
     //   use: {
     //     ...devices['Desktop Firefox'],
     //     storageState: 'playwright/.auth/user-session.json',
@@ -59,6 +61,7 @@ export default defineConfig({
 
     // {
     //   name: 'webkit',
+    //   testDir: "./tests/GUI",
     //   use: {
     //     ...devices['Desktop Safari'],
     //     storageState: 'playwright/.auth/user-session.json',
@@ -85,6 +88,16 @@ export default defineConfig({
     //   name: 'Google Chrome',
     //   use: { ...devices['Desktop Chrome'], channel: 'chrome' },
     // },
+
+    {
+      name: "api",
+      testDir: "./tests/API",
+      use: {
+        extraHTTPHeaders: {
+          Authorization: `${process.env.API_KEY}`,
+        },
+      },
+    },
   ],
 
   /* Run your local dev server before starting the tests */

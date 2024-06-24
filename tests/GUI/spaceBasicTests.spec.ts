@@ -1,11 +1,11 @@
 import test from "@playwright/test";
-import { LeftMenu } from "../page-objects/leftMenu";
-import { CreateSpaceModal } from "../page-objects/modals/createSpaceModal";
-import { ApiHooks } from "../api-utils/apiHooks";
-import { DeleteSpaceModal } from "../page-objects/modals/deleteSpaceModal";
-import { SpaceContextMenu } from "../page-objects/context-menus/spaceContextMenu";
-import { EditSpaceNameModal } from "../page-objects/modals/editSpaceNameModal";
-import { DuplicateSpaceModal } from "../page-objects/modals/duplicateSpaceModal";
+import { LeftMenu } from "../../page-objects/leftMenu";
+import { CreateSpaceModal } from "../../page-objects/modals/createSpaceModal";
+import { ApiHooks } from "../../api-utils/apiHooks";
+import { DeleteSpaceModal } from "../../page-objects/modals/deleteSpaceModal";
+import { SpaceContextMenu } from "../../page-objects/context-menus/spaceContextMenu";
+import { EditSpaceNameModal } from "../../page-objects/modals/editSpaceNameModal";
+import { DuplicateSpaceModal } from "../../page-objects/modals/duplicateSpaceModal";
 
 test.describe(
   "UI tests for checking basic space functionalities",

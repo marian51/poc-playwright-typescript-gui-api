@@ -1,13 +1,13 @@
 import { test } from "@playwright/test";
-import { ExpandableTopBarPage } from "../page-objects/expandableTopBar";
-import { CreateTaskModalPage } from "../page-objects/modals/createTaskModal";
-import { ProjectMainView } from "../page-objects/projectMainView";
-import { TaskConextMenu } from "../page-objects/context-menus/taskContextMenu";
-import { EditTaskModal } from "../page-objects/modals/editTaskModal";
-import { ApiHooks } from "../api-utils/apiHooks";
+import { ExpandableTopBarPage } from "../../page-objects/expandableTopBar";
+import { CreateTaskModalPage } from "../../page-objects/modals/createTaskModal";
+import { ProjectMainView } from "../../page-objects/projectMainView";
+import { TaskConextMenu } from "../../page-objects/context-menus/taskContextMenu";
+import { EditTaskModal } from "../../page-objects/modals/editTaskModal";
+import { ApiHooks } from "../../api-utils/apiHooks";
 import { faker } from "@faker-js/faker";
 
-test.describe.only(
+test.describe(
   "Tasks feature tests",
   {
     tag: "@task",
