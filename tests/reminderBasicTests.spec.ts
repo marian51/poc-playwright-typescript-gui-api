@@ -27,11 +27,30 @@ test.describe(
       await avatarDropdownMenu.clickSettings();
       await profile.clickMyWorkTab();
       await myWorkTab.hoverTodayListTitle();
+      await myWorkTab.setReminder(reminderName);
       await myWorkTab.clickCreateReminderButton();
       await createReminderModal.typeNameInput(reminderName);
       await createReminderModal.clickSaveButton();
 
-      await myWorkTab.assertReminderIsVisible(reminderName);
+      await myWorkTab.assertReminderIsVisible();
+    });
+
+    test("Delete reminder", async ({ page }) => {
+      const topMenu = new TopMenu(page);
+      const avatarDropdownMenu = new AvatarDropdownMenu(page);
+      const profile = new Profile(page);
+      const myWorkTab = new MyWorkTab(page);
+
+      await page.goto("/");
+
+      await topMenu.clickAvatarIcon();
+      await avatarDropdownMenu.clickSettings();
+      await profile.clickMyWorkTab();
+      await myWorkTab.setReminder(reminderName);
+      await myWorkTab.hoverReminder();
+      await myWorkTab.clickRemoveReminderButton();
+      
+      await myWorkTab.assertReminderIsNotVisible();
     });
   }
 );
