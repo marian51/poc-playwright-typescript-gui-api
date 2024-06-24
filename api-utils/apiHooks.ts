@@ -1,5 +1,6 @@
-import { APIRequestContext, APIResponse } from "@playwright/test";
+import { APIRequestContext, APIResponse, expect } from "@playwright/test";
 import { ApiUtils } from "./apiUtils";
+import { GenerateBody } from "./generateBody";
 
 export class ApiHooks {
   public static async deleteSpaceByName(request: APIRequestContext, spaceName: string) {
@@ -56,5 +57,19 @@ export class ApiHooks {
     const deleteTaskEndpoint: string = `https://api.clickup.com/api/v2/task/${taskId}`;
 
     await request.delete(deleteTaskEndpoint, { headers: { Authorization: apiKey, "Content-Type": "application/json" } });
+  }
+
+  public static async createRandomGoal(request: APIRequestContext): Promise<APIResponse> {
+    const preparedGoalBody = GenerateBody.getRandomGoal();
+    const response = await request.post(`/api/v2/team/${process.env.BASE_TEAM_ID}/goal`, { data: preparedGoalBody });
+
+    expect.soft(response).toBeOK();
+    return response;
+  }
+
+  public static async deleteGoalById(request: APIRequestContext, goalId: string) {
+    const response = await request.delete(`/api/v2/goal/${goalId}`);
+
+    expect.soft(response.status()).toEqual(200);
   }
 }

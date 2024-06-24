@@ -1,6 +1,7 @@
 import { expect, test } from "@playwright/test";
 import { faker } from "@faker-js/faker";
 import { GenerateBody } from "../../api-utils/generateBody";
+import { ApiHooks } from "../../api-utils/apiHooks";
 
 test.describe(
   "Goal feature",
@@ -29,9 +30,7 @@ test.describe(
       });
 
       test.afterEach(async ({ request }) => {
-        const response = await request.delete(`https://api.clickup.com/api/v2/goal/${createdGoalId}`);
-
-        expect.soft(response).toBeOK();
+        await ApiHooks.deleteGoalById(request, createdGoalId);
       });
     });
 
@@ -39,10 +38,7 @@ test.describe(
       let preparedGoalId: string;
 
       test.beforeEach(async ({ request }) => {
-        const preparedGoalBody = GenerateBody.getRandomGoal();
-        const response = await request.post(`/api/v2/team/${process.env.BASE_TEAM_ID}/goal`, { data: preparedGoalBody });
-
-        expect.soft(response).toBeOK();
+        const response = await ApiHooks.createRandomGoal(request);       
         preparedGoalId = (await response.json()).goal.id;
       });
 
@@ -56,17 +52,12 @@ test.describe(
       let preparedGoalId: string;
 
       test.beforeAll(async ({ request }) => {
-        const preparedGoalBody = GenerateBody.getRandomGoal();
-        const response = await request.post(`/api/v2/team/${process.env.BASE_TEAM_ID}/goal`, { data: preparedGoalBody });
-
-        expect.soft(response).toBeOK();
+        const response = await ApiHooks.createRandomGoal(request);       
         preparedGoalId = (await response.json()).goal.id;
       });
 
       test.afterAll(async ({ request }) => {
-        const response = await request.delete(`/api/v2/goal/${preparedGoalId}`);
-
-        expect.soft(response.status()).toEqual(200);
+        await ApiHooks.deleteGoalById(request, preparedGoalId);
       });
 
       test("Get all non-archived goals", async ({ request }) => {
