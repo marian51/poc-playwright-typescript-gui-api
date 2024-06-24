@@ -110,6 +110,35 @@ test.describe(
     );
 
     test(
+      "Test for checking if changing doc title changes doc name",
+      {
+        annotation: {
+          type: "issue",
+          description: "https://github.com/marian51/poc-playwright-typescript-gui-api/issues/68",
+        },
+      },
+      async ({ page, request }) => {
+        const leftMenu = new LeftMenu(page);
+        const docView = new DocView(page);
+        const renamedDocTitle = faker.commerce.productName();
+
+        await ApiHooks.createNewDocInSpace(request, newDocName, await ApiUtils.getSpaceIdByName(request, newSpaceName));
+
+        await page.goto("/");
+        await page.locator("cu-web-push-notification-banner").waitFor();
+
+        await leftMenu.clickOnElement(newSpaceName);
+        await page.getByRole("button", {name: "Add List"}).waitFor()
+        await leftMenu.clickOnElement(newDocName);
+        await docView.typeDocTitle(renamedDocTitle);
+        await docView.clickKeyBoardKey("Enter");
+
+        await leftMenu.assertElementIsVisible(renamedDocTitle);
+        await leftMenu.assertElementIsNotVisible(newDocName);
+      }
+    )
+
+    test(
       "Basic test for creating new doc with the same name",
       {
         annotation: {
