@@ -1,5 +1,6 @@
 import { expect, test } from "@playwright/test";
 import { faker } from "@faker-js/faker";
+import { GenerateBody } from "../../api-utils/generateBody";
 
 test.describe(
   "Goal feature",
@@ -8,71 +9,87 @@ test.describe(
   },
   () => {
     test.describe("Tests involving creating new Goals", () => {
-      let createdTaskId: string;
+      let createdGoalId: string;
 
       test("Create new goal", async ({ request }) => {
-        const goalName = faker.person.jobType();
-        const goalDescription = faker.hacker.phrase();
-        const goalColor = faker.color.rgb();
-
-        const newGoalBody = {
-          name: goalName,
-          due_date: 1568036964079,
-          description: goalDescription,
-          multiple_owners: false,
-          owners: [],
-          color: goalColor,
-        };
+        const newGoalBody = GenerateBody.getRandomGoal();
 
         const response = await request.post(`/api/v2/team/${process.env.BASE_TEAM_ID}/goal`, { data: newGoalBody });
-        createdTaskId = (await response.json()).goal.id;
+        const responseJson = await response.json();
+        createdGoalId = responseJson.goal.id;
+
         expect(response).toBeOK();
+        expect(responseJson).toEqual(
+          expect.objectContaining({
+            goal: expect.anything(),
+          })
+        );
+        expect(responseJson.goal.id).toBeTruthy();
+        expect(responseJson.goal.name).toBe(newGoalBody.name);
       });
 
       test.afterEach(async ({ request }) => {
-        await request.delete(`https://api.clickup.com/api/v2/goal/${createdTaskId}`);
+        const response = await request.delete(`https://api.clickup.com/api/v2/goal/${createdGoalId}`);
+
+        expect.soft(response).toBeOK();
       });
     });
 
     test.describe("Tests involving deleting Goals", () => {
-      let preparedTaskId: string;
+      let preparedGoalId: string;
 
       test.beforeEach(async ({ request }) => {
-        const preparedGoalBody = {
-          name: "",
-          due_date: 1568036964079,
-          description: "",
-          multiple_owners: false,
-          owners: [],
-          color: "",
-        };
+        const preparedGoalBody = GenerateBody.getRandomGoal();
         const response = await request.post(`/api/v2/team/${process.env.BASE_TEAM_ID}/goal`, { data: preparedGoalBody });
-        preparedTaskId = (await response.json()).goal.id;
+
+        expect.soft(response).toBeOK();
+        preparedGoalId = (await response.json()).goal.id;
       });
 
       test("Delete a goal", async ({ request }) => {
-        const response = await request.delete(`/api/v2/goal/${preparedTaskId}`);
+        const response = await request.delete(`/api/v2/goal/${preparedGoalId}`);
         expect(response.status()).toEqual(200);
       });
     });
 
-    test.describe("Tests performed on existing Goals", () => {
+    test.describe("Tests performed on existing Goal", () => {
+      let preparedGoalId: string;
+
+      test.beforeAll(async ({ request }) => {
+        const preparedGoalBody = GenerateBody.getRandomGoal();
+        const response = await request.post(`/api/v2/team/${process.env.BASE_TEAM_ID}/goal`, { data: preparedGoalBody });
+
+        expect.soft(response).toBeOK();
+        preparedGoalId = (await response.json()).goal.id;
+      });
+
+      test.afterAll(async ({ request }) => {
+        const response = await request.delete(`/api/v2/goal/${preparedGoalId}`);
+
+        expect.soft(response.status()).toEqual(200);
+      });
+
       test("Get all non-archived goals", async ({ request }) => {
         const response = await request.get(`/api/v2/team/${process.env.BASE_TEAM_ID}/goal`);
+        const responseJson = await response.json();
+
         expect(response).toBeOK();
+        expect(responseJson.goals).toBeTruthy();
       });
 
       test("Update existing goal", async ({ request }) => {
-        const goalId = process.env.PERMANENT_GOAL_ID;
-        const updatedTaskName = faker.animal.bear();
+        const updatedGoalName = faker.animal.bear();
 
         const updatedGoalBody = {
-          name: updatedTaskName,
+          name: updatedGoalName,
           color: "#000000",
         };
 
-        const response = await request.put(`/api/v2/goal/${goalId}`, { data: updatedGoalBody });
+        const response = await request.put(`/api/v2/goal/${preparedGoalId}`, { data: updatedGoalBody });
+        const responseJson = await response.json();
+
         expect(response).toBeOK();
+        expect(responseJson.goal.name).toBe(updatedGoalName);
       });
     });
   }
