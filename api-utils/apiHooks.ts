@@ -1,6 +1,7 @@
 import { APIRequestContext, APIResponse, expect } from "@playwright/test";
 import { ApiUtils } from "./apiUtils";
 import { GenerateBody } from "./generateBody";
+import { faker } from "@faker-js/faker";
 
 export class ApiHooks {
   public static async deleteSpaceByName(request: APIRequestContext, spaceName: string) {
@@ -71,5 +72,14 @@ export class ApiHooks {
     const response = await request.delete(`/api/v2/goal/${goalId}`);
 
     expect.soft(response.status()).toEqual(200);
+  }
+
+  public static async createFolderlessList(request: APIRequestContext, listName?: string): Promise<APIResponse> {
+    const spaceId = await ApiUtils.getSpaceIdByName(request, "Team Space");
+    const createFolderlessListEndpoint = `https://api.clickup.com/api/v2/space/${spaceId}/list`;
+    const response = await request.post(createFolderlessListEndpoint, { data: { name: listName || faker.database.engine() }});
+
+    expect.soft(response).toBeOK();
+    return response;
   }
 }
