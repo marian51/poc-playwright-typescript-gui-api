@@ -1,10 +1,10 @@
 import test from "@playwright/test";
 import { faker } from "@faker-js/faker";
-import { TopMenu } from "../page-objects/topMenu";
-import { AvatarDropdownMenu } from "../page-objects/avatarDropdownMenu";
-import { Profile } from "../page-objects/profile";
-import { MyWorkTab } from "../page-objects/myWorkTab";
-import { CreateReminderModal } from "../page-objects/modals/createReminderModal";
+import { TopMenu } from "../../page-objects/topMenu";
+import { AvatarDropdownMenu } from "../../page-objects/avatarDropdownMenu";
+import { Profile } from "../../page-objects/profile";
+import { MyWorkTab } from "../../page-objects/myWorkTab";
+import { CreateReminderModal } from "../../page-objects/modals/createReminderModal";
 
 test.describe(
   "Reminder feature basic tests",
