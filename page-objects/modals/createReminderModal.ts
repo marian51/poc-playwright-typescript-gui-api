@@ -7,7 +7,7 @@ export class CreateReminderModal {
 
   constructor(page: Page) {
     this.page = page;
-    this.nameInput = this.page.getByTestId("avatar");
+    this.nameInput = this.page.getByTestId("reminder-row-new__input");
     this.saveButton = this.page.getByText("Save");
   }
 

@@ -1,9 +1,11 @@
-import { Locator, Page } from "@playwright/test";
+import { Locator, Page, expect } from "@playwright/test";
 
 export class MyWorkTab {
   private readonly page: Page;
   private readonly todayListTitle: Locator;
   private readonly createReminderButton: Locator;
+
+  private reminder: Locator;
 
   constructor(page: Page) {
     this.page = page;
@@ -17,5 +19,10 @@ export class MyWorkTab {
 
   async clickCreateReminderButton() {
     await this.createReminderButton.click();
+  }
+
+  async assertReminderIsVisible(reminderName: string) {
+    this.reminder = this.page.getByTestId(`reminder-row__title__${reminderName}`);
+    await expect(this.reminder).toBeVisible();
   }
 }
