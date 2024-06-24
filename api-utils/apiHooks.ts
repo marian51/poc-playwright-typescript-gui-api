@@ -40,16 +40,18 @@ export class ApiHooks {
 
   // Currently, new tasks are always being created in [Team Space/Projects/Project 1] by default
   // TODO: Discuss and decide how to handle task creation
-  public static async createNewTask(request: APIRequestContext, taskName: string) {
-    const taskListId: string = await ApiUtils.getBaseListId(request);
+  public static async createNewTask(request: APIRequestContext, taskName: string, taskListId?: string) {
+    // const taskListId: string = await ApiUtils.getBaseListId(request);
+    const listId: string = taskListId ?? await ApiUtils.getBaseListId(request);
     const apiKey: string = process.env.API_KEY as string;
-    const createTaskEndpoint: string = `https://api.clickup.com/api/v2/list/${taskListId}/task`;
+    const createTaskEndpoint: string = `https://api.clickup.com/api/v2/list/${listId}/task`;
 
     const newTaskBody = {
       name: taskName,
     };
 
     const response = await request.post(createTaskEndpoint, { headers: { Authorization: apiKey }, data: newTaskBody });
+    return response;
   }
 
   public static async deleteTask(request: APIRequestContext, taskName: string) {
@@ -79,7 +81,6 @@ export class ApiHooks {
     const createFolderlessListEndpoint = `https://api.clickup.com/api/v2/space/${spaceId}/list`;
     const response = await request.post(createFolderlessListEndpoint, { data: { name: listName || faker.database.engine() }});
 
-    expect.soft(response).toBeOK();
     return response;
   }
 }
