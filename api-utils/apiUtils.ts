@@ -10,7 +10,7 @@ export class ApiUtils {
     const getSpacesEndpoint: string = `https://api.clickup.com/api/v2/team/${teamId}/space`;
 
     const getSpacesResponse: APIResponse = await request.get(getSpacesEndpoint, { headers: { Authorization: apiKey } });
-    const spaceId: string = (await getSpacesResponse.json()).spaces.filter((space) => space.name === "spaceName")[0].id;
+    const spaceId: string = (await getSpacesResponse.json()).spaces.filter((space) => space.name === spaceName)[0].id;
 
     return spaceId;
   }
