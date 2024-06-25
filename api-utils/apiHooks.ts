@@ -1,7 +1,6 @@
 import { APIRequestContext, APIResponse, expect } from "@playwright/test";
 import { ApiUtils } from "./apiUtils";
 import { GenerateData } from "./generateBody";
-import session from "../playwright/.auth/user-session.json"
 
 export class ApiHooks {
   public static async deleteSpaceByName(request: APIRequestContext, spaceName: string) {
@@ -88,7 +87,7 @@ export class ApiHooks {
   }
 
   public static async deleteDocsByName(request: APIRequestContext, docName: string) {
-    const token: string = session.origins[0].localStorage.filter(element => element.name == "id_token")[0].value
+    const token: string = (await request.storageState()).origins[0].localStorage.filter(element => element.name === "id_token")[0].value
     const deleteDocsEndpoint = "https://prod-eu-west-1-3.clickup.com/viz/v1/view"
 
     const body = {
