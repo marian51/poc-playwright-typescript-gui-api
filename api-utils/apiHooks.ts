@@ -75,13 +75,7 @@ export class ApiHooks {
     const apiKey: string = process.env.API_KEY as string;
     const createDocEndpoint: string = `https://api.clickup.com/api/v3/workspaces/${teamId}/docs`;
 
-    const newDocBody = {
-      name: docName,
-      parent: {
-        id: spaceId,
-        type: 4,
-      },
-    };
+    const newDocBody = GenerateData.generateDoc(docName, { id: spaceId, type: 4})
 
     await request.post(createDocEndpoint, { headers: { Authorization: apiKey }, data: newDocBody });
   }
