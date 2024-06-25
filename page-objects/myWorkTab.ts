@@ -1,5 +1,5 @@
 import { Locator, Page, expect } from "@playwright/test";
-import { logClickingOnElement } from "../utils/decorators";
+import { logClickingOnElement, logHoveringOverElement } from "../utils/decorators";
 
 export class MyWorkTab {
   private readonly page: Page;
@@ -14,7 +14,6 @@ export class MyWorkTab {
     this.page = page;
     this.todayListTitle = this.page.getByTestId("inbox-list__title__Today");
     this.createReminderButton = this.page.getByTestId("inbox-list__header-Today").getByTestId("inbox-list__create-reminder");
-    
   }
 
   async setReminder(reminderName: string) {
@@ -22,10 +21,12 @@ export class MyWorkTab {
     this.reminder = this.page.getByTestId(`reminder-row__title__${reminderName}`);
   }
 
+  @logHoveringOverElement("'Today' list title")
   async hoverTodayListTitle() {
     await this.todayListTitle.hover();
   }
 
+  @logHoveringOverElement("'Reminder' item")
   async hoverReminder() {
     await this.reminder.hover();
   }
