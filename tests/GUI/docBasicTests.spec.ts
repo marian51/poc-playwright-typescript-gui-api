@@ -31,8 +31,8 @@ test.describe(
     });
 
     test.beforeEach(async ({ page }) => {
-      leftMenu = new LeftMenu(page)
-    })
+      leftMenu = new LeftMenu(page);
+    });
 
     test.describe("Tests creating or deleting doc", async () => {
       test(
