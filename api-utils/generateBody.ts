@@ -18,4 +18,29 @@ export class GenerateData {
 
     return randomGoalBody;
   }
+
+  public static getRandomComment() {
+    const commentText = faker.lorem.paragraph();
+    const notifyAll = false;
+
+    const randomCommentBody = {
+      comment_text: commentText,
+      notify_all: notifyAll,
+    };
+
+    return randomCommentBody;
+    // TODO: use this, watch out for comment body on other endpoints
+  }
+
+  public static getRandomCommentUpdate() {
+    const commentText = faker.lorem.slug();
+    const resolved = false;
+
+    const randomCommentEditBody = {
+      comment_text: commentText,
+      resolved: resolved,
+    };
+
+    return randomCommentEditBody;
+  }
 }
