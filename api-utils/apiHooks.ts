@@ -1,5 +1,6 @@
-import { APIRequestContext, APIResponse } from "@playwright/test";
+import { APIRequestContext, APIResponse, expect } from "@playwright/test";
 import { ApiUtils } from "./apiUtils";
+import { GenerateData } from "./generateBody";
 import session from "../playwright/.auth/user-session.json"
 
 export class ApiHooks {
@@ -57,6 +58,17 @@ export class ApiHooks {
     const deleteTaskEndpoint: string = `https://api.clickup.com/api/v2/task/${taskId}`;
 
     await request.delete(deleteTaskEndpoint, { headers: { Authorization: apiKey, "Content-Type": "application/json" } });
+  }
+
+  public static async createRandomGoal(request: APIRequestContext): Promise<APIResponse> {
+    const preparedGoalBody = GenerateData.getRandomGoal();
+    const response = await request.post(`/api/v2/team/${process.env.BASE_TEAM_ID}/goal`, { data: preparedGoalBody });
+
+    return response;
+  }
+
+  public static async deleteGoalById(request: APIRequestContext, goalId: string) {
+    await request.delete(`/api/v2/goal/${goalId}`);
   }
 
   public static async createNewDocInSpace(request: APIRequestContext, docName: string, spaceId: string) {
