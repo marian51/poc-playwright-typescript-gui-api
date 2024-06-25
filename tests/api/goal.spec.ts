@@ -1,6 +1,6 @@
 import { expect, test } from "@playwright/test";
 import { faker } from "@faker-js/faker";
-import { GenerateBody } from "../../api-utils/generateBody";
+import { GenerateData } from "../../api-utils/generateBody";
 import { ApiHooks } from "../../api-utils/apiHooks";
 
 test.describe(
@@ -13,13 +13,13 @@ test.describe(
       let createdGoalId: string;
 
       test("Create new goal", async ({ request }) => {
-        const newGoalBody = GenerateBody.getRandomGoal();
+        const newGoalBody = GenerateData.getRandomGoal();
 
         const response = await request.post(`/api/v2/team/${process.env.BASE_TEAM_ID}/goal`, { data: newGoalBody });
         const responseJson = await response.json();
         createdGoalId = responseJson.goal.id;
 
-        expect(response).toBeOK();
+        await expect(response).toBeOK();
         expect(responseJson).toEqual(
           expect.objectContaining({
             goal: expect.anything(),
@@ -64,22 +64,21 @@ test.describe(
         const response = await request.get(`/api/v2/team/${process.env.BASE_TEAM_ID}/goal`);
         const responseJson = await response.json();
 
-        expect(response).toBeOK();
+        await expect(response).toBeOK();
         expect(responseJson.goals).toBeTruthy();
       });
 
-      test("Update existing goal", async ({ request }) => {
+      test("Update name of an existing goal", async ({ request }) => {
         const updatedGoalName = faker.animal.bear();
 
         const updatedGoalBody = {
-          name: updatedGoalName,
-          color: "#000000",
+          name: updatedGoalName
         };
 
         const response = await request.put(`/api/v2/goal/${preparedGoalId}`, { data: updatedGoalBody });
         const responseJson = await response.json();
 
-        expect(response).toBeOK();
+        await expect(response).toBeOK();
         expect(responseJson.goal.name).toBe(updatedGoalName);
       });
     });
