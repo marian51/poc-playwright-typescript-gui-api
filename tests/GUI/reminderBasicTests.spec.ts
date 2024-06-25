@@ -6,7 +6,7 @@ import { Profile } from "../../page-objects/profile";
 import { MyWorkTab } from "../../page-objects/myWorkTab";
 import { CreateReminderModal } from "../../page-objects/modals/createReminderModal";
 
-test.describe(
+test.describe.serial(
   "Reminder feature basic tests",
   {
     tag: "@reminder",
