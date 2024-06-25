@@ -22,7 +22,6 @@ test.describe(
     test(
       "Basic test for checking if creating new space works correct",
       {
-        tag: "@space",
         annotation: {
           type: "issue",
           description: "https://github.com/marian51/poc-playwright-typescript-gui-api/issues/13",
@@ -49,7 +48,6 @@ test.describe(
     test(
       "Basic test for checking if deleting existing space works correct",
       {
-        tag: "@space",
         annotation: {
           type: "issue",
           description: "https://github.com/marian51/poc-playwright-typescript-gui-api/issues/22",
@@ -77,7 +75,6 @@ test.describe(
     test(
       "Basic test for checking if renaming existing space works correct",
       {
-        tag: "@space",
         annotation: {
           type: "issue",
           description: "https://github.com/marian51/poc-playwright-typescript-gui-api/issues/31",
@@ -107,7 +104,6 @@ test.describe(
     test(
       "Basic test for checking if creating new space with the same name is not allowed",
       {
-        tag: "@space",
         annotation: {
           type: "issue",
           description: "https://github.com/marian51/poc-playwright-typescript-gui-api/issues/33",
@@ -136,7 +132,6 @@ test.describe(
     test(
       "Basic test for checking if duplicating existing space works correct",
       {
-        tag: "@space",
         annotation: {
           type: "issue",
           description: "https://github.com/marian51/poc-playwright-typescript-gui-api/issues/48",
@@ -181,7 +176,6 @@ test.describe(
     test(
       "Basic End-2-End test for checking if creating, renaming and deleting existing space works correct",
       {
-        tag: ["@space", "@e2e"],
         annotation: {
           type: "issue",
           description: "https://github.com/marian51/poc-playwright-typescript-gui-api/issues/52",
