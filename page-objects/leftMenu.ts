@@ -41,7 +41,7 @@ export class LeftMenu {
     await expect(this.menuElement).toBeVisible();
   }
 
-  async assertElementsAreVisible(elementsName: string, elementsNumber: number) {
+  async assertVisibleElementsNumber(elementsName: string, elementsNumber: number) {
     this.menuElement = this.leftSideBar.getByRole("treeitem", { name: elementsName });
     await expect(this.menuElement).toHaveCount(elementsNumber);
   }
