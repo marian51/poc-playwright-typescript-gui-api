@@ -1,12 +1,12 @@
 import test from "@playwright/test";
-import { LeftMenu } from "../page-objects/leftMenu";
-import { SpaceContextMenu } from "../page-objects/context-menus/spaceContextMenu";
-import { SpacePlusMenu } from "../page-objects/context-menus/spacePlusMenu";
-import { ApiHooks } from "../api-utils/apiHooks";
-import { DocView } from "../page-objects/docView";
+import { LeftMenu } from "../../page-objects/leftMenu";
+import { SpaceContextMenu } from "../../page-objects/context-menus/spaceContextMenu";
+import { SpacePlusMenu } from "../../page-objects/context-menus/spacePlusMenu";
+import { ApiHooks } from "../../api-utils/apiHooks";
+import { DocView } from "../../page-objects/docView";
 import { faker } from "@faker-js/faker";
-import { ApiUtils } from "../api-utils/apiUtils";
-import { DocContextMenu } from "../page-objects/context-menus/docContextMenu";
+import { ApiUtils } from "../../api-utils/apiUtils";
+import { DocContextMenu } from "../../page-objects/context-menus/docContextMenu";
 
 test.describe(
   "UI tests for checking basic doc functionalities",
