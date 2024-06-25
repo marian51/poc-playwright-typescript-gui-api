@@ -27,11 +27,11 @@ test.describe(
       await avatarDropdownMenu.clickSettings();
       await profile.clickMyWorkTab();
       await myWorkTab.hoverTodayListTitle();
-      await myWorkTab.setReminder(reminderName);
       await myWorkTab.clickCreateReminderButton();
       await createReminderModal.typeNameInput(reminderName);
       await createReminderModal.clickSaveButton();
 
+      await myWorkTab.setReminder(reminderName);
       await myWorkTab.assertReminderIsVisible();
     });
 
@@ -49,7 +49,7 @@ test.describe(
       await myWorkTab.setReminder(reminderName);
       await myWorkTab.hoverReminder();
       await myWorkTab.clickRemoveReminderButton();
-      
+
       await myWorkTab.assertReminderIsNotVisible();
     });
   }

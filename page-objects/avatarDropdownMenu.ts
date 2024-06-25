@@ -1,4 +1,5 @@
 import { Locator, Page } from "@playwright/test";
+import { logClickingOnElement } from "../utils/decorators";
 
 export class AvatarDropdownMenu {
   private readonly page: Page;
@@ -9,6 +10,7 @@ export class AvatarDropdownMenu {
     this.profile = this.page.getByTestId("dropdown-list-item__user");
   }
 
+  @logClickingOnElement("'Profile' menu item")
   async clickSettings() {
     await this.profile.click();
   }

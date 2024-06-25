@@ -1,4 +1,5 @@
 import { Locator, Page, expect } from "@playwright/test";
+import { logClickingOnElement } from "../utils/decorators";
 
 export class MyWorkTab {
   private readonly page: Page;
@@ -13,6 +14,7 @@ export class MyWorkTab {
     this.page = page;
     this.todayListTitle = this.page.getByTestId("inbox-list__title__Today");
     this.createReminderButton = this.page.getByTestId("inbox-list__header-Today").getByTestId("inbox-list__create-reminder");
+    
   }
 
   async setReminder(reminderName: string) {
@@ -28,10 +30,12 @@ export class MyWorkTab {
     await this.reminder.hover();
   }
 
+  @logClickingOnElement("'Create reminder' button")
   async clickCreateReminderButton() {
     await this.createReminderButton.click();
   }
 
+  @logClickingOnElement("'Remove reminder' button")
   async clickRemoveReminderButton() {
     this.removeReminderButton = this.reminderContainer.getByTestId("reminder-row__remove");
     await this.removeReminderButton.click();
@@ -42,6 +46,6 @@ export class MyWorkTab {
   }
 
   async assertReminderIsNotVisible() {
-    await expect(this.reminder, "Deleted reminder should not be visible").not.toBeVisible();
+    await expect(this.reminder, "Deleted reminder should not be visible").toBeHidden();
   }
 }

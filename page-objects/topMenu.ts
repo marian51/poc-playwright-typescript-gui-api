@@ -1,4 +1,5 @@
 import { Locator, Page } from "@playwright/test";
+import { logClickingOnElement } from "../utils/decorators";
 
 export class TopMenu {
   private readonly page: Page;
@@ -9,6 +10,7 @@ export class TopMenu {
     this.avatarIcon = this.page.getByTestId("avatar");
   }
 
+  @logClickingOnElement("'Avatar' icon")
   async clickAvatarIcon() {
     await this.avatarIcon.click();
   }
