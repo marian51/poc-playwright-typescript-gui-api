@@ -19,145 +19,142 @@ test.describe(
     ],
   },
   async () => {
-    test(
-      "Basic test for checking if creating new space works correct",
-      {
-        annotation: {
-          type: "issue",
-          description: "https://github.com/marian51/poc-playwright-typescript-gui-api/issues/13",
-        },
-      },
-      async ({ page, request }) => {
-        const leftMenu = new LeftMenu(page);
-        const createSpaceModal = new CreateSpaceModal(page);
-        const newSpaceName = "GUI TEST new space";
+    let leftMenu: LeftMenu;
+    let newSpaceName: string;
 
+    test.beforeEach("Prepare variables before test", async ({ page }) => {
+      newSpaceName = "GUI TEST new space";
+      leftMenu = new LeftMenu(page);
+    });
+
+    test.describe("Tests creating or deleting space", async () => {
+      test(
+        "Basic test for checking if creating new space works correct",
+        {
+          annotation: {
+            type: "issue",
+            description: "https://github.com/marian51/poc-playwright-typescript-gui-api/issues/13",
+          },
+        },
+        async ({ page, request }) => {
+          const createSpaceModal = new CreateSpaceModal(page);
+
+          await page.goto("/");
+          await page.locator("cu-web-push-notification-banner").waitFor();
+
+          await leftMenu.clickOnElement("Create Space");
+          await createSpaceModal.typeSpaceName(newSpaceName);
+          await createSpaceModal.clickOnContinueButton();
+          await createSpaceModal.clickOnButton("Create Space");
+          await leftMenu.assertElementIsVisible(newSpaceName);
+
+          await ApiHooks.deleteSpaceByName(request, newSpaceName);
+        }
+      );
+
+      test(
+        "Basic test for checking if deleting existing space works correct",
+        {
+          annotation: {
+            type: "issue",
+            description: "https://github.com/marian51/poc-playwright-typescript-gui-api/issues/22",
+          },
+        },
+        async ({ page, request }) => {
+          const deleteSpaceModal = new DeleteSpaceModal(page);
+          const spaceContextMenu = new SpaceContextMenu(page);
+
+          await ApiHooks.createSpaceByName(request, newSpaceName);
+          await page.goto("/");
+          await page.locator("cu-web-push-notification-banner").waitFor();
+
+          await leftMenu.rightClickOnElement(newSpaceName);
+          await spaceContextMenu.clickOnOption("Delete");
+          await deleteSpaceModal.typeSpaceName(newSpaceName);
+          await deleteSpaceModal.clickOnDeleteButton();
+          await deleteSpaceModal.waitForDeleting();
+          await leftMenu.assertElementIsNotVisible(newSpaceName);
+        }
+      );
+    });
+
+    test.describe("Tests running on exiting space", async () => {
+      test.beforeEach("Prepare space for test and go to website", async ({ page, request }) => {
+        await ApiHooks.createSpaceByName(request, newSpaceName);
         await page.goto("/");
         await page.locator("cu-web-push-notification-banner").waitFor();
+      });
 
-        await leftMenu.clickOnElement("Create Space");
-        await createSpaceModal.typeSpaceName(newSpaceName);
-        await createSpaceModal.clickOnContinueButton();
-        await createSpaceModal.clickOnButton("Create Space");
-        await leftMenu.assertElementIsVisible(newSpaceName);
-
+      test.afterEach("Remove space after test", async ({ request }) => {
         await ApiHooks.deleteSpaceByName(request, newSpaceName);
-      }
-    );
+      });
 
-    test(
-      "Basic test for checking if deleting existing space works correct",
-      {
-        annotation: {
-          type: "issue",
-          description: "https://github.com/marian51/poc-playwright-typescript-gui-api/issues/22",
+      test(
+        "Basic test for checking if renaming existing space works correct",
+        {
+          annotation: {
+            type: "issue",
+            description: "https://github.com/marian51/poc-playwright-typescript-gui-api/issues/31",
+          },
         },
-      },
-      async ({ page, request }) => {
-        const leftMenu = new LeftMenu(page);
-        const deleteSpaceModal = new DeleteSpaceModal(page);
-        const spaceContextMenu = new SpaceContextMenu(page);
-        const newSpaceName = "GUI TEST new space";
+        async ({ page }) => {
+          const spaceContextMenu = new SpaceContextMenu(page);
+          const editSpaceNameModal = new EditSpaceNameModal(page);
+          const renamedSpaceName = "RENAMED GUI TEST new space";
 
-        await ApiHooks.createSpaceByName(request, newSpaceName);
-        await page.goto("/");
-        await page.locator("cu-web-push-notification-banner").waitFor();
+          await leftMenu.rightClickOnElement(newSpaceName);
+          await spaceContextMenu.clickOnOption("Rename");
+          await editSpaceNameModal.typeSpaceName(renamedSpaceName);
+          await editSpaceNameModal.clickOnSaveButton();
+          await leftMenu.assertElementIsVisible(renamedSpaceName);
 
-        await leftMenu.rightClickOnElement(newSpaceName);
-        await spaceContextMenu.clickOnOption("Delete");
-        await deleteSpaceModal.typeSpaceName(newSpaceName);
-        await deleteSpaceModal.clickOnDeleteButton();
-        await deleteSpaceModal.waitForDeleting();
-        await leftMenu.assertElementIsNotVisible(newSpaceName);
-      }
-    );
+          newSpaceName = renamedSpaceName;
+        }
+      );
 
-    test(
-      "Basic test for checking if renaming existing space works correct",
-      {
-        annotation: {
-          type: "issue",
-          description: "https://github.com/marian51/poc-playwright-typescript-gui-api/issues/31",
+      test(
+        "Basic test for checking if creating new space with the same name is not allowed",
+        {
+          annotation: {
+            type: "issue",
+            description: "https://github.com/marian51/poc-playwright-typescript-gui-api/issues/33",
+          },
         },
-      },
-      async ({ page, request }) => {
-        const leftMenu = new LeftMenu(page);
-        const spaceContextMenu = new SpaceContextMenu(page);
-        const editSpaceNameModal = new EditSpaceNameModal(page);
-        const newSpaceName = "GUI TEST new space";
-        const renamedSpaceName = "RENAMED GUI TEST new space";
+        async ({ page }) => {
+          const createSpaceModal = new CreateSpaceModal(page);
 
-        await ApiHooks.createSpaceByName(request, newSpaceName);
-        await page.goto("/");
-        await page.locator("cu-web-push-notification-banner").waitFor();
+          await leftMenu.clickOnElement("Create Space");
+          await createSpaceModal.typeSpaceName(newSpaceName);
+          await createSpaceModal.assertNameInputHasError();
+          await createSpaceModal.assertErrorMessageIsDisplayed();
+          await createSpaceModal.clickOnContinueButton();
+          await createSpaceModal.assertModalWindowIsVisible();
+        }
+      );
 
-        await leftMenu.rightClickOnElement(newSpaceName);
-        await spaceContextMenu.clickOnOption("Rename");
-        await editSpaceNameModal.typeSpaceName(renamedSpaceName);
-        await editSpaceNameModal.clickOnSaveButton();
-        await leftMenu.assertElementIsVisible(renamedSpaceName);
-
-        await ApiHooks.deleteSpaceByName(request, renamedSpaceName);
-      }
-    );
-
-    test(
-      "Basic test for checking if creating new space with the same name is not allowed",
-      {
-        annotation: {
-          type: "issue",
-          description: "https://github.com/marian51/poc-playwright-typescript-gui-api/issues/33",
+      test(
+        "Basic test for checking if duplicating existing space works correct",
+        {
+          annotation: {
+            type: "issue",
+            description: "https://github.com/marian51/poc-playwright-typescript-gui-api/issues/48",
+          },
         },
-      },
-      async ({ page, request }) => {
-        const leftMenu = new LeftMenu(page);
-        const createSpaceModal = new CreateSpaceModal(page);
-        const newSpaceName = "GUI TEST new space";
+        async ({ page, request }) => {
+          const spaceContextMenu = new SpaceContextMenu(page);
+          const duplicateSpaceModal = new DuplicateSpaceModal(page);
+          const duplicatedSpaceName = "GUI TEST duplicated space";
 
-        await ApiHooks.createSpaceByName(request, newSpaceName);
-        await page.goto("/");
-        await page.locator("cu-web-push-notification-banner").waitFor();
+          await leftMenu.rightClickOnElement(newSpaceName);
+          await spaceContextMenu.clickOnOption("Duplicate");
+          await duplicateSpaceModal.typeSpaceName(duplicatedSpaceName);
+          await duplicateSpaceModal.clickOnDuplicateButton();
+          await leftMenu.assertElementIsVisible(duplicatedSpaceName);
 
-        await leftMenu.clickOnElement("Create Space");
-        await createSpaceModal.typeSpaceName(newSpaceName);
-        await createSpaceModal.assertNameInputHasError();
-        await createSpaceModal.assertErrorMessageIsDisplayed();
-        await createSpaceModal.clickOnContinueButton();
-        await createSpaceModal.assertModalWindowIsVisible();
-
-        await ApiHooks.deleteSpaceByName(request, newSpaceName);
-      }
-    );
-
-    test(
-      "Basic test for checking if duplicating existing space works correct",
-      {
-        annotation: {
-          type: "issue",
-          description: "https://github.com/marian51/poc-playwright-typescript-gui-api/issues/48",
-        },
-      },
-      async ({ page, request }) => {
-        const leftMenu = new LeftMenu(page);
-        const spaceContextMenu = new SpaceContextMenu(page);
-        const duplicateSpaceModal = new DuplicateSpaceModal(page);
-        const newSpaceName = "GUI TEST new space";
-        const duplicatedSpaceName = "GUI TEST duplicated space";
-
-        await ApiHooks.createSpaceByName(request, newSpaceName);
-        await page.goto("/");
-        await page.locator("cu-web-push-notification-banner").waitFor();
-
-        await leftMenu.rightClickOnElement(newSpaceName);
-        await spaceContextMenu.clickOnOption("Duplicate");
-        await duplicateSpaceModal.typeSpaceName(duplicatedSpaceName);
-        await duplicateSpaceModal.clickOnDuplicateButton();
-        await leftMenu.assertElementIsVisible(duplicatedSpaceName);
-
-        await ApiHooks.deleteSpaceByName(request, newSpaceName);
-        await ApiHooks.deleteSpaceByName(request, duplicatedSpaceName);
-      }
-    );
+          await ApiHooks.deleteSpaceByName(request, duplicatedSpaceName);
+        }
+      );
+    });
   }
 );
 
