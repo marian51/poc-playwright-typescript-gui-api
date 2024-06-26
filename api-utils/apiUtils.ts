@@ -77,4 +77,23 @@ export class ApiUtils {
     const baseListName: string = "Project 1";
     return await this.getListIdByName(request, baseSpaceName, baseFolderName, baseListName);
   }
+
+  /**
+   * Api function for getting id strings of all docs with given name
+   * @param request Typical `request` object taken from Playwright
+   * @param docName Name of doc (or docs), which will be deleted, eq. "*Practical Fresh Fish*"
+   * @returns Array of IDs of docs with given name, eq. `["8cnhpru-2975", "8cnhpru-3055", "8cnhpru-3095"]`
+   */
+  @apiTryCatch("Doc")
+  public static async getDocIdsByName(request: APIRequestContext, docName: string) {
+    const apiKey: string = process.env.API_KEY as string;
+    const teamId: string = process.env.BASE_TEAM_ID as string;
+    const getAllDocsEndpoint: string = `https://api.clickup.com/api/v3/workspaces/${teamId}/docs`;
+
+    const getAllDOcsResponse: APIResponse = await request.get(getAllDocsEndpoint, { headers: { Authorization: apiKey } });
+    const docsArray = (await getAllDOcsResponse.json()).docs.filter((doc) => doc.name === docName);
+    const docsId: string[] = docsArray.map(doc => doc.id)
+
+    return docsId;
+  }
 }
