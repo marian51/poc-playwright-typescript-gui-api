@@ -19,6 +19,13 @@ export class GenerateData {
     return randomGoalBody;
   }
 
+  public static generateDoc(docName: string, parent: {id: string, type: number}) {
+    return {
+      name: docName,
+      parent: parent
+    };
+  }
+
   public static getComment(text?: string) {
     const commentText = text ?? faker.lorem.paragraph();
     const notifyAll = false;
