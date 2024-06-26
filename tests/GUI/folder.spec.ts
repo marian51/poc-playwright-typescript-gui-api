@@ -32,25 +32,25 @@ test.describe(
       await ApiHooks.deleteFolderByName(request, spaceName, newFolderName);
     });
 
-    test("Test for checking if deleting existing folder works correctly", async ({ page, request }) => {
-      const folderContextMenu = new FolderContextMenu(page);
-      const deleteFolderModal = new DeleteFolderModal(page);
-
-      await ApiHooks.createFolderByName(request, spaceName, newFolderName);
-
-      await leftMenu.rightClickOnElement(newFolderName);
-      await folderContextMenu.clickOnOption("Delete");
-      await deleteFolderModal.typeFolderName(newFolderName);
-      await deleteFolderModal.clickOnDeleteButton();
-      await leftMenu.assertElementIsNotVisible(newFolderName);
-    });
-
     test.describe("Tests on existing folder", () => {
+      test.beforeEach(async ({ request }) => {
+        await ApiHooks.createFolderByName(request, spaceName, newFolderName);
+      });
+
+      test("Test for checking if deleting existing folder works correctly", async ({ page, request }) => {
+        const folderContextMenu = new FolderContextMenu(page);
+        const deleteFolderModal = new DeleteFolderModal(page);
+
+        await leftMenu.rightClickOnElement(newFolderName);
+        await folderContextMenu.clickOnOption("Delete");
+        await deleteFolderModal.typeFolderName(newFolderName);
+        await deleteFolderModal.clickOnDeleteButton();
+        await leftMenu.assertElementIsNotVisible(newFolderName);
+      });
+
       test("Test for checking if renaming existing folder works correctly", async ({ page, request }) => {
         const renamedFolderName = "Renamed GUI TEST folder";
         const folderContextMenu = new FolderContextMenu(page);
-
-        await ApiHooks.createFolderByName(request, spaceName, newFolderName);
 
         await leftMenu.rightClickOnElement(newFolderName);
         await folderContextMenu.clickOnOption("Rename");
