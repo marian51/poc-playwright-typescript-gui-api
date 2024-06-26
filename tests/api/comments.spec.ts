@@ -29,14 +29,9 @@ test.describe("Comment feature",
     });
 
     test("Add task comment", async ({ request }) => {
-      const comment = faker.lorem.paragraph();
+      const comment = GenerateData.getComment();
 
-      const response = await request.post(`/api/v2/task/${taskId}/comment`, {
-        data: {
-          comment_text: comment,
-          notify_all: false,
-        },
-      });
+      const response = await request.post(`/api/v2/task/${taskId}/comment`, { data: comment });
       const responseJson = await response.json();
 
       await expect(response).toBeOK();
@@ -45,8 +40,7 @@ test.describe("Comment feature",
     });
 
     test("Delete task comment", async ({ request }) => {
-      const comment = faker.lorem.paragraph();
-      const commentResponse = await ApiHooks.addCommentToTask(request, taskId, comment);
+      const commentResponse = await ApiHooks.addCommentToTask(request, taskId);
       const commentId = (await commentResponse.json()).id;
 
       const response = await request.delete(`/api/v2/comment/${commentId}`);
@@ -60,8 +54,7 @@ test.describe("Comment feature",
       let commentId: string;
 
       test.beforeEach("Prepare a comment", async ({ request }) => {
-        const comment = faker.lorem.paragraph();
-        const commentResponse = await ApiHooks.addCommentToTask(request, taskId, comment);
+        const commentResponse = await ApiHooks.addCommentToTask(request, taskId);
         commentId = (await commentResponse.json()).id;
       });
 
