@@ -11,7 +11,7 @@ export class AvatarDropdownMenu {
   }
 
   @logClickingOnElement("'Profile' menu item")
-  async clickSettings() {
+  async clickProfile() {
     await this.profile.click();
   }
 }
