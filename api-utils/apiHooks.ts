@@ -73,20 +73,20 @@ export class ApiHooks {
     const apiKey: string = process.env.API_KEY as string;
     const createDocEndpoint: string = `https://api.clickup.com/api/v3/workspaces/${teamId}/docs`;
 
-    const newDocBody = GenerateData.generateDoc(docName, { id: spaceId, type: 4})
+    const newDocBody = GenerateData.generateDoc(docName, { id: spaceId, type: 4 });
 
     await request.post(createDocEndpoint, { headers: { Authorization: apiKey }, data: newDocBody });
   }
 
   public static async deleteDocsByName(request: APIRequestContext, docName: string) {
-    const token: string = (await request.storageState()).origins[0].localStorage.filter(element => element.name === "id_token")[0].value
-    const deleteDocsEndpoint = "https://prod-eu-west-1-3.clickup.com/viz/v1/view"
+    const token: string = (await request.storageState()).origins[0].localStorage.filter((element) => element.name === "id_token")[0].value;
+    const deleteDocsEndpoint = "https://prod-eu-west-1-3.clickup.com/viz/v1/view";
 
     const body = {
-      "viewIds": await ApiUtils.getDocIdsByName(request, docName)
-    }
+      viewIds: await ApiUtils.getDocIdsByName(request, docName),
+    };
 
-    await request.delete(deleteDocsEndpoint, { headers: { Authorization: `Bearer ${token}` }, data: body })
+    await request.delete(deleteDocsEndpoint, { headers: { Authorization: `Bearer ${token}` }, data: body });
   }
 
   public static async deleteListById(request: APIRequestContext, listId: string) {
@@ -115,5 +115,17 @@ export class ApiHooks {
 
     const response = await request.post(addListCommentEndpoint, { data: commentBody });
     return response;
+  }
+
+  public static async addDefaultChatView(request: APIRequestContext): Promise<APIResponse> {
+    const addViewEndpoint = `api/v2/team/${process.env.BASE_TEAM_ID}/view`;
+    const defaultTaskBody = GenerateData.getDefaultChatView();
+    const response = await request.post(addViewEndpoint, { data: defaultTaskBody });
+    
+    return response;
+  }
+
+  public static async deleteViewById(request: APIRequestContext, viewId: string) {
+    await request.delete(`/api/v2/view/${viewId}`);
   }
 }

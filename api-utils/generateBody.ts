@@ -1,4 +1,5 @@
 import { faker } from "@faker-js/faker";
+import chatViewBody from '../resource/chat-view.json';
 
 export class GenerateData {
   public static getRandomGoal() {
@@ -49,5 +50,9 @@ export class GenerateData {
     };
 
     return randomCommentEditBody;
+  }
+
+  public static getDefaultChatView() {
+    return chatViewBody;
   }
 }

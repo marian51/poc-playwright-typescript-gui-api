@@ -1,0 +1,67 @@
+{
+  "name": "New Everything level View",
+  "type": "conversation",
+  "grouping": {
+    "field": "status",
+    "dir": 1,
+    "collapsed": [],
+    "ignore": false
+  },
+  "divide": {
+    "field": null,
+    "dir": null,
+    "collapsed": []
+  },
+  "sorting": {
+    "fields": [
+      {
+        "field": "cf_624a423a-c1d1-4467-99e2-63e225658cb2",
+        "dir": -1,
+        "idx": 0
+      }
+    ]
+  },
+  "filters": {
+    "op": "AND",
+    "field": [
+      {
+        "field": "cf_624a423a-c1d1-4467-99e2-63e225658cb2",
+        "op": "EQ",
+        "determinor": null,
+        "idx": 0,
+        "values": "123"
+      }
+    ],
+    "search": "",
+    "show_closed": false
+  },
+  "columns": {
+    "fields": [
+      {
+        "field": "assignee",
+        "idx": 0,
+        "width": 160,
+        "hidden": true,
+        "name": null,
+        "display": null
+      }
+    ]
+  },
+  "team_sidebar": {
+    "assignees": [],
+    "assigned_comments": false,
+    "unassigned_tasks": false
+  },
+  "settings": {
+    "show_task_locations": false,
+    "show_subtasks": 3,
+    "show_subtask_parent_names": false,
+    "show_closed_subtasks": false,
+    "show_assignees": true,
+    "show_images": true,
+    "collapse_empty_columns": null,
+    "me_comments": true,
+    "me_subtasks": true,
+    "me_checklists": true
+  }
+}
