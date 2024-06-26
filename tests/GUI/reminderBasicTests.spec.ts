@@ -24,7 +24,7 @@ test.describe.serial(
       await page.goto("/");
 
       await topMenu.clickAvatarIcon();
-      await avatarDropdownMenu.clickSettings();
+      await avatarDropdownMenu.clickProfile();
       await profile.clickMyWorkTab();
       await myWorkTab.hoverTodayListTitle();
       await myWorkTab.clickCreateReminderButton();
@@ -44,7 +44,7 @@ test.describe.serial(
       await page.goto("/");
 
       await topMenu.clickAvatarIcon();
-      await avatarDropdownMenu.clickSettings();
+      await avatarDropdownMenu.clickProfile();
       await profile.clickMyWorkTab();
       await myWorkTab.setReminder(reminderName);
       await myWorkTab.hoverReminder();
