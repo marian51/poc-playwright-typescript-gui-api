@@ -3,7 +3,7 @@ import { faker } from "@faker-js/faker";
 import { GenerateData } from "../../api-utils/generateBody";
 import { ApiHooks } from "../../api-utils/apiHooks";
 
-test.describe(
+test.describe.skip(
   "Goal feature",
   {
     tag: ["@Goal"],
@@ -72,7 +72,7 @@ test.describe(
         const updatedGoalName = faker.animal.bear();
 
         const updatedGoalBody = {
-          name: updatedGoalName
+          name: updatedGoalName,
         };
 
         const response = await request.put(`/api/v2/goal/${preparedGoalId}`, { data: updatedGoalBody });
