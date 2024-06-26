@@ -24,6 +24,11 @@ export class LeftMenu {
     await this.menuElement.click({ button: "right" });
   }
 
+  @logClicking("left menu space create button")
+  async clickOnSpacePlusButton(spaceName: string) {
+    await this.page.getByTestId(`project-list-bar-item__link__${spaceName}`).getByTestId(`project-row__ellipsis_icon-${spaceName}`).click();
+  }
+
   async assertElementIsVisible(elementName: string) {
     this.menuElement = this.leftSideBar.getByRole("treeitem", { name: elementName });
     await expect(this.menuElement).toBeVisible();
