@@ -3,7 +3,11 @@ import { ApiHooks } from "../../api-utils/apiHooks";
 import { faker } from "@faker-js/faker";
 import { GenerateData } from "../../api-utils/generateBody";
 
-test.describe("Comment feature", () => {
+test.describe("Comment feature",
+  {
+    tag: ["@Comment"],
+  },
+  () => {
   let listId: string;
 
   test.beforeAll("Prepare a list", async ({ request }) => {
@@ -27,7 +31,7 @@ test.describe("Comment feature", () => {
     test("Add task comment", async ({ request }) => {
       const comment = faker.lorem.paragraph();
 
-      const response = await request.post(`https://api.clickup.com/api/v2/task/${taskId}/comment`, {
+      const response = await request.post(`/api/v2/task/${taskId}/comment`, {
         data: {
           comment_text: comment,
           notify_all: false,
