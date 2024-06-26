@@ -3,22 +3,25 @@ import { ApiHooks } from "../../api-utils/apiHooks";
 import { faker } from "@faker-js/faker";
 import { GenerateData } from "../../api-utils/generateBody";
 
-test.describe("Comment feature tests", () => {
+test.describe("Comment feature", () => {
   let listId: string;
-  let taskId: string;
+
+  test.beforeAll("Prepare a list", async ({ request }) => {
+    const folderResponse = await ApiHooks.createFolderlessList(request);
+    listId = (await folderResponse.json()).id;
+  });
+
+  test.afterAll("Teardown - delete the list with a task", async ({ request }) => {
+    await ApiHooks.deleteListById(request, listId);
+  });
+
   test.describe("Task comments", () => {
+    let taskId: string;
     const taskName = faker.internet.emoji();
 
-    test.beforeAll("Create a list and a task", async ({ request }) => {
-      const folderResponse = await ApiHooks.createFolderlessList(request);
-      listId = (await folderResponse.json()).id;
-
+    test.beforeAll("Prepare a task", async ({ request }) => {
       const taskResponse = await ApiHooks.createNewTask(request, taskName, listId);
       taskId = (await taskResponse.json()).id;
-    });
-
-    test.afterAll("Teardown - delete the list with a task", async ({ request }) => {
-      await ApiHooks.deleteListById(request, listId);
     });
 
     test("Add task comment", async ({ request }) => {
@@ -45,19 +48,17 @@ test.describe("Comment feature tests", () => {
       const response = await request.delete(`/api/v2/comment/${commentId}`);
       const responseJson = await response.json();
 
-      // Expect 200 with empty body
       await expect(response).toBeOK();
       expect(responseJson).toMatchObject({});
     });
 
-    test.describe("Updating", async () => {
+    test.describe("Updating", () => {
       let commentId: string;
 
       test.beforeEach("Prepare a comment", async ({ request }) => {
         const comment = faker.lorem.paragraph();
         const commentResponse = await ApiHooks.addCommentToTask(request, taskId, comment);
         commentId = (await commentResponse.json()).id;
-        // TODO: continue here, maybe change comment to use GenerateData, CLEANUP
       });
 
       test("Edit a comment", async ({ request }) => {
@@ -68,6 +69,37 @@ test.describe("Comment feature tests", () => {
         await expect(response).toBeOK();
         expect(responseJson).toMatchObject({});
       });
+
+      test("Assign yourself to a comment", async ({ request }) => {
+        const response = await request.put(`/api/v2/comment/${commentId}`, { data: { assignee: 183 } });
+        const responseJson = await response.json();
+
+        await expect(response).toBeOK();
+        expect(responseJson).toMatchObject({});
+      });
+    });
+  });
+
+  test.describe("List comments", () => {
+    test("Add comment", async ({ request }) => {
+      const commentBody = GenerateData.getComment();
+      const response = await request.post(`/api/v2/list/${listId}/comment`, { data: commentBody });
+      const responseJson = await response.json();
+
+      await expect(response).toBeOK();
+      expect(responseJson.id).toBeTruthy();
+      expect(responseJson.version.data.relationships[1]).toHaveProperty("object_id", listId);
+    });
+
+    test("Delete comment", async ({ request }) => {
+      const commentResponse = await ApiHooks.addCommentToList(request, listId);
+      const commentId = (await commentResponse.json()).id;
+
+      const response = await request.delete(`/api/v2/comment/${commentId}`);
+      const responseJson = await response.json();
+
+      await expect(response).toBeOK();
+      expect(responseJson).toMatchObject({});
     });
   });
 });

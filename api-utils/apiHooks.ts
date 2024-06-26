@@ -80,10 +80,19 @@ export class ApiHooks {
     return response;
   }
 
-  public static async addCommentToTask(request: APIRequestContext, taskId: string, comment: string): Promise<APIResponse> {
+  public static async addCommentToTask(request: APIRequestContext, taskId: string, commentText?: string): Promise<APIResponse> {
     const addTaskCommentEndpoint = `/api/v2/task/${taskId}/comment`;
+    const commentBody = GenerateData.getComment(commentText);
 
-    const response = await request.post(addTaskCommentEndpoint, { data: { comment_text: comment, resolved: false } });
+    const response = await request.post(addTaskCommentEndpoint, { data: commentBody });
+    return response;
+  }
+
+  public static async addCommentToList(request: APIRequestContext, listId: string, commentText?: string): Promise<APIResponse> {
+    const addListCommentEndpoint = `/api/v2/list/${listId}/comment`;
+    const commentBody = GenerateData.getComment(commentText);
+
+    const response = await request.post(addListCommentEndpoint, { data: commentBody });
     return response;
   }
 }

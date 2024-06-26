@@ -19,8 +19,8 @@ export class GenerateData {
     return randomGoalBody;
   }
 
-  public static getRandomComment() {
-    const commentText = faker.lorem.paragraph();
+  public static getComment(text?: string) {
+    const commentText = text ?? faker.lorem.paragraph();
     const notifyAll = false;
 
     const randomCommentBody = {
@@ -29,9 +29,9 @@ export class GenerateData {
     };
 
     return randomCommentBody;
-    // TODO: use this, watch out for comment body on other endpoints
   }
 
+  // Comment update requires different body than new comment
   public static getRandomCommentUpdate() {
     const commentText = faker.lorem.slug();
     const resolved = false;
