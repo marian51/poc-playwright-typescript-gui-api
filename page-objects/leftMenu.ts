@@ -1,9 +1,10 @@
 import { Locator, Page, expect } from "@playwright/test";
-import { logClicking } from "../utils/decorators";
+import { logClicking, logTyping } from "../utils/decorators";
 
 export class LeftMenu {
   private readonly page: Page;
   private readonly leftSideBar: Locator;
+  private readonly folderNameInput: Locator;
 
   private menuElement: Locator;
   private spacePlusButton: Locator;
@@ -11,6 +12,7 @@ export class LeftMenu {
   constructor(page: Page) {
     this.page = page;
     this.leftSideBar = this.page.locator("cu-simple-bar");
+    this.folderNameInput = this.page.getByTestId('nav-editor__input');
   }
 
   @logClicking("left menu option")
@@ -29,6 +31,12 @@ export class LeftMenu {
   async clickOnSpacePlusButton(spaceName: string) {
     this.spacePlusButton = this.page.getByTestId(`project-list-bar-item__link__${spaceName}`).getByTestId(`project-row__ellipsis_icon-${spaceName}`);
     await this.spacePlusButton.click();
+  }
+
+  @logTyping("Folder name")
+  async typeFolderName(renamedFolderName: string) {
+    await this.folderNameInput.fill(renamedFolderName);
+    await this.folderNameInput.blur();
   }
 
   async assertElementIsVisible(elementName: string) {
