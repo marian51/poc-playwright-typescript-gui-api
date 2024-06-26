@@ -1,8 +1,10 @@
-import { Page } from "@playwright/test";
+import { Locator, Page } from "@playwright/test";
 import { logClicking } from "../../utils/decorators";
 
 export class SpaceCreateContextMenu {
   private readonly page: Page;
+
+  private menuOption: Locator;
 
   constructor(page: Page) {
     this.page = page;
@@ -10,6 +12,7 @@ export class SpaceCreateContextMenu {
 
   @logClicking("menu option")
   async clickOnOption(optionName: string) {
-    await this.page.getByTestId(`dropdown-list-item__${optionName}`).click();
+    this.menuOption = this.page.getByTestId(`dropdown-list-item__${optionName}`);
+    await this.menuOption.click();
   }
 }

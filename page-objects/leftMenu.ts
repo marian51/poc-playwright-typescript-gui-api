@@ -6,6 +6,7 @@ export class LeftMenu {
   private readonly leftSideBar: Locator;
 
   private menuElement: Locator;
+  private spacePlusButton: Locator;
 
   constructor(page: Page) {
     this.page = page;
@@ -26,7 +27,8 @@ export class LeftMenu {
 
   @logClicking("left menu space create button")
   async clickOnSpacePlusButton(spaceName: string) {
-    await this.page.getByTestId(`project-list-bar-item__link__${spaceName}`).getByTestId(`project-row__ellipsis_icon-${spaceName}`).click();
+    this.spacePlusButton = this.page.getByTestId(`project-list-bar-item__link__${spaceName}`).getByTestId(`project-row__ellipsis_icon-${spaceName}`);
+    await this.spacePlusButton.click();
   }
 
   async assertElementIsVisible(elementName: string) {
