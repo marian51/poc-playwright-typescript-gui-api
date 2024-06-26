@@ -122,7 +122,13 @@ test.describe(
     });
 
     test("Add comment (chat message)", async ({ request }) => {
-      console.log(chatId);
+      const message = faker.music.songName();
+      const response = await request.post(`/api/v2/view/${chatId}/comment`, { data: { comment_text: message } });
+      const responseJson = await response.json();
+
+      await expect(response).toBeOK();
+      expect(responseJson.id).toBeTruthy();
+      expect(responseJson.version.data.relationships[1]).toHaveProperty("object_id", chatId);
     });
   }
 );
