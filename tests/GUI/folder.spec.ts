@@ -11,12 +11,21 @@ test.describe(
   { tag: "@folder", annotation: { type: "issue", description: "https://github.com/marian51/poc-playwright-typescript-gui-api/issues/87" } },
   () => {
     const newFolderName = "GUI TEST folder";
-    const spaceName = "Team Space";
+    const spaceName = "Space for Folder tests";
     let leftMenu: LeftMenu;
+
+    test.beforeAll(async ({ request }) => {
+      await ApiHooks.createSpaceByName(request, spaceName);
+    });
 
     test.beforeEach(async ({ page }) => {
       await page.goto("/");
+      await page.locator("cu-web-push-notification-banner").waitFor();
       leftMenu = new LeftMenu(page);
+    });
+
+    test.afterAll(async ({ request }) => {
+      await ApiHooks.deleteSpaceByName(request, spaceName);
     });
 
     test("Test for checking if creating new folder works correctly", async ({ page, request }) => {
@@ -27,6 +36,7 @@ test.describe(
       await spaceCreateContextMenu.clickOnOption("category");
       await createFolderModal.typeFolderName(newFolderName);
       await createFolderModal.clickOnCreateFolderButton();
+      await leftMenu.clickOnElement(spaceName);
       await leftMenu.assertElementIsVisible(newFolderName);
 
       await ApiHooks.deleteFolderByName(request, spaceName, newFolderName);
@@ -41,6 +51,7 @@ test.describe(
         const folderContextMenu = new FolderContextMenu(page);
         const deleteFolderModal = new DeleteFolderModal(page);
 
+        await leftMenu.clickOnElement(spaceName);
         await leftMenu.rightClickOnElement(newFolderName);
         await folderContextMenu.clickOnOption("Delete");
         await deleteFolderModal.typeFolderName(newFolderName);
@@ -52,10 +63,10 @@ test.describe(
         const renamedFolderName = "Renamed GUI TEST folder";
         const folderContextMenu = new FolderContextMenu(page);
 
+        await leftMenu.clickOnElement(spaceName);
         await leftMenu.rightClickOnElement(newFolderName);
         await folderContextMenu.clickOnOption("Rename");
         await leftMenu.typeFolderName(renamedFolderName);
-
         await leftMenu.assertElementIsVisible(renamedFolderName);
 
         await ApiHooks.deleteFolderByName(request, spaceName, renamedFolderName);

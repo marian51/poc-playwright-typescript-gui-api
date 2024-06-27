@@ -3,14 +3,16 @@ import { logClickingOnElement, logTyping } from "../../utils/decorators";
 
 export class CreateFolderModal {
     private readonly page: Page;
+    private readonly modalContainer: Locator;
 
     private readonly nameInput: Locator;
-    private readonly createFolderButton: Locator;
+    // private readonly createFolderButton: Locator;
 
   constructor(page: Page) {
     this.page = page;
+    this.modalContainer = this.page.getByTestId("modal__dialog");
     this.nameInput = this.page.getByTestId("create-category__form-input");
-    this.createFolderButton = this.page.getByTestId("create-category__create-folder");
+    // this.createFolderButton = this.page.getByRole("button", {name: "Create"});
   }
 
   @logTyping("Folder name")
@@ -20,6 +22,6 @@ export class CreateFolderModal {
 
   @logClickingOnElement("'Create Folder' button")
   async clickOnCreateFolderButton() {
-    await this.createFolderButton.click();
+    await this.modalContainer.getByRole("button", {name: "Create"}).click();
   }
 }

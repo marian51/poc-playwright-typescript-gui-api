@@ -7,7 +7,7 @@ export class LeftMenu {
   private readonly folderNameInput: Locator;
 
   private menuElement: Locator;
-  private spacePlusButton: Locator;
+  private spaceElement: Locator;
 
   constructor(page: Page) {
     this.page = page;
@@ -29,8 +29,13 @@ export class LeftMenu {
 
   @logClicking("left menu space create button")
   async clickOnSpacePlusButton(spaceName: string) {
-    this.spacePlusButton = this.page.getByTestId(`project-list-bar-item__link__${spaceName}`).getByTestId(`project-row__ellipsis_icon-${spaceName}`);
-    await this.spacePlusButton.click();
+    await this.hoverOverSpaceElement(spaceName);
+    await this.spaceElement.getByTestId(`project-row__ellipsis_icon-${spaceName}`).click();
+  }
+
+  async hoverOverSpaceElement(spaceName: string) {
+    this.spaceElement = this.page.getByTestId(`project-list-bar-item__link__${spaceName}`);
+    await this.spaceElement.hover();
   }
 
   @logTyping("Folder name")
