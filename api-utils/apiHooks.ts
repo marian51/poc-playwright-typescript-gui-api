@@ -70,6 +70,27 @@ export class ApiHooks {
     await request.delete(`/api/v2/goal/${goalId}`);
   }
 
+  public static async createNewDocInSpace(request: APIRequestContext, docName: string, spaceId: string) {
+    const teamId: string = process.env.BASE_TEAM_ID as string;
+    const apiKey: string = process.env.API_KEY as string;
+    const createDocEndpoint: string = `https://api.clickup.com/api/v3/workspaces/${teamId}/docs`;
+
+    const newDocBody = GenerateData.generateDoc(docName, { id: spaceId, type: 4})
+
+    await request.post(createDocEndpoint, { headers: { Authorization: apiKey }, data: newDocBody });
+  }
+
+  public static async deleteDocsByName(request: APIRequestContext, docName: string) {
+    const token: string = (await request.storageState()).origins[0].localStorage.filter(element => element.name === "id_token")[0].value
+    const deleteDocsEndpoint = "https://prod-eu-west-1-3.clickup.com/viz/v1/view"
+
+    const body = {
+      "viewIds": await ApiUtils.getDocIdsByName(request, docName)
+    }
+
+    await request.delete(deleteDocsEndpoint, { headers: { Authorization: `Bearer ${token}` }, data: body })
+  }
+
   public static async deleteFolderByName(request: APIRequestContext, spaceName: string, folderName: string) {
     const apiKey: string = process.env.API_KEY as string;
     const folderId = await ApiUtils.getFolderIdByName(request, spaceName, folderName);

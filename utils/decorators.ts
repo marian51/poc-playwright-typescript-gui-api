@@ -40,6 +40,23 @@ export function logClickingOnElement(elementName: string, specialKey?: string) {
 }
 
 /**
+ * Dedicated for logging **more specific** methods, which does not take an argument with name of the hovered element, e.g. method `hoverContinueButton()`
+ * @param elementName name of the element which will be hovered, e.g. "'Continue' button"
+ * @returns
+ */
+export function logHoveringOverElement(elementName: string) {
+  return function actualDecorator(originalMethod: any, context: ClassMethodDecoratorContext) {
+    function replacementMethod(this: any, ...args: any[]) {
+      console.log(`${getCurrentTimeAndDate()} - [${this.constructor.name}.${String(context.name)}] Hovering over ${elementName}`);
+      const result = originalMethod.call(this, ...args);
+      return result;
+    }
+
+    return replacementMethod;
+  };
+}
+
+/**
  * For logging methods for typing text into text field (input, text area etc.). Text, which will be typed, is taking from logged method argument
  * @param inputName *optional* name of input which is typing into, eq. "Task name"
  * @returns
