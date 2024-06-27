@@ -23,8 +23,12 @@ test.describe(
       page = await browser.newPage();
       for (const task of tasks) {
         await ApiHooks.createNewTaskWithData(request, task);
-        console.log("Created task: " + task.name)
+        console.log("Created task: " + task.name);
       }
+    });
+
+    test.afterAll(async () => {
+      await projectMainView.deleteAllTasks();
     });
 
     [
@@ -46,10 +50,6 @@ test.describe(
         await projectMainView.sortListBy(key, direction);
         await projectMainView.assertTasksOrder(key, direction);
       });
-    });
-
-    test.afterAll(async () => {
-      await projectMainView.deleteAllTasks();
     });
   }
 );
