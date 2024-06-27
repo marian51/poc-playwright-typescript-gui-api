@@ -116,6 +116,14 @@ export class ApiHooks {
     const response = await request.post(addListCommentEndpoint, { data: commentBody });
     return response;
   }
+  
+  public static async addCommentToView(request: APIRequestContext, viewId: string, commentText?: string): Promise<APIResponse> {
+    const addViewCommentEndpoint = `/api/v2/view/${viewId}/comment`;
+    const commentBody = GenerateData.getComment(commentText);
+
+    const response = await request.post(addViewCommentEndpoint, { data: commentBody });
+    return response;
+  }
 
   public static async addDefaultChatView(request: APIRequestContext): Promise<APIResponse> {
     const addViewEndpoint = `api/v2/team/${process.env.BASE_TEAM_ID}/view`;

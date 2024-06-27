@@ -105,30 +105,53 @@ test.describe(
 );
 
 test.describe(
-  "Comment feature",
+  "Comment feature › Chat",
   {
-    tag: ["@Comment"],
+    tag: ["@Comment", "@Chat"],
   },
   () => {
-    let chatId: string;
+    let chatViewId: string;
+    let commentId: string;
 
     test.beforeAll("Setup - Create chat view", async ({ request }) => {
       const response = await ApiHooks.addDefaultChatView(request);
-      chatId = (await response.json()).view.id;
+      chatViewId = (await response.json()).view.id;
     });
 
     test.afterAll("Teardown - Delete chat view", async ({ request }) => {
-      await ApiHooks.deleteViewById(request, chatId);
+      await ApiHooks.deleteViewById(request, chatViewId);
+    });
+
+    test.beforeEach("Prepare a chat message", async ({ request }) => {
+      const commentResponse = await ApiHooks.addCommentToView(request, chatViewId);
+      commentId = (await commentResponse.json()).id;
     });
 
     test("Add comment (chat message)", async ({ request }) => {
       const message = faker.music.songName();
-      const response = await request.post(`/api/v2/view/${chatId}/comment`, { data: { comment_text: message } });
+      const response = await request.post(`/api/v2/view/${chatViewId}/comment`, { data: { comment_text: message } });
       const responseJson = await response.json();
 
       await expect(response).toBeOK();
       expect(responseJson.id).toBeTruthy();
-      expect(responseJson.version.data.relationships[1]).toHaveProperty("object_id", chatId);
+      expect(responseJson.version.data.relationships[1]).toHaveProperty("object_id", chatViewId);
+    });
+
+    test("Delete a comment (chat message)", async ({ request }) => {
+      const response = await request.delete(`/api/v2/comment/${commentId}`);
+      const responseJson = await response.json();
+
+      await expect(response).toBeOK();
+      expect(responseJson).toMatchObject({});
+    });
+
+    test("Reply to a comment", async ({ request }) => {
+      const message = faker.music.songName();
+      const response = await request.post(`/api/v2/comment/${commentId}/reply`, { data: { comment_text: message } });
+      const responseJson = await response.json();
+
+      await expect(response).toBeOK();
+      expect(responseJson).toMatchObject({});
     });
   }
 );
