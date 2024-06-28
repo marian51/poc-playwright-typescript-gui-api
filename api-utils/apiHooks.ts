@@ -51,6 +51,14 @@ export class ApiHooks {
     const response = await request.post(createTaskEndpoint, { headers: { Authorization: apiKey }, data: newTaskBody });
   }
 
+  public static async createNewTaskWithData(request: APIRequestContext, taskData: Object) {
+    const taskListId: string = await ApiUtils.getBaseListId(request);
+    const apiKey: string = process.env.API_KEY as string;
+    const createTaskEndpoint: string = `https://api.clickup.com/api/v2/list/${taskListId}/task`;
+
+    const response = await request.post(createTaskEndpoint, { headers: { Authorization: apiKey }, data: taskData });
+  }
+
   public static async deleteTask(request: APIRequestContext, taskName: string) {
     const apiKey: string = process.env.API_KEY as string;
     const taskId = await ApiUtils.getTaskIdFromBaseList(request, taskName);
