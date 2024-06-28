@@ -18,33 +18,38 @@ test.describe(
       await ApiHooks.createSpaceByName(request, spaceName);
     });
 
-    test.beforeEach(async ({ page }) => {
-      await page.goto("/");
-      await page.locator("cu-web-push-notification-banner").waitFor();
-      leftMenu = new LeftMenu(page);
-    });
-
     test.afterAll(async ({ request }) => {
       await ApiHooks.deleteSpaceByName(request, spaceName);
     });
 
-    test("Test for checking if creating new folder works correctly", async ({ page, request }) => {
-      const spaceCreateContextMenu = new SpaceCreateContextMenu(page);
-      const createFolderModal = new CreateFolderModal(page);
+    test.describe("Tests that create folder", () => {
+      test.beforeEach(async ({ page }) => {
+        await page.goto("/");
+        await page.locator("cu-web-push-notification-banner").waitFor();
+        leftMenu = new LeftMenu(page);
+      });
 
-      await leftMenu.clickOnSpacePlusButton(spaceName);
-      await spaceCreateContextMenu.clickOnOption("category");
-      await createFolderModal.typeFolderName(newFolderName);
-      await createFolderModal.clickOnCreateFolderButton();
-      await leftMenu.clickOnElement(spaceName);
-      await leftMenu.assertElementIsVisible(newFolderName);
+      test("Test for checking if creating new folder works correctly", async ({ page, request }) => {
+        const spaceCreateContextMenu = new SpaceCreateContextMenu(page);
+        const createFolderModal = new CreateFolderModal(page);
 
-      await ApiHooks.deleteFolderByName(request, spaceName, newFolderName);
+        await leftMenu.clickOnSpacePlusButton(spaceName);
+        await spaceCreateContextMenu.clickOnOption("category");
+        await createFolderModal.typeFolderName(newFolderName);
+        await createFolderModal.clickOnCreateFolderButton();
+        await leftMenu.clickOnElement(spaceName);
+        await leftMenu.assertElementIsVisible(newFolderName);
+
+        await ApiHooks.deleteFolderByName(request, spaceName, newFolderName);
+      });
     });
 
     test.describe("Tests on existing folder", () => {
-      test.beforeEach(async ({ request }) => {
+      test.beforeEach(async ({ page, request }) => {
         await ApiHooks.createFolderByName(request, spaceName, newFolderName);
+        await page.goto("/");
+        await page.locator("cu-web-push-notification-banner").waitFor();
+        leftMenu = new LeftMenu(page);
       });
 
       test("Test for checking if deleting existing folder works correctly", async ({ page, request }) => {
@@ -52,7 +57,21 @@ test.describe(
         const deleteFolderModal = new DeleteFolderModal(page);
 
         await leftMenu.clickOnElement(spaceName);
+        await page.waitForLoadState('networkidle')
         await leftMenu.rightClickOnElement(newFolderName);
+        await folderContextMenu.clickOnOption("Delete");
+        await deleteFolderModal.typeFolderName(newFolderName);
+        await deleteFolderModal.clickOnDeleteButton();
+        await leftMenu.assertElementIsNotVisible(newFolderName);
+      });
+
+      test("Test for checking if deleting existing folder through ellipsis works correctly", async ({ page, request }) => {
+        const folderContextMenu = new FolderContextMenu(page);
+        const deleteFolderModal = new DeleteFolderModal(page);
+
+        await leftMenu.clickOnElement(spaceName);
+        await page.waitForLoadState('networkidle')
+        await leftMenu.clickOnFolderEllipsis(newFolderName);
         await folderContextMenu.clickOnOption("Delete");
         await deleteFolderModal.typeFolderName(newFolderName);
         await deleteFolderModal.clickOnDeleteButton();
@@ -64,7 +83,22 @@ test.describe(
         const folderContextMenu = new FolderContextMenu(page);
 
         await leftMenu.clickOnElement(spaceName);
+        await page.waitForLoadState('networkidle')
         await leftMenu.rightClickOnElement(newFolderName);
+        await folderContextMenu.clickOnOption("Rename");
+        await leftMenu.typeFolderName(renamedFolderName);
+        await leftMenu.assertElementIsVisible(renamedFolderName);
+
+        await ApiHooks.deleteFolderByName(request, spaceName, renamedFolderName);
+      });
+
+      test("Test for checking if renaming existing folder through ellipsis works correctly", async ({ page, request }) => {
+        const renamedFolderName = "Renamed GUI TEST folder";
+        const folderContextMenu = new FolderContextMenu(page);
+
+        await leftMenu.clickOnElement(spaceName);
+        await page.waitForLoadState('networkidle')
+        await leftMenu.clickOnFolderEllipsis(newFolderName);
         await folderContextMenu.clickOnOption("Rename");
         await leftMenu.typeFolderName(renamedFolderName);
         await leftMenu.assertElementIsVisible(renamedFolderName);

@@ -29,6 +29,12 @@ export class LeftMenu {
     await this.menuElement.click({ button: "right" });
   }
 
+  // @logClicking("left menu folder", "Right")
+  // async rightClickOnFolder(elementName: string) {
+  //   await this.page.getByTestId(`category-row__folder-name__${elementName}`).click({ button: "right", force: true });
+  // }
+  
+
   @logTyping("Rename doc")
   async typeIntoRenameDocInput(newDocName: string) {
     await this.renameInput.fill(newDocName);
@@ -45,9 +51,19 @@ export class LeftMenu {
     await this.spaceElement.getByTestId(`project-row__ellipsis_icon-${spaceName}`).click();
   }
 
+  async clickOnFolderEllipsis(folderName: string) {
+    await this.hoverOverElement(folderName);
+    await this.menuElement.getByTestId(`category-row__ellipsis-folder-name__${folderName}`).click();
+  }
+
   async hoverOverSpaceElement(spaceName: string) {
     this.spaceElement = this.page.getByTestId(`project-list-bar-item__link__${spaceName}`);
     await this.spaceElement.hover();
+  }
+
+  async hoverOverElement(elementName: string) {
+    this.menuElement = this.leftSideBar.getByRole("treeitem", { name: elementName });
+    await this.menuElement.hover();
   }
 
   @logTyping("Folder name")
