@@ -10,7 +10,9 @@ export class ApiHooks {
     const getSpacesEndpoint: string = `/api/v2/team/${teamId}/space`;
 
     // Getting all existing spaces
-    const allSpacesResponse = await request.get(getSpacesEndpoint);
+    const allSpacesResponse = await request.get(getSpacesEndpoint, {
+      headers: { Authorization: apiKey },
+    });
 
     // Finding space id
     const spaceId = (await allSpacesResponse.json()).spaces.filter((space) => space.name === spaceName)[0].id;
@@ -40,21 +42,23 @@ export class ApiHooks {
   // TODO: Discuss and decide how to handle task creation
   public static async createNewTask(request: APIRequestContext, taskName: string, taskListId?: string) {
     const listId: string = taskListId ?? (await ApiUtils.getBaseListId(request));
+    const apiKey: string = process.env.API_KEY as string;
     const createTaskEndpoint: string = `/api/v2/list/${listId}/task`;
 
     const newTaskBody = {
       name: taskName,
     };
 
-    const response = await request.post(createTaskEndpoint, { data: newTaskBody });
+    const response = await request.post(createTaskEndpoint, { headers: { Authorization: apiKey }, data: newTaskBody });
     return response;
   }
 
   public static async deleteTask(request: APIRequestContext, taskName: string) {
     const taskId = await ApiUtils.getTaskIdFromBaseList(request, taskName);
+    const apiKey: string = process.env.API_KEY as string;
     const deleteTaskEndpoint: string = `/api/v2/task/${taskId}`;
 
-    await request.delete(deleteTaskEndpoint, { headers: { "Content-Type": "application/json" } });
+    await request.delete(deleteTaskEndpoint, { headers: { Authorization: apiKey, "Content-Type": "application/json" } });
   }
 
   public static async createRandomGoal(request: APIRequestContext): Promise<APIResponse> {
@@ -116,7 +120,7 @@ export class ApiHooks {
     const response = await request.post(addListCommentEndpoint, { data: commentBody });
     return response;
   }
-  
+
   public static async addCommentToView(request: APIRequestContext, viewId: string, commentText?: string): Promise<APIResponse> {
     const addViewCommentEndpoint = `/api/v2/view/${viewId}/comment`;
     const commentBody = GenerateData.getComment(commentText);
@@ -129,7 +133,7 @@ export class ApiHooks {
     const addViewEndpoint = `api/v2/team/${process.env.BASE_TEAM_ID}/view`;
     const defaultTaskBody = GenerateData.getDefaultChatView();
     const response = await request.post(addViewEndpoint, { data: defaultTaskBody });
-    
+
     return response;
   }
 
