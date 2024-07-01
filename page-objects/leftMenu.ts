@@ -16,7 +16,7 @@ export class LeftMenu {
 
   async waitForPageLoad() {
     try {
-      await this.page.locator("cu-web-push-notification-banner").waitFor();
+      await this.page.locator("cu-web-push-notification-banner").waitFor({ timeout: 5000 });
     } catch (error) {
       console.log("=== Notifications bar has NOT been loaded ===")
     } finally {
