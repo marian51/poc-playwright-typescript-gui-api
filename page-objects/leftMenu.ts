@@ -1,5 +1,5 @@
 import { Locator, Page, expect } from "@playwright/test";
-import { logClicking, logTyping } from "../utils/decorators";
+import { logClicking, logHoveringOverElement, logTyping } from "../utils/decorators";
 
 export class LeftMenu {
   private readonly page: Page;
@@ -45,16 +45,19 @@ export class LeftMenu {
     await this.spaceElement.getByTestId(`project-row__ellipsis_icon-${spaceName}`).click();
   }
 
+  @logClicking("left menu folder ellipsis")
   async clickOnFolderEllipsis(folderName: string) {
     await this.hoverOverElement(folderName);
     await this.menuElement.getByTestId(`category-row__ellipsis-folder-name__${folderName}`).click();
   }
 
+  @logHoveringOverElement("'Space' element")
   async hoverOverSpaceElement(spaceName: string) {
     this.spaceElement = this.page.getByTestId(`project-list-bar-item__link__${spaceName}`);
     await this.spaceElement.hover();
   }
 
+  @logHoveringOverElement("Left menu element")
   async hoverOverElement(elementName: string) {
     this.menuElement = this.leftSideBar.getByRole("treeitem", { name: elementName });
     await this.menuElement.hover();

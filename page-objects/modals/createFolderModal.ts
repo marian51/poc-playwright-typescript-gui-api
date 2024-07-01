@@ -4,7 +4,6 @@ import { logClickingOnElement, logTyping } from "../../utils/decorators";
 export class CreateFolderModal {
     private readonly page: Page;
     private readonly modalContainer: Locator;
-
     private readonly nameInput: Locator;
 
   constructor(page: Page) {
