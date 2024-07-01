@@ -40,7 +40,7 @@ test.describe(
           const createSpaceModal = new CreateSpaceModal(page);
 
           await page.goto("/");
-          await page.locator("cu-web-push-notification-banner").waitFor();
+          await leftMenu.waitForPageLoad();
 
           await leftMenu.clickOnElement("Create Space");
           await createSpaceModal.typeSpaceName(newSpaceName);
@@ -66,7 +66,7 @@ test.describe(
 
           await ApiHooks.createSpaceByName(request, newSpaceName);
           await page.goto("/");
-          await page.locator("cu-web-push-notification-banner").waitFor();
+          await leftMenu.waitForPageLoad();
 
           await leftMenu.rightClickOnElement(newSpaceName);
           await spaceContextMenu.clickOnOption("Delete");
@@ -82,7 +82,7 @@ test.describe(
       test.beforeEach("Prepare space for test and go to website", async ({ page, request }) => {
         await ApiHooks.createSpaceByName(request, newSpaceName);
         await page.goto("/");
-        await page.locator("cu-web-push-notification-banner").waitFor();
+        await leftMenu.waitForPageLoad();
       });
 
       test.afterEach("Remove space after test", async ({ request }) => {
@@ -188,7 +188,7 @@ test.describe(
         const renamedSpaceName = "RENAMED GUI TEST new space";
 
         await page.goto("/");
-        await page.locator("cu-web-push-notification-banner").waitFor();
+        await leftMenu.waitForPageLoad();
 
         await test.step("Step: Create new space", async () => {
           await leftMenu.clickOnElement("Create Space");

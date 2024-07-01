@@ -14,6 +14,16 @@ export class LeftMenu {
     this.renameInput = this.leftSideBar.getByTestId("nav-editor__input");
   }
 
+  async waitForPageLoad() {
+    try {
+      await this.page.locator("cu-web-push-notification-banner").waitFor();
+    } catch (error) {
+      console.log("=== Notifications bar has NOT been loaded ===")
+    } finally {
+      console.log("=========== Page has been loaded ============")
+    }
+  }
+
   @logClicking("left menu option")
   async clickOnElement(elementName: string) {
     this.menuElement = this.leftSideBar.getByRole("treeitem", { name: elementName });
