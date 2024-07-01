@@ -2,7 +2,7 @@ pipeline {
   agent { docker { image 'mcr.microsoft.com/playwright:v1.45.0-jammy' } }
 
   environment {
-    USERNAME = credentials('USERNAME')
+    USER_NAME = credentials('USER_NAME')
     PASSWORD = credentials('PASSWORD')
     API_KEY = credentials('API_KEY')
     BASE_TEAM_ID = credentials('BASE_TEAM_ID')
