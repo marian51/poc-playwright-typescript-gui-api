@@ -65,3 +65,7 @@ In the `package.json` file, the `scripts` field contains predefined scripts. The
   ```bash
   npm run test-tag --tag="tag_name"
   ```
+
+## Notes
+
+- to run Jenkins, you should install `Docker Pipeline` and `Docker plugin` plugins
