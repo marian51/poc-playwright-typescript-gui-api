@@ -29,12 +29,6 @@ export class LeftMenu {
     await this.menuElement.click({ button: "right" });
   }
 
-  // @logClicking("left menu folder", "Right")
-  // async rightClickOnFolder(elementName: string) {
-  //   await this.page.getByTestId(`category-row__folder-name__${elementName}`).click({ button: "right", force: true });
-  // }
-  
-
   @logTyping("Rename doc")
   async typeIntoRenameDocInput(newDocName: string) {
     await this.renameInput.fill(newDocName);
