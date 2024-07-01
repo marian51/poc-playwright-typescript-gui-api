@@ -1,5 +1,5 @@
 pipeline {
-  agent { docker { image 'mcr.microsoft.com/playwright:v1.45.0-jammy' } }
+  agent any
 
   environment {
     USER_NAME = credentials('USER_NAME')
@@ -11,26 +11,35 @@ pipeline {
   stages {
     stage('Check engine') {
       steps {
-        echo 'npm install'
+        echo 'echo npm install'
       }
     }
 
     stage('Install dependencies') {
       steps {
         sh 'npm install'
+        sh 'npx playwright install'
       }
     }
 
     stage('Run Playwright tests') {
       steps {
-        sh 'npx playwright test --grep @space'
+        sh 'npx playwright test --grep @e2e'
       }
     }
   }
 
   post {
     always {
-      echo "always"
+      echo "Post build action triggered ALWAYS"
+      publishHTML([
+        allowMissing: false,
+        alwaysLinkToLastBuild: false,
+        keepAll: false,
+        reportDir: 'playwright-report',
+        reportFiles: 'index.html',
+        reportName: 'Test Results Report'
+      ])
     }
 
     success {
