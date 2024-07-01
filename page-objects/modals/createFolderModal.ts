@@ -6,13 +6,11 @@ export class CreateFolderModal {
     private readonly modalContainer: Locator;
 
     private readonly nameInput: Locator;
-    // private readonly createFolderButton: Locator;
 
   constructor(page: Page) {
     this.page = page;
     this.modalContainer = this.page.getByTestId("modal__dialog");
     this.nameInput = this.page.getByTestId("create-category__form-input");
-    // this.createFolderButton = this.page.getByRole("button", {name: "Create"});
   }
 
   @logTyping("Folder name")
