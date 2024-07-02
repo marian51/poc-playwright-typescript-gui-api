@@ -35,8 +35,8 @@ pipeline {
       echo "Post build action triggered ALWAYS"
       publishHTML([
         allowMissing: false,
-        alwaysLinkToLastBuild: false,
-        keepAll: false,
+        alwaysLinkToLastBuild: true,
+        keepAll: true,
         reportDir: 'playwright-report',
         reportFiles: 'index.html',
         reportName: 'Test Results Report'
