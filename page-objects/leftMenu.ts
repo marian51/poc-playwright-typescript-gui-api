@@ -5,7 +5,6 @@ export class LeftMenu {
   private readonly page: Page;
   private readonly leftSideBar: Locator;
   private readonly renameInput: Locator;
-  private readonly folderNameInput: Locator;
 
   private menuElement: Locator;
   private spaceElement: Locator;
@@ -14,7 +13,6 @@ export class LeftMenu {
     this.page = page;
     this.leftSideBar = this.page.locator("cu-simple-bar");
     this.renameInput = this.leftSideBar.getByTestId("nav-editor__input");
-    this.folderNameInput = this.page.getByTestId('nav-editor__input');
   }
 
   @logClicking("left menu option")
@@ -65,8 +63,8 @@ export class LeftMenu {
 
   @logTyping("Folder name")
   async typeFolderName(renamedFolderName: string) {
-    await this.folderNameInput.fill(renamedFolderName);
-    await this.folderNameInput.blur();
+    await this.renameInput.fill(renamedFolderName);
+    await this.renameInput.blur();
   }
 
   async assertElementIsVisible(elementName: string) {

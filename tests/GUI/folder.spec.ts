@@ -1,10 +1,10 @@
 import test from "@playwright/test";
 import { LeftMenu } from "../../page-objects/leftMenu";
-import { SpaceCreateContextMenu } from "../../page-objects/context-menus/spaceCreateContextMenu";
 import { CreateFolderModal } from "../../page-objects/modals/createFolderModal";
 import { FolderContextMenu } from "../../page-objects/context-menus/folderContextMenu";
 import { DeleteFolderModal } from "../../page-objects/modals/deleteFolderModal";
 import { ApiHooks } from "../../api-utils/apiHooks";
+import { SpacePlusMenu } from "../../page-objects/context-menus/spacePlusMenu";
 
 test.describe(
   "Folder tests",
@@ -30,11 +30,11 @@ test.describe(
       });
 
       test("Test for checking if creating new folder works correctly", async ({ page, request }) => {
-        const spaceCreateContextMenu = new SpaceCreateContextMenu(page);
+        const spacePlusMenu = new SpacePlusMenu(page);
         const createFolderModal = new CreateFolderModal(page);
 
         await leftMenu.clickOnSpacePlusButton(spaceName);
-        await spaceCreateContextMenu.clickOnOption("category");
+        await spacePlusMenu.clickOnOption("Folder");
         await createFolderModal.typeFolderName(newFolderName);
         await createFolderModal.clickOnCreateFolderButton();
         await leftMenu.clickOnElement(spaceName);
