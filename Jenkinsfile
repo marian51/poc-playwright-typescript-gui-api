@@ -2,29 +2,46 @@ pipeline {
   agent any
 
   environment {
-    USER_NAME = credentials('USER_NAME')
-    PASSWORD = credentials('PASSWORD')
-    API_KEY = credentials('API_KEY')
-    BASE_TEAM_ID = credentials('BASE_TEAM_ID')
+    USER_NAME = credentials("USER_NAME")
+    PASSWORD = credentials("PASSWORD")
+    API_KEY = credentials("API_KEY")
+    BASE_TEAM_ID = credentials("BASE_TEAM_ID")
   }
 
   stages {
-    stage('Check engine') {
+    stage("Check engine") {
       steps {
-        echo 'echo npm install'
+        echo "echo npm install"
       }
     }
 
-    stage('Install dependencies') {
+    stage("Install dependencies") {
       steps {
-        sh 'npm install'
-        sh 'npx playwright install'
+        sh "npm install"
+        sh "npx playwright install"
       }
     }
 
-    stage('Run Playwright tests') {
+    stage("Run all Playwright tests") {
+      when {
+        expression {
+          params.TAG == "All tests"
+        }
+      }
       steps {
-        sh 'npx playwright test --grep @e2e'
+        sh "npx playwright test"
+      }
+    }
+
+    stage("Run only Playwright with given tag") {
+      when {
+        expression {
+          params.TAG != "All tests"
+        }
+      }
+      steps {
+        echo "Running tests with tag: ${params.TAG}"
+        sh "npx playwright test --grep ${params.TAG}"
       }
     }
   }
@@ -36,9 +53,9 @@ pipeline {
         allowMissing: false,
         alwaysLinkToLastBuild: true,
         keepAll: true,
-        reportDir: 'playwright-report',
-        reportFiles: 'index.html',
-        reportName: 'Test Results Report'
+        reportDir: "playwright-report",
+        reportFiles: "index.html",
+        reportName: "Test Results Report"
       ])
     }
 
