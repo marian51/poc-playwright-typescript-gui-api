@@ -6,6 +6,7 @@ import { DeleteSpaceModal } from "../../page-objects/modals/deleteSpaceModal";
 import { SpaceContextMenu } from "../../page-objects/context-menus/spaceContextMenu";
 import { EditSpaceNameModal } from "../../page-objects/modals/editSpaceNameModal";
 import { DuplicateSpaceModal } from "../../page-objects/modals/duplicateSpaceModal";
+import waitForPageLoad from "../../utils/GlobalGuiUtils";
 
 test.describe(
   "UI tests for checking basic space functionalities",
@@ -40,7 +41,7 @@ test.describe(
           const createSpaceModal = new CreateSpaceModal(page);
 
           await page.goto("/");
-          await leftMenu.waitForPageLoad();
+          await waitForPageLoad(page);
 
           await leftMenu.clickOnElement("Create Space");
           await createSpaceModal.typeSpaceName(newSpaceName);
@@ -66,7 +67,7 @@ test.describe(
 
           await ApiHooks.createSpaceByName(request, newSpaceName);
           await page.goto("/");
-          await leftMenu.waitForPageLoad();
+          await waitForPageLoad(page);
 
           await leftMenu.rightClickOnElement(newSpaceName);
           await spaceContextMenu.clickOnOption("Delete");
@@ -82,7 +83,7 @@ test.describe(
       test.beforeEach("Prepare space for test and go to website", async ({ page, request }) => {
         await ApiHooks.createSpaceByName(request, newSpaceName);
         await page.goto("/");
-        await leftMenu.waitForPageLoad();
+        await waitForPageLoad(page);
       });
 
       test.afterEach("Remove space after test", async ({ request }) => {
@@ -188,7 +189,7 @@ test.describe(
         const renamedSpaceName = "RENAMED GUI TEST new space";
 
         await page.goto("/");
-        await leftMenu.waitForPageLoad();
+        await waitForPageLoad(page);
 
         await test.step("Step: Create new space", async () => {
           await leftMenu.clickOnElement("Create Space");
