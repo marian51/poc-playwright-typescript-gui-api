@@ -34,20 +34,22 @@ test.describe(
     });
 
     test.describe("Editing existing tasks", () => {
+      let projectMainView: ProjectMainView;
+      let editTaskModal: EditTaskModal;
+
       test.beforeEach(async ({ page, request }) => {
         await ApiHooks.createNewTask(request, taskName);
         await page.goto("/");
+        projectMainView = new ProjectMainView(page);
+        editTaskModal = new EditTaskModal(page);
       });
 
       test.afterEach(async ({ request }) => {
         await ApiHooks.deleteTask(request, taskName);
         await ApiHooks.deleteTask(request, changedTaskName);
       });
-
-      test("Change task status to in progress", async ({ page }) => {
-        const projectMainView = new ProjectMainView(page);
-        const editTaskModal = new EditTaskModal(page);
-
+      
+      test("Change task status to in progress", async () => {
         await projectMainView.openTaskModal(taskName);
         await editTaskModal.changeTaskStatusToInProgress();
         await editTaskModal.close();
@@ -55,10 +57,7 @@ test.describe(
         await projectMainView.assertTaskIsInProgress(taskName);
       });
 
-      test("Change task name", async ({ page }) => {
-        const projectMainView = new ProjectMainView(page);
-        const editTaskModal = new EditTaskModal(page);
-
+      test("Change task name", async () => {
         await projectMainView.openTaskModal(taskName);
         await editTaskModal.changeTaskName(taskName);
         await editTaskModal.close();

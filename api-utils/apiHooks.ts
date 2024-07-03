@@ -105,8 +105,9 @@ export class ApiHooks {
     await request.delete(`/api/v2/list/${listId}`);
   }
 
-  public static async createFolderlessList(request: APIRequestContext, listName?: string): Promise<APIResponse> {
-    const spaceId = await ApiUtils.getSpaceIdByName(request, "Team Space");
+  public static async createFolderlessList(request: APIRequestContext, spaceName?: string, listName?: string): Promise<APIResponse> {
+    // TODO: dictionary
+    const spaceId = await ApiUtils.getSpaceIdByName(request, spaceName ?? "Team Space");
     const createFolderlessListEndpoint = `/api/v2/space/${spaceId}/list`;
     const response = await request.post(createFolderlessListEndpoint, { data: { name: listName ?? faker.database.engine() } });
 
