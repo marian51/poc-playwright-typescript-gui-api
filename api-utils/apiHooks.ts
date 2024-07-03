@@ -148,4 +148,24 @@ export class ApiHooks {
   public static async deleteViewById(request: APIRequestContext, viewId: string) {
     await request.delete(`/api/v2/view/${viewId}`);
   }
+
+  public static async deleteFolderByName(request: APIRequestContext, spaceName: string, folderName: string) {
+    const apiKey: string = process.env.API_KEY as string;
+    const folderId = await ApiUtils.getFolderIdByName(request, spaceName, folderName);
+    const deleteFolderEndpoint: string = `https://api.clickup.com/api/v2/folder/${folderId}`;
+
+    await request.delete(deleteFolderEndpoint, { headers: { Authorization: apiKey } });
+  }
+
+  public static async createFolderByName(request: APIRequestContext, spaceName: string, folderName: string) {
+    const apiKey: string = process.env.API_KEY as string;
+    const spaceId = await ApiUtils.getSpaceIdByName(request, spaceName);
+    const createFolderEndpoint: string = `https://api.clickup.com/api/v2/space/${spaceId}/folder`;
+
+    const newFolderBody = {
+      name: folderName,
+    };
+
+    await request.post(createFolderEndpoint, { headers: { Authorization: apiKey }, data: newFolderBody });
+  }
 }
