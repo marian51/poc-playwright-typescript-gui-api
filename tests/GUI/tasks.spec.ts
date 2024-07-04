@@ -7,7 +7,7 @@ import { EditTaskModal } from "../../page-objects/modals/editTaskModal";
 import { ApiHooks } from "../../api-utils/apiHooks";
 import { faker } from "@faker-js/faker";
 
-test.describe(
+test.describe.only(
   "Tasks feature tests",
   {
     tag: "@task",
@@ -24,12 +24,10 @@ test.describe(
       // TODO: dictionary
       const spaceName = "SETUP_SPACE";
       const listName = "SETUP_LIST";
+
       await ApiHooks.createSpaceByName(request, spaceName);
       const response = await ApiHooks.createFolderlessList(request, spaceName, listName);
       const responseJson = await response.json();
-
-      console.log(responseJson); // TODO: remove
-
       setupListId = responseJson.id;
     });
 
@@ -55,6 +53,8 @@ test.describe(
       await createTaskModalPage.clickCreateTaskButton();
 
       await projectMainView.assertTaskIsVisible(taskName);
+
+      await ApiHooks.deleteAllTasksFromList(request, setupListId);
     });
 
     test.describe("Editing existing tasks", () => {

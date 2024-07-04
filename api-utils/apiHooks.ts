@@ -76,6 +76,17 @@ export class ApiHooks {
     await request.delete(deleteTaskEndpoint, { headers: { Authorization: apiKey, "Content-Type": "application/json" } });
   }
 
+  public static async deleteAllTasksFromList(request: APIRequestContext, listId: string) {
+    const apiKey: string = process.env.API_KEY as string;
+    const getTasksEndpoint = `/api/v2/list/${listId}/task`;
+    const tasks = await request.get(getTasksEndpoint, { headers: { Authorization: apiKey } });
+    const taskIds = (await tasks.json()).tasks.map(task => task.id);
+
+    for (const taskId of taskIds) {
+      await request.delete(`/api/v2/task/${taskId}`, { headers: { Authorization: apiKey } });
+    }
+  }
+
   public static async createRandomGoal(request: APIRequestContext): Promise<APIResponse> {
     const preparedGoalBody = GenerateData.getRandomGoal();
     const response = await request.post(`/api/v2/team/${process.env.BASE_TEAM_ID}/goal`, { data: preparedGoalBody });
