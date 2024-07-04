@@ -1,5 +1,5 @@
 import { Locator, Page, expect } from "@playwright/test";
-import { logClicking, logTyping } from "../utils/decorators";
+import { logClicking, logHoveringOverElement, logTyping } from "../utils/decorators";
 
 export class LeftMenu {
   private readonly page: Page;
@@ -7,6 +7,7 @@ export class LeftMenu {
   private readonly renameInput: Locator;
 
   private menuElement: Locator;
+  private spaceElement: Locator;
 
   constructor(page: Page) {
     this.page = page;
@@ -34,6 +35,36 @@ export class LeftMenu {
   @logClicking("keyboard key")
   async clickKeyBoardKey(keyboardKey: string) {
     await this.leftSideBar.press(keyboardKey);
+  }
+
+  @logClicking("left menu space create button")
+  async clickOnSpacePlusButton(spaceName: string) {
+    await this.hoverOverSpaceElement(spaceName);
+    await this.spaceElement.getByTestId(`project-row__ellipsis_icon-${spaceName}`).click();
+  }
+
+  @logClicking("left menu folder ellipsis")
+  async clickOnFolderEllipsis(folderName: string) {
+    await this.hoverOverElement(folderName);
+    await this.menuElement.getByTestId(`category-row__ellipsis-folder-name__${folderName}`).click();
+  }
+
+  @logHoveringOverElement("'Space' element")
+  async hoverOverSpaceElement(spaceName: string) {
+    this.spaceElement = this.page.getByTestId(`project-list-bar-item__link__${spaceName}`);
+    await this.spaceElement.hover();
+  }
+
+  @logHoveringOverElement("Left menu element")
+  async hoverOverElement(elementName: string) {
+    this.menuElement = this.leftSideBar.getByRole("treeitem", { name: elementName });
+    await this.menuElement.hover();
+  }
+
+  @logTyping("Folder name")
+  async typeFolderName(renamedFolderName: string) {
+    await this.renameInput.fill(renamedFolderName);
+    await this.renameInput.blur();
   }
 
   async assertElementIsVisible(elementName: string) {
