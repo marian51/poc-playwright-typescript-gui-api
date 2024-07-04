@@ -1,5 +1,5 @@
 pipeline {
-  agent any
+  agent { docker { image 'mcr.microsoft.com/playwright:v1.45.1-jammy' } }
 
   environment {
     USER_NAME = credentials("USER_NAME")
