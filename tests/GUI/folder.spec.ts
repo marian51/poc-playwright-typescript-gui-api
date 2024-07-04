@@ -5,6 +5,7 @@ import { FolderContextMenu } from "../../page-objects/context-menus/folderContex
 import { DeleteFolderModal } from "../../page-objects/modals/deleteFolderModal";
 import { ApiHooks } from "../../api-utils/apiHooks";
 import { SpacePlusMenu } from "../../page-objects/context-menus/spacePlusMenu";
+import waitForPageLoad from "../../utils/GlobalGuiUtils";
 
 test.describe(
   "Folder tests",
@@ -25,7 +26,7 @@ test.describe(
     test.describe("Tests that create folder", () => {
       test.beforeEach(async ({ page }) => {
         await page.goto("/");
-        await page.locator("cu-web-push-notification-banner").waitFor();
+        await waitForPageLoad(page);
         leftMenu = new LeftMenu(page);
       });
 
@@ -48,7 +49,7 @@ test.describe(
       test.beforeEach(async ({ page, request }) => {
         await ApiHooks.createFolderByName(request, spaceName, newFolderName);
         await page.goto("/");
-        await page.locator("cu-web-push-notification-banner").waitFor();
+        await waitForPageLoad(page);
         leftMenu = new LeftMenu(page);
       });
 

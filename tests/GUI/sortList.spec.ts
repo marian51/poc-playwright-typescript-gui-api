@@ -3,6 +3,7 @@ import { LeftMenu } from "../../page-objects/leftMenu";
 import tasks from "../../resources/tasks-import.json";
 import { ApiHooks } from "../../api-utils/apiHooks";
 import { ProjectMainView } from "../../page-objects/projectMainView";
+import waitForPageLoad from "../../utils/GlobalGuiUtils";
 
 let leftMenu: LeftMenu;
 let projectMainView: ProjectMainView;
@@ -44,7 +45,7 @@ test.describe(
         projectMainView = new ProjectMainView(page);
 
         await page.goto("/");
-        await page.locator("cu-web-push-notification-banner").waitFor();
+        await waitForPageLoad(page);
 
         await leftMenu.clickOnElement("Project 1");
         await projectMainView.sortListBy(key, direction);

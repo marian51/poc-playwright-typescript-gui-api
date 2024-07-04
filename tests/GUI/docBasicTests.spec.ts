@@ -7,6 +7,7 @@ import { DocView } from "../../page-objects/docView";
 import { faker } from "@faker-js/faker";
 import { ApiUtils } from "../../api-utils/apiUtils";
 import { DocContextMenu } from "../../page-objects/context-menus/docContextMenu";
+import waitForPageLoad from "../../utils/GlobalGuiUtils";
 
 test.describe(
   "UI tests for checking basic doc functionalities",
@@ -49,7 +50,7 @@ test.describe(
           const docView = new DocView(page);
 
           await page.goto("/");
-          await page.locator("cu-web-push-notification-banner").waitFor();
+          await waitForPageLoad(page);
 
           await leftMenu.rightClickOnElement(newSpaceName);
           await spaceContextMenu.clickOnOption("Create new");
@@ -77,7 +78,7 @@ test.describe(
           await ApiHooks.createNewDocInSpace(request, newDocName, await ApiUtils.getSpaceIdByName(request, newSpaceName));
 
           await page.goto("/");
-          await page.locator("cu-web-push-notification-banner").waitFor();
+          await waitForPageLoad(page);
 
           await leftMenu.clickOnElement(newSpaceName);
           await leftMenu.rightClickOnElement(newDocName);
@@ -92,7 +93,7 @@ test.describe(
       test.beforeEach("Prepare doc for test and go to website", async ({ page, request }) => {
         await ApiHooks.createNewDocInSpace(request, newDocName, await ApiUtils.getSpaceIdByName(request, newSpaceName));
         await page.goto("/");
-        await page.locator("cu-web-push-notification-banner").waitFor();
+        await waitForPageLoad(page);
       });
 
       test.afterEach("Remove doc after test", async ({ request }) => {
