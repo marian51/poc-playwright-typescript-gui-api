@@ -69,6 +69,13 @@ export class ApiHooks {
     await request.delete(deleteTaskEndpoint, { headers: { Authorization: apiKey, "Content-Type": "application/json" } });
   }
 
+  public static async deleteTaskById(request: APIRequestContext, taskId: string) {
+    const apiKey: string = process.env.API_KEY as string;
+    const deleteTaskEndpoint: string = `/api/v2/task/${taskId}`;
+
+    await request.delete(deleteTaskEndpoint, { headers: { Authorization: apiKey, "Content-Type": "application/json" } });
+  }
+
   public static async createRandomGoal(request: APIRequestContext): Promise<APIResponse> {
     const preparedGoalBody = GenerateData.getRandomGoal();
     const response = await request.post(`/api/v2/team/${process.env.BASE_TEAM_ID}/goal`, { data: preparedGoalBody });
@@ -107,9 +114,10 @@ export class ApiHooks {
 
   public static async createFolderlessList(request: APIRequestContext, spaceName?: string, listName?: string): Promise<APIResponse> {
     // TODO: dictionary
+    const apiKey: string = process.env.API_KEY as string;
     const spaceId = await ApiUtils.getSpaceIdByName(request, spaceName ?? "Team Space");
     const createFolderlessListEndpoint = `/api/v2/space/${spaceId}/list`;
-    const response = await request.post(createFolderlessListEndpoint, { data: { name: listName ?? faker.database.engine() } });
+    const response = await request.post(createFolderlessListEndpoint, { headers: { Authorization: apiKey }, data: { name: listName ?? faker.database.engine() } });
 
     return response;
   }

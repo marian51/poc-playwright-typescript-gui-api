@@ -41,7 +41,7 @@ export default defineConfig({
     {
       name: "setup",
       testMatch: /.*\.setup\.ts/,
-      teardown: "teardown",
+      // teardown: "teardown",
     },
 
     { name: "teardown", testMatch: /global\.teardown\.ts/ },
