@@ -6,6 +6,7 @@ import { TaskConextMenu } from "../../page-objects/context-menus/taskContextMenu
 import { EditTaskModal } from "../../page-objects/modals/editTaskModal";
 import { ApiHooks } from "../../api-utils/apiHooks";
 import { faker } from "@faker-js/faker";
+import { LeftMenu } from "../../page-objects/leftMenu";
 
 test.describe(
   "Tasks feature tests",
@@ -14,6 +15,7 @@ test.describe(
   },
   () => {
     let projectMainView: ProjectMainView;
+    let leftMenu: LeftMenu;
     let setupListId: string;
 
     const taskName = faker.word.verb();
@@ -37,16 +39,21 @@ test.describe(
 
     test.beforeEach("Navigate to setup list", async ({ page }) => {
       projectMainView = new ProjectMainView(page);
+      leftMenu = new LeftMenu(page);
       await page.goto("/");
+
+      // skip annoying popup
       await page.locator('[data-test="views-dashboard-nux-modal__skip"]').click();
-      await page.getByTestId("project-list-bar-item__link__SETUP_SPACE").getByRole("link", { name: "SETUP_SPACE" }).click();
-      await page.getByRole("link", { name: "SETUP_LIST" }).click();
+
+      leftMenu.clickOnElement("SETUP_SPACE");
+      leftMenu.clickOnElement("SETUP_LIST");
     });
 
     test("Create new task", async ({ page, request }) => {
       const expandableTopBarPage = new ExpandableTopBarPage(page);
       const createTaskModalPage = new CreateTaskModalPage(page);
 
+      await projectMainView.waitForTaskList();
       await expandableTopBarPage.clickAddTaskButton();
       await createTaskModalPage.fillTaskNameField(taskName);
       await createTaskModalPage.fillDescriptionField(taskDescription);
