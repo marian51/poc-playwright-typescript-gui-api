@@ -1,6 +1,6 @@
 pipeline {
   agent any
-
+ 
   environment {
     USER_NAME = credentials("USER_NAME")
     PASSWORD = credentials("PASSWORD")
