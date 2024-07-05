@@ -56,6 +56,13 @@ pipeline {
         reportFiles: "index.html",
         reportName: "Test Results Report"
       ])
+
+      emailext(
+        subject: "${DEFAULT_SUBJECT}",
+        body: "${DEFAULT_CONTENT}",
+        to: "${params.RECIPIENT}",
+        mimeType: "text/html"
+      )
     }
 
     success {
