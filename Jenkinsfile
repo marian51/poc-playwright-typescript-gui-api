@@ -58,8 +58,8 @@ pipeline {
       ])
 
       emailext(
-        subject: "$DEFAULT_SUBJECT",
-        body: "$DEFAULT_CONTENT",
+        subject: '$DEFAULT_SUBJECT',
+        body: '$DEFAULT_CONTENT',
         to: "${params.RECIPIENT}",
         mimeType: "text/html"
       )
