@@ -12,6 +12,8 @@ env:
   API_KEY: ${{ secrets.API_KEY }}
   BASE_TEAM_ID: ${{ secrets.BASE_TEAM_ID }}
 
+  TZ: 'Europe/Warsaw'
+
 jobs:
   test:
     name: 'All Playwright tests'
@@ -22,11 +24,6 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-
-      - name: Set timezone to Europe/Warsaw
-        uses: szenius/set-timezone@v2.0
-        with:
-          timezoneLinux: "Europe/Warsaw"
 
       - name: Install dependencies
         run: npm install
