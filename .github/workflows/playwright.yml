@@ -1,0 +1,46 @@
+name: Basic workflow for running all Playwright tests
+
+on:
+  push:
+    branches: [ main, dev/98-setup-github-actions ]
+  pull_request:
+    branches: [ main ]
+
+env:
+  USER_NAME: ${{ secrets.USER_NAME }}
+  PASSWORD: ${{ secrets.PASSWORD }}
+  API_KEY: ${{ secrets.API_KEY }}
+  BASE_TEAM_ID: ${{ secrets.BASE_TEAM_ID }}
+
+jobs:
+  test:
+    name: 'All Playwright tests'
+    runs-on: ubuntu-latest
+    container:
+      image: mcr.microsoft.com/playwright:v1.45.1-jammy
+    timeout-minutes: 60
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Install node js, version 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install Playwright Chromium browser
+        run: npx playwright install chrome --with-deps
+
+      - name: Run all Playwright tests
+        run: npx playwright test
+
+      - name: Upload Playwright report
+        uses: actions/upload-artifact@v4
+        if: ${{ !cancelled() }}
+        with:
+          name: playwright-report
+          path: playwright-report/
+          retention-days: 30
