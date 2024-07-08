@@ -7,7 +7,7 @@ pipeline {
     API_KEY = credentials("API_KEY")
     BASE_TEAM_ID = credentials("BASE_TEAM_ID")
 
-    TZ = "Europle/Warsaw"
+    TZ = "Europe/Warsaw"
   }
 
   stages {
