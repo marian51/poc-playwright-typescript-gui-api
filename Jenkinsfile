@@ -6,6 +6,8 @@ pipeline {
     PASSWORD = credentials("PASSWORD")
     API_KEY = credentials("API_KEY")
     BASE_TEAM_ID = credentials("BASE_TEAM_ID")
+
+    TZ = "Europle/Warsaw"
   }
 
   stages {
