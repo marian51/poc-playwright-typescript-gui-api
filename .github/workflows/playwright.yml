@@ -2,7 +2,7 @@ name: Basic workflow for running all Playwright tests
 
 on:
   push:
-    branches: [ main, dev/98-setup-github-actions ]
+    branches: [ main ]
   pull_request:
     branches: [ main ]
 
