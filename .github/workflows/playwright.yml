@@ -23,16 +23,13 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Install node js, version 20
-        uses: actions/setup-node@v4
+      - name: Set timezone to Europe/Warsaw
+        uses: szenius/set-timezone@v2.0
         with:
-          node-version: 20
+          timezoneLinux: "Europe/Warsaw"
 
       - name: Install dependencies
         run: npm install
-
-      - name: Install Playwright Chromium browser
-        run: npx playwright install chrome --with-deps
 
       - name: Run all Playwright tests
         run: npx playwright test
