@@ -21,6 +21,10 @@ export class EditTaskModal {
     await this.statusInProgress.click();
   }
 
+  async markTaskAsCompleted() {
+    await this.taskStatusButton.click();
+  }
+
   async changeTaskName(newTaskName: string) {
     await this.taskNameInput.fill(newTaskName);
   }

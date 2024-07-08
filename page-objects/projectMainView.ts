@@ -55,6 +55,11 @@ export class ProjectMainView {
     await this.dashboardToolbar.getByTestId("dashboard-table-toolbar-delete-tasks").click();
   }
 
+  async waitForTaskList(): Promise<void> {
+    // Waits for the list to be ready to accept new input (placed as the last row in task list)
+    await this.page.getByTestId("task-row-new__input").waitFor();
+  }
+
   async assertTaskIsVisible(taskName: string) {
     this.expectedTask = this.dashboard.getByRole("link", { name: taskName });
     await expect(this.expectedTask).toBeVisible();
