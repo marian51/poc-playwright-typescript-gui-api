@@ -10,3 +10,7 @@ export async function waitForPageLoad(page: Page) {
     console.log("Continuing to run the test.");
   }
 }
+
+export async function disableConnectedSearchPopup(page: Page) {
+  await page.evaluate(() => {localStorage.setItem("slapdash:cu-universal-search-modal-dismissed", "true");})
+}
