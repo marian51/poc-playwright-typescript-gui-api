@@ -1,6 +1,6 @@
 import { Page } from "@playwright/test";
 
-export default async function waitForPageLoad(page: Page) {
+export async function waitForPageLoad(page: Page) {
   try {
     await page.locator("cu-web-push-notification-banner").waitFor({ timeout: 5000 });
     console.log("Notifications bar has been loaded.");

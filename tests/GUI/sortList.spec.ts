@@ -3,7 +3,7 @@ import { LeftMenu } from "../../page-objects/leftMenu";
 import tasks from "../../resources/tasks-import.json";
 import { ApiHooks } from "../../api-utils/apiHooks";
 import { ProjectMainView } from "../../page-objects/projectMainView";
-import waitForPageLoad from "../../utils/GlobalGuiUtils";
+import { waitForPageLoad } from "../../utils/GlobalGuiUtils";
 
 let leftMenu: LeftMenu;
 let projectMainView: ProjectMainView;
