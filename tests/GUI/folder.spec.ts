@@ -5,7 +5,7 @@ import { FolderContextMenu } from "../../page-objects/context-menus/folderContex
 import { DeleteFolderModal } from "../../page-objects/modals/deleteFolderModal";
 import { ApiHooks } from "../../api-utils/apiHooks";
 import { SpacePlusMenu } from "../../page-objects/context-menus/spacePlusMenu";
-import waitForPageLoad from "../../utils/GlobalGuiUtils";
+import { waitForPageLoad } from "../../utils/GlobalGuiUtils";
 
 test.describe(
   "Folder tests",

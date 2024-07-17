@@ -6,7 +6,7 @@ import { DeleteSpaceModal } from "../../page-objects/modals/deleteSpaceModal";
 import { SpaceContextMenu } from "../../page-objects/context-menus/spaceContextMenu";
 import { EditSpaceNameModal } from "../../page-objects/modals/editSpaceNameModal";
 import { DuplicateSpaceModal } from "../../page-objects/modals/duplicateSpaceModal";
-import waitForPageLoad from "../../utils/GlobalGuiUtils";
+import { waitForPageLoad } from "../../utils/GlobalGuiUtils";
 
 test.describe(
   "UI tests for checking basic space functionalities",
