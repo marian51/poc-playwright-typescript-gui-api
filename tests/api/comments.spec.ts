@@ -3,6 +3,8 @@ import { ApiHooks } from "../../api-utils/apiHooks";
 import { faker } from "@faker-js/faker";
 import { GenerateData } from "../../api-utils/generateBody";
 import { SELF_ID } from "../../resources/constants";
+import { ApiService } from "../../api-utils/apiService";
+import { Endpoint } from "../../api-utils/endpoints";
 
 test.describe(
   "Comment feature",
@@ -33,7 +35,8 @@ test.describe(
       test("Add task comment", async ({ request }) => {
         const comment = GenerateData.getComment();
 
-        const response = await request.post(`/api/v2/task/${taskId}/comment`, { data: comment });
+        // const response = await request.post(`/api/v2/task/${taskId}/comment`, { data: comment });
+        const response = await ApiService.postWithData(request, Endpoint.addTaskComment(taskId), comment);
         const responseJson = await response.json();
 
         await expect(response).toBeOK();
