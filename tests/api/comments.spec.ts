@@ -2,6 +2,7 @@ import test, { expect } from "@playwright/test";
 import { ApiHooks } from "../../api-utils/apiHooks";
 import { faker } from "@faker-js/faker";
 import { GenerateData } from "../../api-utils/generateBody";
+import { SELF_ID } from "../../resources/constants";
 
 test.describe(
   "Comment feature",
@@ -69,8 +70,7 @@ test.describe(
         });
 
         test("Assign yourself to a comment", async ({ request }) => {
-          const defaultSelfId = 183; // TODO: move to separate class
-          const response = await request.put(`/api/v2/comment/${commentId}`, { data: { assignee: defaultSelfId } });
+          const response = await request.put(`/api/v2/comment/${commentId}`, { data: { assignee: SELF_ID } });
           const responseJson = await response.json();
 
           await expect(response).toBeOK();

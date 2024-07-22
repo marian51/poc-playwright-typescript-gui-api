@@ -7,6 +7,7 @@ import { EditTaskModal } from "../../page-objects/modals/editTaskModal";
 import { ApiHooks } from "../../api-utils/apiHooks";
 import { faker } from "@faker-js/faker";
 import { LeftMenu } from "../../page-objects/leftMenu";
+import { SETUP } from "../../resources/constants";
 
 test.describe(
   "Tasks feature tests",
@@ -23,18 +24,14 @@ test.describe(
     const taskDescription = faker.lorem.sentence();
 
     test.beforeAll("Create a Space with one List", async ({ request }) => {
-      // TODO: dictionary
-      const spaceName = "SETUP_SPACE";
-      const listName = "SETUP_LIST";
-
-      await ApiHooks.createSpaceByName(request, spaceName);
-      const response = await ApiHooks.createFolderlessList(request, spaceName, listName);
+      await ApiHooks.createSpaceByName(request, SETUP.SPACE);
+      const response = await ApiHooks.createFolderlessList(request, SETUP.SPACE, SETUP.LIST);
       const responseJson = await response.json();
       setupListId = responseJson.id;
     });
 
     test.afterAll("Remove the setup Space", async ({ request }) => {
-      await ApiHooks.deleteSpaceByName(request, "SETUP_SPACE");
+      await ApiHooks.deleteSpaceByName(request, SETUP.SPACE);
     });
 
     test.beforeEach("Navigate to setup list", async ({ page }) => {
@@ -45,8 +42,8 @@ test.describe(
       // skip annoying popup
       await page.locator('[data-test="views-dashboard-nux-modal__skip"]').click();
 
-      leftMenu.clickOnElement("SETUP_SPACE");
-      leftMenu.clickOnElement("SETUP_LIST");
+      leftMenu.clickOnElement(SETUP.SPACE);
+      leftMenu.clickOnElement(SETUP.LIST);
     });
 
     test("Create new task", async ({ page, request }) => {
