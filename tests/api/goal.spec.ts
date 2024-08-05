@@ -18,7 +18,7 @@ test.describe.skip(
         const newGoalBody = GenerateData.getRandomGoal();
 
         // const response = await request.post(`/api/v2/team/${process.env.BASE_TEAM_ID}/goal`, { data: newGoalBody });
-        const response = await ApiService.postWithData(Endpoint.goal(), newGoalBody, request);
+        const response = await ApiService.postWithData(Endpoint.teamGoals(), newGoalBody, request);
         const responseJson = await response.json();
         createdGoalId = responseJson.goal.id;
 
