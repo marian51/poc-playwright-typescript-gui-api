@@ -30,7 +30,7 @@ export default defineConfig({
     baseURL: "https://app.clickup.com",
 
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
-    trace: "retain-on-failure",
+    trace: "on",//TODO: change back to retain-on-failure
     video: "retain-on-failure",
 
     /* Change the attribute by which method 'page.getByTestId(...)' looks for elements. See https://playwright.dev/docs/locators#set-a-custom-test-id-attribute*/

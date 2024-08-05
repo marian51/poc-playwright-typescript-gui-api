@@ -32,11 +32,11 @@ test.describe(
         taskId = (await taskResponse.json()).id;
       });
 
-      test("Add task comment", async ({ request }) => {
+      test.only("Add task comment", async ({ request }) => {
         const comment = GenerateData.getComment();
 
         // const response = await request.post(`/api/v2/task/${taskId}/comment`, { data: comment });
-        const response = await ApiService.postWithData(request, Endpoint.addTaskComment(taskId), comment);
+        const response = await ApiService.postWithData(Endpoint.addTaskComment(taskId), comment, request);
         const responseJson = await response.json();
 
         await expect(response).toBeOK();

@@ -4,6 +4,6 @@ export class Endpoint {
 
   public static addTaskComment(taskId: string, apiVersion?: string) {
     const api = apiVersion ?? Endpoint.API_V2;
-    return `${apiVersion}/task/${taskId}/comment`;
+    return `${api}/task/${taskId}/comment`;
   }
 }
