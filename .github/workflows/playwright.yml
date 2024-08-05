@@ -10,7 +10,7 @@ on:
       testsTag:
         description: "Tags of tests to run (starts with '@' char)"
         required: true
-        default: '@all'
+        default: "@all"
         type: string
 
 env:
@@ -18,7 +18,7 @@ env:
   PASSWORD: ${{ secrets.PASSWORD }}
   API_KEY: ${{ secrets.API_KEY }}
   BASE_TEAM_ID: ${{ secrets.BASE_TEAM_ID }}
-  TAGS: ${{ inputs.testsTag }}
+  TAGS: ${{ github.event.inputs.testsTag }}
 
   TZ: 'Europe/Warsaw'
 
