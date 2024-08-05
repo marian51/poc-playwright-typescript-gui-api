@@ -43,7 +43,8 @@ jobs:
       - name: Run only Playwright tests with given tag
         if: ${{ env.TAGS != '@all' }}
         run: |
-          echo "Running Playwright tests with '${{ env.TAGS }}' tag"
+          echo "tag $TAGS"
+          echo "Running Playwright tests with ${{ env.TAGS }} tag"
           npx playwright test --grep '${{ env.TAGS }}'"
 
       - name: Upload Playwright report
