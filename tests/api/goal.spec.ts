@@ -2,6 +2,8 @@ import { expect, test } from "@playwright/test";
 import { faker } from "@faker-js/faker";
 import { GenerateData } from "../../api-utils/generateBody";
 import { ApiHooks } from "../../api-utils/apiHooks";
+import { ApiService } from "../../api-utils/apiService";
+import { Endpoint } from "../../api-utils/endpoints";
 
 test.describe.skip(
   "Goal feature",
@@ -15,7 +17,8 @@ test.describe.skip(
       test("Create new goal", async ({ request }) => {
         const newGoalBody = GenerateData.getRandomGoal();
 
-        const response = await request.post(`/api/v2/team/${process.env.BASE_TEAM_ID}/goal`, { data: newGoalBody });
+        // const response = await request.post(`/api/v2/team/${process.env.BASE_TEAM_ID}/goal`, { data: newGoalBody });
+        const response = await ApiService.postWithData(Endpoint.goal(), newGoalBody, request);
         const responseJson = await response.json();
         createdGoalId = responseJson.goal.id;
 
@@ -43,7 +46,8 @@ test.describe.skip(
       });
 
       test("Delete a goal", async ({ request }) => {
-        const response = await request.delete(`/api/v2/goal/${preparedGoalId}`);
+        // const response = await request.delete(`/api/v2/goal/${preparedGoalId}`);
+        const response = await ApiService.delete(Endpoint.goal(preparedGoalId), request);
         expect(response.status()).toEqual(200);
       });
     });
@@ -61,7 +65,8 @@ test.describe.skip(
       });
 
       test("Get all non-archived goals", async ({ request }) => {
-        const response = await request.get(`/api/v2/team/${process.env.BASE_TEAM_ID}/goal`);
+        // const response = await request.get(`/api/v2/team/${process.env.BASE_TEAM_ID}/goal`);
+        const response = await ApiService.get(Endpoint.teamGoals(), request);
         const responseJson = await response.json();
 
         await expect(response).toBeOK();
@@ -75,7 +80,8 @@ test.describe.skip(
           name: updatedGoalName,
         };
 
-        const response = await request.put(`/api/v2/goal/${preparedGoalId}`, { data: updatedGoalBody });
+        // const response = await request.put(`/api/v2/goal/${preparedGoalId}`, { data: updatedGoalBody });
+        const response = await ApiService.putWithData(Endpoint.goal(preparedGoalId), updatedGoalBody, request);
         const responseJson = await response.json();
 
         await expect(response).toBeOK();

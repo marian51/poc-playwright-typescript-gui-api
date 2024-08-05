@@ -12,4 +12,8 @@ export class ApiService {
   public static async delete(endpoint: string, request: APIRequestContext): Promise<APIResponse> {
     return await request.delete(endpoint);
   }
+  
+  public static async get(endpoint: string, request: APIRequestContext): Promise<APIResponse> {
+    return await request.get(endpoint);
+  }
 }

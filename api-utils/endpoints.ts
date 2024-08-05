@@ -22,4 +22,12 @@ export class Endpoint {
   public static chatViewComment(chatViewId: string) {
     return `/api/v2/view/${chatViewId}/comment`;
   }
+
+  public static teamGoals() {
+    return `/api/v2/team/${process.env.BASE_TEAM_ID}/goal`;
+  }
+
+  public static goal(goalId: string) {
+    return `/api/v2/goal/${goalId}`;
+  }
 }
