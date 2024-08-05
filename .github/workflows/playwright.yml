@@ -10,7 +10,7 @@ on:
       testsTag:
         description: "Tags of tests to run (starts with '@' char)"
         required: true
-        default: "@all"
+        default: ""
         type: string
 
 env:
@@ -37,11 +37,11 @@ jobs:
         run: npm install
 
       - name: Run all Playwright tests
-        if: ${{ env.TAGS == '@all' }}
+        if: ${{ env.TAGS == '' }}
         run: npx playwright test
 
       - name: Run only Playwright tests with given tag
-        if: ${{ env.TAGS != '@all' }}
+        if: ${{ env.TAGS != '' }}
         run: |
           echo "tag $TAGS"
           echo "Running Playwright tests with ${{ env.TAGS }} tag"
