@@ -5,6 +5,13 @@ on:
     branches: [ main ]
   pull_request:
     branches: [ main ]
+  workflow_dispatch:
+    inputs:
+      testsTag:
+        description: "Tags of tests to run (starts with '@' char)"
+        required: true
+        default: '@all'
+        type: string
 
 env:
   USER_NAME: ${{ secrets.USER_NAME }}
@@ -29,7 +36,14 @@ jobs:
         run: npm install
 
       - name: Run all Playwright tests
+        if: ${{ inputs.testsTag == '@all' }}
         run: npx playwright test
+
+      - name: Run only Playwright tests with given tag
+        if: ${{ inputs.testsTag != '@all' }}
+        run: |
+          echo "Running Playwright tests with '${{ inputs.testsTag }}' tag"
+          npx playwright test --grep '${{ inputs.testsTag }}'"
 
       - name: Upload Playwright report
         uses: actions/upload-artifact@v4
