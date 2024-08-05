@@ -6,4 +6,20 @@ export class Endpoint {
     const api = apiVersion ?? Endpoint.API_V2;
     return `${api}/task/${taskId}/comment`;
   }
+
+  public static comment(commentId: string) {
+    return `/api/v2/comment/${commentId}`;
+  }
+
+  public static commentReply(commentId: string) {
+    return `/api/v2/comment/${commentId}/reply`;
+  }
+
+  public static listComment(listId: string) {
+    return `/api/v2/list/${listId}/comment`;
+  }
+
+  public static chatViewComment(chatViewId: string) {
+    return `/api/v2/view/${chatViewId}/comment`;
+  }
 }

@@ -32,7 +32,7 @@ test.describe(
         taskId = (await taskResponse.json()).id;
       });
 
-      test.only("Add task comment", async ({ request }) => {
+      test("Add task comment", async ({ request }) => {
         const comment = GenerateData.getComment();
 
         // const response = await request.post(`/api/v2/task/${taskId}/comment`, { data: comment });
@@ -48,7 +48,8 @@ test.describe(
         const commentResponse = await ApiHooks.addCommentToTask(request, taskId);
         const commentId = (await commentResponse.json()).id;
 
-        const response = await request.delete(`/api/v2/comment/${commentId}`);
+        // const response = await request.delete(`/api/v2/comment/${commentId}`);
+        const response = await ApiService.delete(Endpoint.comment(commentId), request);
         const responseJson = await response.json();
 
         await expect(response).toBeOK();
@@ -65,7 +66,8 @@ test.describe(
 
         test("Edit a comment", async ({ request }) => {
           const editedComment = GenerateData.getRandomCommentUpdate();
-          const response = await request.put(`/api/v2/comment/${commentId}`, { data: editedComment });
+          // const response = await request.put(`/api/v2/comment/${commentId}`, { data: editedComment });
+          const response = await ApiService.putWithData(Endpoint.comment(commentId), editedComment, request);
           const responseJson = await response.json();
 
           await expect(response).toBeOK();
@@ -73,7 +75,8 @@ test.describe(
         });
 
         test("Assign yourself to a comment", async ({ request }) => {
-          const response = await request.put(`/api/v2/comment/${commentId}`, { data: { assignee: SELF_ID } });
+          // const response = await request.put(`/api/v2/comment/${commentId}`, { data: { assignee: SELF_ID } });
+          const response = await ApiService.putWithData(Endpoint.comment(commentId), { assignee: SELF_ID }, request);
           const responseJson = await response.json();
 
           await expect(response).toBeOK();
@@ -85,7 +88,8 @@ test.describe(
     test.describe("List comments", () => {
       test("Add comment", async ({ request }) => {
         const commentBody = GenerateData.getComment();
-        const response = await request.post(`/api/v2/list/${listId}/comment`, { data: commentBody });
+        // const response = await request.post(`/api/v2/list/${listId}/comment`, { data: commentBody });
+        const response = await ApiService.postWithData(Endpoint.listComment(listId), commentBody, request);
         const responseJson = await response.json();
 
         await expect(response).toBeOK();
@@ -97,7 +101,8 @@ test.describe(
         const commentResponse = await ApiHooks.addCommentToList(request, listId);
         const commentId = (await commentResponse.json()).id;
 
-        const response = await request.delete(`/api/v2/comment/${commentId}`);
+        // const response = await request.delete(`/api/v2/comment/${commentId}`);
+        const response = await ApiService.delete(Endpoint.comment(commentId), request);
         const responseJson = await response.json();
 
         await expect(response).toBeOK();
@@ -132,7 +137,8 @@ test.describe(
 
     test("Add comment (chat message)", async ({ request }) => {
       const message = faker.music.songName();
-      const response = await request.post(`/api/v2/view/${chatViewId}/comment`, { data: { comment_text: message } });
+      // const response = await request.post(`/api/v2/view/${chatViewId}/comment`, { data: { comment_text: message } });
+      const response = await ApiService.postWithData(Endpoint.chatViewComment(chatViewId), { comment_text: message }, request);
       const responseJson = await response.json();
 
       await expect(response).toBeOK();
@@ -141,7 +147,8 @@ test.describe(
     });
 
     test("Delete a comment (chat message)", async ({ request }) => {
-      const response = await request.delete(`/api/v2/comment/${commentId}`);
+      // const response = await request.delete(`/api/v2/comment/${commentId}`);
+      const response = await ApiService.delete(Endpoint.comment(commentId), request);
       const responseJson = await response.json();
 
       await expect(response).toBeOK();
@@ -150,7 +157,8 @@ test.describe(
 
     test("Reply to a comment", async ({ request }) => {
       const message = faker.music.songName();
-      const response = await request.post(`/api/v2/comment/${commentId}/reply`, { data: { comment_text: message } });
+      // const response = await request.post(`/api/v2/comment/${commentId}/reply`, { data: { comment_text: message } });
+      const response = await ApiService.postWithData(Endpoint.commentReply(commentId), { comment_text: message }, request)
       const responseJson = await response.json();
 
       await expect(response).toBeOK();
