@@ -43,7 +43,7 @@ test.describe(
       await page.goto("/");
 
       // skip annoying popup
-      await page.locator('[data-test="views-dashboard-nux-modal__skip"]').click();
+      // await page.locator('[data-test="views-dashboard-nux-modal__skip"]').click();
 
       leftMenu.clickOnElement("SETUP_SPACE");
       leftMenu.clickOnElement("SETUP_LIST");
