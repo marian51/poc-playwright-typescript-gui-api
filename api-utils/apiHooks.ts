@@ -101,11 +101,14 @@ export class ApiHooks {
   public static async createNewDocInSpace(request: APIRequestContext, docName: string, spaceId: string) {
     const teamId: string = process.env.BASE_TEAM_ID as string;
     const apiKey: string = process.env.API_KEY as string;
-    const createDocEndpoint: string = `https://api.clickup.com/api/v3/workspaces/${teamId}/docs`;
+    const token: string = (await request.storageState()).origins[0].localStorage.filter((element) => element.name === "id_token")[0].value;
+    const createDocEndpoint: string = `https://prod-eu-west-1-3.clickup.com/docs/v1/view`;
 
-    const newDocBody = GenerateData.generateDoc(docName, { id: spaceId, type: 4 });
+    const newDocBody = GenerateData.generateDoc(docName, { id: spaceId, type: 4 }, teamId);
 
-    await request.post(createDocEndpoint, { headers: { Authorization: apiKey }, data: newDocBody });
+    const response = await request.post(createDocEndpoint, { headers: { Authorization: `Bearer ${token}` }, data: newDocBody });
+    console.log(response.status())
+    console.log(await response.json())
   }
 
   public static async deleteDocsByName(request: APIRequestContext, docName: string) {
