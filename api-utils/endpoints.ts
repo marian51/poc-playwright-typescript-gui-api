@@ -58,7 +58,7 @@ export class Endpoint {
   public static folderlessList(spaceId: string) {
     return `/api/v2/space/${spaceId}/list`;
   }
-  
+
   public static view(viewId: string) {
     return `/api/v2/view/${viewId}`;
   }
@@ -69,5 +69,9 @@ export class Endpoint {
 
   public static spaceFolder(spaceId: string) {
     return `/api/v2/space/${spaceId}/folder`;
+  }
+
+  public static teamView() {
+    return `/api/v2/team/${process.env.BASE_TEAM_ID}/view`;
   }
 }

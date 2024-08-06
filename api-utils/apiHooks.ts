@@ -145,9 +145,8 @@ export class ApiHooks {
   }
 
   public static async addDefaultChatView(request: APIRequestContext): Promise<APIResponse> {
-    const addViewEndpoint = `api/v2/team/${process.env.BASE_TEAM_ID}/view`;
     const defaultTaskBody = GenerateData.getDefaultChatView();
-    const response = await request.post(addViewEndpoint, { data: defaultTaskBody });
+    const response = await request.post(Endpoint.teamView(), { data: defaultTaskBody });
 
     return response;
   }
