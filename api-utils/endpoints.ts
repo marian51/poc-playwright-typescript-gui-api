@@ -1,10 +1,6 @@
 export class Endpoint {
-  private static readonly API_V1 = "/api/v1";
-  private static readonly API_V2 = "/api/v2";
-
-  public static addTaskComment(taskId: string, apiVersion?: string) {
-    const api = apiVersion ?? Endpoint.API_V2;
-    return `${api}/task/${taskId}/comment`;
+  public static taskComment(taskId: string) {
+    return `/api/v2/task/${taskId}/comment`;
   }
 
   public static comment(commentId: string) {
@@ -19,8 +15,8 @@ export class Endpoint {
     return `/api/v2/list/${listId}/comment`;
   }
 
-  public static chatViewComment(chatViewId: string) {
-    return `/api/v2/view/${chatViewId}/comment`;
+  public static addViewComment(viewId: string) {
+    return `/api/v2/view/${viewId}/comment`;
   }
 
   public static teamGoals() {
@@ -29,5 +25,49 @@ export class Endpoint {
 
   public static goal(goalId: string) {
     return `/api/v2/goal/${goalId}`;
+  }
+
+  public static teamSpaces() {
+    return `/api/v2/team/${process.env.BASE_TEAM_ID}/space`;
+  }
+
+  public static space(spaceId: string) {
+    return `/api/v2/space/${spaceId}`;
+  }
+
+  public static listTask(listId: string) {
+    return `/api/v2/list/${listId}/task`;
+  }
+
+  public static task(taskId: string) {
+    return `/api/v2/task/${taskId}`;
+  }
+
+  public static teamDocs() {
+    return `/api/v3/workspaces/${process.env.BASE_TEAM_ID}/docs`;
+  }
+
+  public static deleteDocs() {
+    return "https://prod-eu-west-1-3.clickup.com/viz/v1/view";
+  }
+
+  public static list(listId: string) {
+    return `/api/v2/list/${listId}`;
+  }
+
+  public static folderlessList(spaceId: string) {
+    return `/api/v2/space/${spaceId}/list`;
+  }
+  
+  public static view(viewId: string) {
+    return `/api/v2/view/${viewId}`;
+  }
+
+  public static folder(folderId: string) {
+    return `/api/v2/folder/${folderId}`;
+  }
+
+  public static spaceFolder(spaceId: string) {
+    return `/api/v2/space/${spaceId}/folder`;
   }
 }
