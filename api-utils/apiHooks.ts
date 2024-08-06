@@ -89,7 +89,6 @@ export class ApiHooks {
   }
 
   public static async createNewDocInSpace(request: APIRequestContext, docName: string, spaceId: string) {
-    const teamId: string = process.env.BASE_TEAM_ID as string;
     const apiKey: string = process.env.API_KEY as string;
 
     const newDocBody = GenerateData.generateDoc(docName, { id: spaceId, type: 4 });
