@@ -39,9 +39,6 @@ test.describe(
       leftMenu = new LeftMenu(page);
       await page.goto("/");
 
-      // skip annoying popup
-      await page.locator('[data-test="views-dashboard-nux-modal__skip"]').click();
-
       leftMenu.clickOnElement(SETUP.SPACE);
       leftMenu.clickOnElement(SETUP.LIST);
     });
