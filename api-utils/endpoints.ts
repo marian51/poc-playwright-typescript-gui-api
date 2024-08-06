@@ -71,6 +71,10 @@ export class Endpoint {
     return `/api/v2/space/${spaceId}/list`;
   }
 
+  public static folderList(folderId: string) {
+    return `/api/v2/folder/${folderId}/list`;
+  }
+
   // --------- FOLDERS ---------
 
   public static folder(folderId: string) {
