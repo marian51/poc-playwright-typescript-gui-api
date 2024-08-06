@@ -20,10 +20,13 @@ export class GenerateData {
     return randomGoalBody;
   }
 
-  public static generateDoc(docName: string, parent: {id: string, type: number}) {
+  public static generateDoc(docName: string, parent: {id: string, type: number}, teamId: string) {
     return {
       name: docName,
-      parent: parent
+      parent: parent,
+      workspace_id: teamId,
+      type: 9,
+      sidebar_view: true
     };
   }
 

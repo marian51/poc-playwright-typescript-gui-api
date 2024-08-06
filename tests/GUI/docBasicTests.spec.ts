@@ -136,7 +136,6 @@ test.describe(
           const renamedDocTitle = faker.commerce.productName();
 
           await leftMenu.clickOnElement(newSpaceName);
-          await page.getByRole("button", { name: "Add List" }).waitFor();
           await leftMenu.clickOnElement(newDocName);
           await docView.typeDocTitle(renamedDocTitle);
           await docView.clickKeyBoardKey("Enter");
