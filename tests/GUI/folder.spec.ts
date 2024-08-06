@@ -53,7 +53,7 @@ test.describe(
         leftMenu = new LeftMenu(page);
       });
 
-      test("Test for checking if deleting existing folder works correctly", async ({ page, request }) => {
+      test("Test for checking if deleting existing folder works correctly", async ({ page }) => {
         const folderContextMenu = new FolderContextMenu(page);
         const deleteFolderModal = new DeleteFolderModal(page);
 
@@ -66,7 +66,7 @@ test.describe(
         await leftMenu.assertElementIsNotVisible(newFolderName);
       });
 
-      test("Test for checking if deleting existing folder through ellipsis works correctly", async ({ page, request }) => {
+      test("Test for checking if deleting existing folder through ellipsis works correctly", async ({ page }) => {
         const folderContextMenu = new FolderContextMenu(page);
         const deleteFolderModal = new DeleteFolderModal(page);
 
