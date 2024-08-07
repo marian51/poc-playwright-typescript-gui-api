@@ -58,8 +58,9 @@ test.describe(
         const deleteFolderModal = new DeleteFolderModal(page);
 
         await leftMenu.clickOnElement(spaceName);
-        await page.getByRole("button", { name: "Add List"}).waitFor();
-        await leftMenu.rightClickOnElement(newFolderName);
+        // await page.getByRole("button", { name: "Add List"}).waitFor();
+        // await leftMenu.rightClickOnElement(newFolderName);
+        await leftMenu.retryClick(newFolderName,"right");
         await folderContextMenu.clickOnOption("Delete");
         await deleteFolderModal.typeFolderName(newFolderName);
         await deleteFolderModal.clickOnDeleteButton();
@@ -71,8 +72,9 @@ test.describe(
         const deleteFolderModal = new DeleteFolderModal(page);
 
         await leftMenu.clickOnElement(spaceName);
-        await page.getByRole("button", { name: "Add List"}).waitFor();
-        await leftMenu.clickOnFolderEllipsis(newFolderName);
+        // await page.getByRole("button", { name: "Add List"}).waitFor();
+        // await leftMenu.clickOnFolderEllipsis(newFolderName);
+        await leftMenu.retryClickEllipsis(newFolderName)
         await folderContextMenu.clickOnOption("Delete");
         await deleteFolderModal.typeFolderName(newFolderName);
         await deleteFolderModal.clickOnDeleteButton();
@@ -84,8 +86,9 @@ test.describe(
         const folderContextMenu = new FolderContextMenu(page);
 
         await leftMenu.clickOnElement(spaceName);
-        await page.getByRole("button", { name: "Add List"}).waitFor();
-        await leftMenu.rightClickOnElement(newFolderName);
+        // await page.getByRole("button", { name: "Add List"}).waitFor();
+        // await leftMenu.rightClickOnElement(newFolderName);
+        await leftMenu.retryClick(newFolderName, "right");
         await folderContextMenu.clickOnOption("Rename");
         await leftMenu.typeFolderName(renamedFolderName);
         await leftMenu.assertElementIsVisible(renamedFolderName);
@@ -98,8 +101,9 @@ test.describe(
         const folderContextMenu = new FolderContextMenu(page);
 
         await leftMenu.clickOnElement(spaceName);
-        await page.getByRole("button", { name: "Add List"}).waitFor();
-        await leftMenu.clickOnFolderEllipsis(newFolderName);
+        // await page.getByRole("button", { name: "Add List"}).waitFor();
+        // await leftMenu.clickOnFolderEllipsis(newFolderName);
+        await leftMenu.retryClickEllipsis(newFolderName);
         await folderContextMenu.clickOnOption("Rename");
         await leftMenu.typeFolderName(renamedFolderName);
         await leftMenu.assertElementIsVisible(renamedFolderName);

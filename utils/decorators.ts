@@ -1,3 +1,4 @@
+import { Page } from "@playwright/test";
 import moment from "moment";
 
 /**
@@ -114,4 +115,34 @@ function getCurrentTimeAndDate() {
   moment.locale("PL");
   const date = moment();
   return `${date.format("L")} - ${date.format("LTS")}`;
+}
+
+export function retryDecorator(attempts: number, delay: number, getSelector: (context: any) => string) {
+  return function (originalMethod: (this: any, ...args: any[]) => Promise<any>, _context: ClassMethodDecoratorContext) {
+    async function replacementMethod(this: { page: Page }, ...args: any[]) {
+      for (let attempt = 1; attempt <= attempts; attempt++) {
+        try {
+          const result = await originalMethod.apply(this, args);
+
+          const selector = getSelector(this);
+          const contextAppeared = await this.page.waitForSelector(selector, { timeout: delay });
+
+          if (contextAppeared) {
+            console.log(`Attempt ${attempt}: Success`);
+          }
+          return result;
+        } catch (error) {
+          console.error(`Attempt ${attempt} failed: ${error.message}`);
+          if (attempt === attempts) {
+            console.error("All attempts failed.");
+            throw error;
+          }
+          console.log(`Retrying after ${delay} ms...`);
+          await new Promise((resolve) => setTimeout(resolve, delay));
+        }
+      }
+    }
+
+    return replacementMethod;
+  };
 }
