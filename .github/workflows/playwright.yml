@@ -5,12 +5,20 @@ on:
     branches: [ main ]
   pull_request:
     branches: [ main ]
+  workflow_dispatch:
+    inputs:
+      testsTag:
+        description: "Tags of tests to run (starts with '@' char)"
+        required: true
+        default: ""
+        type: string
 
 env:
   USER_NAME: ${{ secrets.USER_NAME }}
   PASSWORD: ${{ secrets.PASSWORD }}
   API_KEY: ${{ secrets.API_KEY }}
   BASE_TEAM_ID: ${{ secrets.BASE_TEAM_ID }}
+  TAGS: ${{ github.event.inputs.testsTag }}
 
   TZ: 'Europe/Warsaw'
 
@@ -19,7 +27,7 @@ jobs:
     name: 'All Playwright tests'
     runs-on: ubuntu-latest
     container:
-      image: mcr.microsoft.com/playwright:v1.45.1-jammy
+      image: mcr.microsoft.com/playwright:v1.46.0-jammy
     timeout-minutes: 60
     steps:
       - name: Checkout code
@@ -29,7 +37,15 @@ jobs:
         run: npm install
 
       - name: Run all Playwright tests
+        if: ${{ env.TAGS == '' }}
         run: npx playwright test
+
+      - name: Run only Playwright tests with given tag
+        if: ${{ env.TAGS != '' }}
+        run: |
+          echo "tag $TAGS"
+          echo "Running Playwright tests with ${{ env.TAGS }} tag"
+          npx playwright test --grep '${{ env.TAGS }}'"
 
       - name: Upload Playwright report
         uses: actions/upload-artifact@v4

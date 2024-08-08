@@ -58,7 +58,7 @@ test.describe(
         const deleteFolderModal = new DeleteFolderModal(page);
 
         await leftMenu.clickOnElement(spaceName);
-        await page.getByRole("button", { name: "Add List"}).waitFor();
+        await page.getByRole("button", { name: "Add Bookmark"}).waitFor();
         await leftMenu.rightClickOnElement(newFolderName);
         await folderContextMenu.clickOnOption("Delete");
         await deleteFolderModal.typeFolderName(newFolderName);
@@ -71,7 +71,7 @@ test.describe(
         const deleteFolderModal = new DeleteFolderModal(page);
 
         await leftMenu.clickOnElement(spaceName);
-        await page.getByRole("button", { name: "Add List"}).waitFor();
+        await page.getByRole("button", { name: "Add Bookmark"}).waitFor();
         await leftMenu.clickOnFolderEllipsis(newFolderName);
         await folderContextMenu.clickOnOption("Delete");
         await deleteFolderModal.typeFolderName(newFolderName);
@@ -84,7 +84,7 @@ test.describe(
         const folderContextMenu = new FolderContextMenu(page);
 
         await leftMenu.clickOnElement(spaceName);
-        await page.getByRole("button", { name: "Add List"}).waitFor();
+        await page.getByRole("button", { name: "Add Bookmark"}).waitFor();
         await leftMenu.rightClickOnElement(newFolderName);
         await folderContextMenu.clickOnOption("Rename");
         await leftMenu.typeFolderName(renamedFolderName);
@@ -98,7 +98,7 @@ test.describe(
         const folderContextMenu = new FolderContextMenu(page);
 
         await leftMenu.clickOnElement(spaceName);
-        await page.getByRole("button", { name: "Add List"}).waitFor();
+        await page.getByRole("button", { name: "Add Bookmark"}).waitFor();
         await leftMenu.clickOnFolderEllipsis(newFolderName);
         await folderContextMenu.clickOnOption("Rename");
         await leftMenu.typeFolderName(renamedFolderName);
