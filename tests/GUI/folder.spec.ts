@@ -5,7 +5,7 @@ import { FolderContextMenu } from "../../page-objects/context-menus/folderContex
 import { DeleteFolderModal } from "../../page-objects/modals/deleteFolderModal";
 import { ApiHooks } from "../../api-utils/apiHooks";
 import { SpacePlusMenu } from "../../page-objects/context-menus/spacePlusMenu";
-import waitForPageLoad from "../../utils/GlobalGuiUtils";
+import { waitForPageLoad } from "../../utils/GlobalGuiUtils";
 
 test.describe(
   "Folder tests",
@@ -53,7 +53,7 @@ test.describe(
         leftMenu = new LeftMenu(page);
       });
 
-      test("Test for checking if deleting existing folder works correctly", async ({ page, request }) => {
+      test("Test for checking if deleting existing folder works correctly", async ({ page }) => {
         const folderContextMenu = new FolderContextMenu(page);
         const deleteFolderModal = new DeleteFolderModal(page);
 
@@ -66,7 +66,7 @@ test.describe(
         await leftMenu.assertElementIsNotVisible(newFolderName);
       });
 
-      test("Test for checking if deleting existing folder through ellipsis works correctly", async ({ page, request }) => {
+      test("Test for checking if deleting existing folder through ellipsis works correctly", async ({ page }) => {
         const folderContextMenu = new FolderContextMenu(page);
         const deleteFolderModal = new DeleteFolderModal(page);
 
