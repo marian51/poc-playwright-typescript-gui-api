@@ -1,5 +1,5 @@
 import { faker } from "@faker-js/faker";
-import chatViewBody from '../resource/chat-view.json';
+import chatViewBody from "../resources/chat-view.json";
 
 export class GenerateData {
   public static getRandomGoal() {
@@ -20,10 +20,10 @@ export class GenerateData {
     return randomGoalBody;
   }
 
-  public static generateDoc(docName: string, parent: {id: string, type: number}) {
+  public static generateDoc(docName: string, parent: { id: string; type: number }) {
     return {
       name: docName,
-      parent: parent
+      parent: parent,
     };
   }
 

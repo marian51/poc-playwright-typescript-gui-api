@@ -1,5 +1,6 @@
 import { Locator, Page, expect } from "@playwright/test";
 import tasksOrder from "../resources/tasks-order.json";
+import { EXPECT } from "../resources/constants";
 
 export class ProjectMainView {
   private readonly page: Page;
@@ -75,8 +76,7 @@ export class ProjectMainView {
     this.taskRowContainer = this.dashboard.getByTestId("task-row__container__" + taskName);
     this.taskStatus = this.taskRowContainer.getByTestId("task-row-status__badge");
 
-    // TODO: expected dictionary
-    await expect(this.taskStatus).toHaveText("in progress");
+    await expect(this.taskStatus).toHaveText(EXPECT.IN_PROGRESS);
   }
 
   async assertTasksOrder(column: string, direction: string) {
