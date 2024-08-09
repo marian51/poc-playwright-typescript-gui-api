@@ -9,5 +9,7 @@ export const EXPECT = {
 
 export const SETUP = {
   SPACE: "SETUP_SPACE",
-  LIST: "SETUP_LIST"
+  LIST: "SETUP_LIST",
+  FOLDER: "GUI TEST folder",
+  SPACE_FOR_FOLDERS: "Space for Folder tests"
 }

@@ -6,21 +6,20 @@ import { DeleteFolderModal } from "../../page-objects/modals/deleteFolderModal";
 import { ApiHooks } from "../../api-utils/apiHooks";
 import { SpacePlusMenu } from "../../page-objects/context-menus/spacePlusMenu";
 import { waitForPageLoad } from "../../utils/GlobalGuiUtils";
+import { SETUP } from "../../resources/constants";
 
 test.describe(
   "Folder tests",
   { tag: "@folder", annotation: { type: "issue", description: "https://github.com/marian51/poc-playwright-typescript-gui-api/issues/87" } },
   () => {
-    const newFolderName = "GUI TEST folder";
-    const spaceName = "Space for Folder tests";
     let leftMenu: LeftMenu;
 
     test.beforeAll(async ({ request }) => {
-      await ApiHooks.createSpaceByName(request, spaceName);
+      await ApiHooks.createSpaceByName(request, SETUP.SPACE_FOR_FOLDERS);
     });
 
     test.afterAll(async ({ request }) => {
-      await ApiHooks.deleteSpaceByName(request, spaceName);
+      await ApiHooks.deleteSpaceByName(request, SETUP.SPACE_FOR_FOLDERS);
     });
 
     test.describe("Tests that create folder", () => {
@@ -34,20 +33,20 @@ test.describe(
         const spacePlusMenu = new SpacePlusMenu(page);
         const createFolderModal = new CreateFolderModal(page);
 
-        await leftMenu.clickOnSpacePlusButton(spaceName);
+        await leftMenu.clickOnSpacePlusButton(SETUP.SPACE_FOR_FOLDERS);
         await spacePlusMenu.clickOnOption("Folder");
-        await createFolderModal.typeFolderName(newFolderName);
+        await createFolderModal.typeFolderName(SETUP.FOLDER);
         await createFolderModal.clickOnCreateFolderButton();
-        await leftMenu.clickOnElement(spaceName);
-        await leftMenu.assertElementIsVisible(newFolderName);
+        await leftMenu.clickOnElement(SETUP.SPACE_FOR_FOLDERS);
+        await leftMenu.assertElementIsVisible(SETUP.FOLDER);
 
-        await ApiHooks.deleteFolderByName(request, spaceName, newFolderName);
+        await ApiHooks.deleteFolderByName(request, SETUP.SPACE_FOR_FOLDERS, SETUP.FOLDER);
       });
     });
 
     test.describe("Tests on existing folder", () => {
       test.beforeEach(async ({ page, request }) => {
-        await ApiHooks.createFolderByName(request, spaceName, newFolderName);
+        await ApiHooks.createFolderByName(request, SETUP.SPACE_FOR_FOLDERS, SETUP.FOLDER);
         await page.goto("/");
         await waitForPageLoad(page);
         leftMenu = new LeftMenu(page);
@@ -57,54 +56,54 @@ test.describe(
         const folderContextMenu = new FolderContextMenu(page);
         const deleteFolderModal = new DeleteFolderModal(page);
 
-        await leftMenu.clickOnElement(spaceName);
+        await leftMenu.clickOnElement(SETUP.SPACE_FOR_FOLDERS);
         await page.getByRole("button", { name: "Add List"}).waitFor();
-        await leftMenu.rightClickOnElement(newFolderName);
+        await leftMenu.rightClickOnElement(SETUP.FOLDER);
         await folderContextMenu.clickOnOption("Delete");
-        await deleteFolderModal.typeFolderName(newFolderName);
+        await deleteFolderModal.typeFolderName(SETUP.FOLDER);
         await deleteFolderModal.clickOnDeleteButton();
-        await leftMenu.assertElementIsNotVisible(newFolderName);
+        await leftMenu.assertElementIsNotVisible(SETUP.FOLDER);
       });
 
       test("Test for checking if deleting existing folder through ellipsis works correctly", async ({ page }) => {
         const folderContextMenu = new FolderContextMenu(page);
         const deleteFolderModal = new DeleteFolderModal(page);
 
-        await leftMenu.clickOnElement(spaceName);
+        await leftMenu.clickOnElement(SETUP.SPACE_FOR_FOLDERS);
         await page.getByRole("button", { name: "Add List"}).waitFor();
-        await leftMenu.clickOnFolderEllipsis(newFolderName);
+        await leftMenu.clickOnFolderEllipsis(SETUP.FOLDER);
         await folderContextMenu.clickOnOption("Delete");
-        await deleteFolderModal.typeFolderName(newFolderName);
+        await deleteFolderModal.typeFolderName(SETUP.FOLDER);
         await deleteFolderModal.clickOnDeleteButton();
-        await leftMenu.assertElementIsNotVisible(newFolderName);
+        await leftMenu.assertElementIsNotVisible(SETUP.FOLDER);
       });
 
       test("Test for checking if renaming existing folder works correctly", async ({ page, request }) => {
         const renamedFolderName = "Renamed GUI TEST folder";
         const folderContextMenu = new FolderContextMenu(page);
 
-        await leftMenu.clickOnElement(spaceName);
+        await leftMenu.clickOnElement(SETUP.SPACE_FOR_FOLDERS);
         await page.getByRole("button", { name: "Add List"}).waitFor();
-        await leftMenu.rightClickOnElement(newFolderName);
+        await leftMenu.rightClickOnElement(SETUP.FOLDER);
         await folderContextMenu.clickOnOption("Rename");
         await leftMenu.typeFolderName(renamedFolderName);
         await leftMenu.assertElementIsVisible(renamedFolderName);
 
-        await ApiHooks.deleteFolderByName(request, spaceName, renamedFolderName);
+        await ApiHooks.deleteFolderByName(request, SETUP.SPACE_FOR_FOLDERS, renamedFolderName);
       });
 
       test("Test for checking if renaming existing folder through ellipsis works correctly", async ({ page, request }) => {
         const renamedFolderName = "Renamed GUI TEST folder";
         const folderContextMenu = new FolderContextMenu(page);
 
-        await leftMenu.clickOnElement(spaceName);
+        await leftMenu.clickOnElement(SETUP.SPACE_FOR_FOLDERS);
         await page.getByRole("button", { name: "Add List"}).waitFor();
-        await leftMenu.clickOnFolderEllipsis(newFolderName);
+        await leftMenu.clickOnFolderEllipsis(SETUP.FOLDER);
         await folderContextMenu.clickOnOption("Rename");
         await leftMenu.typeFolderName(renamedFolderName);
         await leftMenu.assertElementIsVisible(renamedFolderName);
 
-        await ApiHooks.deleteFolderByName(request, spaceName, renamedFolderName);
+        await ApiHooks.deleteFolderByName(request, SETUP.SPACE_FOR_FOLDERS, renamedFolderName);
       });
     });
   }
