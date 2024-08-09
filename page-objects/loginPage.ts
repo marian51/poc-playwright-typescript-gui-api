@@ -1,4 +1,5 @@
 import { Locator, Page } from "@playwright/test";
+import { PASSWORD, USER_NAME } from "../resources/constants";
 
 export class LoginPage {
   readonly page: Page;
@@ -14,11 +15,8 @@ export class LoginPage {
   }
 
   async loginAsUser() {
-    let username: string = process.env.USER_NAME as string;
-    let password: string = process.env.PASSWORD as string;
-
-    await this.emailField.fill(username);
-    await this.passwordField.fill(password);
+    await this.emailField.fill(USER_NAME);
+    await this.passwordField.fill(PASSWORD);
     await this.loginButton.click({ force: true });
   }
 }
