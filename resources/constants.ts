@@ -5,6 +5,8 @@ export const SELF_ID: number = 183;
 
 export const EXPECT = {
   IN_PROGRESS: "in progress",
+  RGB_ERROR_BORDER: "rgb(211, 61, 68)",
+  RGB_ERROR_TEXT: "rgb(177, 58, 65)"
 }
 
 export const SETUP = {
@@ -12,4 +14,13 @@ export const SETUP = {
   LIST: "SETUP_LIST",
   FOLDER: "GUI TEST folder",
   SPACE_FOR_FOLDERS: "Space for Folder tests"
+}
+
+export const OPTION = {
+  DELETE: "Delete",
+  RENAME: "Rename",
+  ENTER: "Enter",
+  DUPLICATE: "Duplicate",
+  CREATE_NEW: "Create new",
+  DOC: "Doc"
 }

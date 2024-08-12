@@ -8,6 +8,7 @@ import { faker } from "@faker-js/faker";
 import { ApiUtils } from "../../api-utils/apiUtils";
 import { DocContextMenu } from "../../page-objects/context-menus/docContextMenu";
 import { waitForPageLoad } from "../../utils/GlobalGuiUtils";
+import { OPTION } from "../../resources/constants";
 
 test.describe(
   "UI tests for checking basic doc functionalities",
@@ -82,7 +83,7 @@ test.describe(
 
           await leftMenu.clickOnElement(newSpaceName);
           await leftMenu.rightClickOnElement(newDocName);
-          await docContextMenu.clickOnOption("Delete");
+          await docContextMenu.clickOnOption(OPTION.DELETE);
 
           await leftMenu.assertElementIsNotVisible(newDocName);
         }
@@ -114,9 +115,9 @@ test.describe(
 
           await leftMenu.clickOnElement(newSpaceName);
           await leftMenu.rightClickOnElement(newDocName);
-          await docContextMenu.clickOnOption("Rename");
+          await docContextMenu.clickOnOption(OPTION.RENAME);
           await leftMenu.typeIntoRenameDocInput(renamedDocName);
-          await leftMenu.clickKeyBoardKey("Enter");
+          await leftMenu.clickKeyBoardKey(OPTION.ENTER);
 
           await leftMenu.assertElementIsVisible(renamedDocName);
           newDocName = renamedDocName;
@@ -161,8 +162,8 @@ test.describe(
           const docView = new DocView(page);
 
           await leftMenu.rightClickOnElement(newSpaceName);
-          await spaceContextMenu.clickOnOption("Create new");
-          await spacePlusMenu.clickOnOption("Doc");
+          await spaceContextMenu.clickOnOption(OPTION.CREATE_NEW);
+          await spacePlusMenu.clickOnOption(OPTION.DOC);
           await docView.typeDocTitle(newDocName);
           await docView.clickKeyBoardKey("Enter");
 
@@ -183,7 +184,7 @@ test.describe(
 
           await leftMenu.clickOnElement(newSpaceName);
           await leftMenu.rightClickOnElement(newDocName);
-          await docContextMenu.clickOnOption("Duplicate");
+          await docContextMenu.clickOnOption(OPTION.DUPLICATE);
 
           await leftMenu.assertElementIsVisible(newDocName + " (copy)");
 
