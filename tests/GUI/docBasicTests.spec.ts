@@ -54,10 +54,10 @@ test.describe(
           await waitForPageLoad(page);
 
           await leftMenu.rightClickOnElement(newSpaceName);
-          await spaceContextMenu.clickOnOption("Create new");
-          await spacePlusMenu.clickOnOption("Doc");
+          await spaceContextMenu.clickOnOption(OPTION.CREATE_NEW);
+          await spacePlusMenu.clickOnOption(OPTION.DOC);
           await docView.typeDocTitle(newDocName);
-          await docView.clickKeyBoardKey("Enter");
+          await docView.clickKeyBoardKey(OPTION.ENTER);
 
           await leftMenu.assertElementIsVisible(newDocName);
 
@@ -140,7 +140,7 @@ test.describe(
           await page.getByRole("button", { name: "Add List" }).waitFor();
           await leftMenu.clickOnElement(newDocName);
           await docView.typeDocTitle(renamedDocTitle);
-          await docView.clickKeyBoardKey("Enter");
+          await docView.clickKeyBoardKey(OPTION.ENTER);
 
           await leftMenu.assertElementIsVisible(renamedDocTitle);
           await leftMenu.assertElementIsNotVisible(newDocName);
@@ -165,7 +165,7 @@ test.describe(
           await spaceContextMenu.clickOnOption(OPTION.CREATE_NEW);
           await spacePlusMenu.clickOnOption(OPTION.DOC);
           await docView.typeDocTitle(newDocName);
-          await docView.clickKeyBoardKey("Enter");
+          await docView.clickKeyBoardKey(OPTION.ENTER);
 
           await leftMenu.assertVisibleElementsNumber(newDocName, 2);
         }

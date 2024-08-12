@@ -7,7 +7,7 @@ import { SpaceContextMenu } from "../../page-objects/context-menus/spaceContextM
 import { EditSpaceNameModal } from "../../page-objects/modals/editSpaceNameModal";
 import { DuplicateSpaceModal } from "../../page-objects/modals/duplicateSpaceModal";
 import { waitForPageLoad } from "../../utils/GlobalGuiUtils";
-import { OPTION, SETUP } from "../../resources/constants";
+import { ELEMENT, OPTION, SETUP } from "../../resources/constants";
 
 test.describe(
   "UI tests for checking basic space functionalities",
@@ -43,10 +43,10 @@ test.describe(
           await page.goto("/");
           await waitForPageLoad(page);
 
-          await leftMenu.clickOnElement("Create Space");
+          await leftMenu.clickOnElement(ELEMENT.CREATE_SPACE);
           await createSpaceModal.typeSpaceName(SETUP.NEW_SPACE);
           await createSpaceModal.clickOnContinueButton();
-          await createSpaceModal.clickOnButton("Create Space");
+          await createSpaceModal.clickOnButton(ELEMENT.CREATE_SPACE);
           await leftMenu.assertElementIsVisible(SETUP.NEW_SPACE);
 
           await ApiHooks.deleteSpaceByName(request, SETUP.NEW_SPACE);
@@ -121,7 +121,7 @@ test.describe(
         async ({ page }) => {
           const createSpaceModal = new CreateSpaceModal(page);
 
-          await leftMenu.clickOnElement("Create Space");
+          await leftMenu.clickOnElement(ELEMENT.CREATE_SPACE);
           await createSpaceModal.typeSpaceName(SETUP.NEW_SPACE);
           await createSpaceModal.assertNameInputHasError();
           await createSpaceModal.assertErrorMessageIsDisplayed();
@@ -186,10 +186,10 @@ test.describe(
         await waitForPageLoad(page);
 
         await test.step("Step: Create new space", async () => {
-          await leftMenu.clickOnElement("Create Space");
+          await leftMenu.clickOnElement(ELEMENT.CREATE_SPACE);
           await createSpaceModal.typeSpaceName(SETUP.NEW_SPACE);
           await createSpaceModal.clickOnContinueButton();
-          await createSpaceModal.clickOnButton("Create Space");
+          await createSpaceModal.clickOnButton(ELEMENT.CREATE_SPACE);
 
           await leftMenu.assertElementIsVisible(SETUP.NEW_SPACE);
         });

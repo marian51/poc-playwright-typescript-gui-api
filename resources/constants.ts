@@ -29,3 +29,7 @@ export const OPTION = {
   DOC: "Doc",
   FOLDER: "Folder"
 }
+
+export const ELEMENT = {
+  CREATE_SPACE: "Create Space"
+}
