@@ -1,14 +1,13 @@
 import { APIRequestContext, APIResponse } from "@playwright/test";
 import { apiTryCatch } from "../utils/decorators";
 import { Endpoint } from "./endpoints";
+import { API_KEY } from "../resources/constants";
 
 export class ApiUtils {
 
   @apiTryCatch("Space")
   public static async getSpaceIdByName(request: APIRequestContext, spaceName: string): Promise<string> {
-    const apiKey: string = process.env.API_KEY as string;
-
-    const getSpacesResponse: APIResponse = await request.get(Endpoint.teamSpaces(), { headers: { Authorization: apiKey } });
+    const getSpacesResponse: APIResponse = await request.get(Endpoint.teamSpaces(), { headers: { Authorization: API_KEY } });
     const spaceId: string = (await getSpacesResponse.json()).spaces.filter((space) => space.name === spaceName)[0].id;
 
     return spaceId;
@@ -16,10 +15,9 @@ export class ApiUtils {
 
   @apiTryCatch("Folder")
   public static async getFolderIdByName(request: APIRequestContext, spaceName: string, folderName: string): Promise<string> {
-    const apiKey: string = process.env.API_KEY as string;
     const spaceId: string = await this.getSpaceIdByName(request, spaceName);
 
-    const getFoldersResponse: APIResponse = await request.get(Endpoint.spaceFolder(spaceId), { headers: { Authorization: apiKey } });
+    const getFoldersResponse: APIResponse = await request.get(Endpoint.spaceFolder(spaceId), { headers: { Authorization: API_KEY } });
     const folderId: string = (await getFoldersResponse.json()).folders.filter((folder) => folder.name === folderName)[0].id;
 
     return folderId;
@@ -27,10 +25,9 @@ export class ApiUtils {
 
   @apiTryCatch("List")
   public static async getListIdByName(request: APIRequestContext, spaceName: string, folderName: string, listName: string): Promise<string> {
-    const apiKey: string = process.env.API_KEY as string;
     const folderId: string = await this.getFolderIdByName(request, spaceName, folderName);
 
-    const getListsResponse: APIResponse = await request.get(Endpoint.folderList(folderId), { headers: { Authorization: apiKey } });
+    const getListsResponse: APIResponse = await request.get(Endpoint.folderList(folderId), { headers: { Authorization: API_KEY } });
     const listId: string = (await getListsResponse.json()).lists.filter((list) => list.name === listName)[0].id;
 
     return listId;

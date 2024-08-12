@@ -7,6 +7,7 @@ import { SpaceContextMenu } from "../../page-objects/context-menus/spaceContextM
 import { EditSpaceNameModal } from "../../page-objects/modals/editSpaceNameModal";
 import { DuplicateSpaceModal } from "../../page-objects/modals/duplicateSpaceModal";
 import { waitForPageLoad } from "../../utils/GlobalGuiUtils";
+import { ELEMENT, OPTION, SETUP } from "../../resources/constants";
 
 test.describe(
   "UI tests for checking basic space functionalities",
@@ -24,7 +25,6 @@ test.describe(
     let newSpaceName: string;
 
     test.beforeEach("Prepare variables before test", async ({ page }) => {
-      newSpaceName = "GUI TEST new space";
       leftMenu = new LeftMenu(page);
     });
 
@@ -43,13 +43,13 @@ test.describe(
           await page.goto("/");
           await waitForPageLoad(page);
 
-          await leftMenu.clickOnElement("Create Space");
-          await createSpaceModal.typeSpaceName(newSpaceName);
+          await leftMenu.clickOnElement(ELEMENT.CREATE_SPACE);
+          await createSpaceModal.typeSpaceName(SETUP.NEW_SPACE);
           await createSpaceModal.clickOnContinueButton();
-          await createSpaceModal.clickOnButton("Create Space");
-          await leftMenu.assertElementIsVisible(newSpaceName);
+          await createSpaceModal.clickOnButton(ELEMENT.CREATE_SPACE);
+          await leftMenu.assertElementIsVisible(SETUP.NEW_SPACE);
 
-          await ApiHooks.deleteSpaceByName(request, newSpaceName);
+          await ApiHooks.deleteSpaceByName(request, SETUP.NEW_SPACE);
         }
       );
 
@@ -65,29 +65,29 @@ test.describe(
           const deleteSpaceModal = new DeleteSpaceModal(page);
           const spaceContextMenu = new SpaceContextMenu(page);
 
-          await ApiHooks.createSpaceByName(request, newSpaceName);
+          await ApiHooks.createSpaceByName(request, SETUP.NEW_SPACE);
           await page.goto("/");
           await waitForPageLoad(page);
 
-          await leftMenu.rightClickOnElement(newSpaceName);
-          await spaceContextMenu.clickOnOption("Delete");
-          await deleteSpaceModal.typeSpaceName(newSpaceName);
+          await leftMenu.rightClickOnElement(SETUP.NEW_SPACE);
+          await spaceContextMenu.clickOnOption(OPTION.DELETE);
+          await deleteSpaceModal.typeSpaceName(SETUP.NEW_SPACE);
           await deleteSpaceModal.clickOnDeleteButton();
           await deleteSpaceModal.waitForDeleting();
-          await leftMenu.assertElementIsNotVisible(newSpaceName);
+          await leftMenu.assertElementIsNotVisible(SETUP.NEW_SPACE);
         }
       );
     });
 
     test.describe("Tests running on exiting space", async () => {
       test.beforeEach("Prepare space for test and go to website", async ({ page, request }) => {
-        await ApiHooks.createSpaceByName(request, newSpaceName);
+        await ApiHooks.createSpaceByName(request, SETUP.NEW_SPACE);
         await page.goto("/");
         await waitForPageLoad(page);
       });
 
       test.afterEach("Remove space after test", async ({ request }) => {
-        await ApiHooks.deleteSpaceByName(request, newSpaceName);
+        await ApiHooks.deleteSpaceByName(request, SETUP.NEW_SPACE);
       });
 
       test(
@@ -101,15 +101,12 @@ test.describe(
         async ({ page }) => {
           const spaceContextMenu = new SpaceContextMenu(page);
           const editSpaceNameModal = new EditSpaceNameModal(page);
-          const renamedSpaceName = "RENAMED GUI TEST new space";
 
-          await leftMenu.rightClickOnElement(newSpaceName);
-          await spaceContextMenu.clickOnOption("Rename");
-          await editSpaceNameModal.typeSpaceName(renamedSpaceName);
+          await leftMenu.rightClickOnElement(SETUP.NEW_SPACE);
+          await spaceContextMenu.clickOnOption(OPTION.RENAME);
+          await editSpaceNameModal.typeSpaceName(SETUP.RENAMED_SPACE);
           await editSpaceNameModal.clickOnSaveButton();
-          await leftMenu.assertElementIsVisible(renamedSpaceName);
-
-          newSpaceName = renamedSpaceName;
+          await leftMenu.assertElementIsVisible(SETUP.RENAMED_SPACE);
         }
       );
 
@@ -124,8 +121,8 @@ test.describe(
         async ({ page }) => {
           const createSpaceModal = new CreateSpaceModal(page);
 
-          await leftMenu.clickOnElement("Create Space");
-          await createSpaceModal.typeSpaceName(newSpaceName);
+          await leftMenu.clickOnElement(ELEMENT.CREATE_SPACE);
+          await createSpaceModal.typeSpaceName(SETUP.NEW_SPACE);
           await createSpaceModal.assertNameInputHasError();
           await createSpaceModal.assertErrorMessageIsDisplayed();
           await createSpaceModal.clickOnContinueButton();
@@ -144,15 +141,14 @@ test.describe(
         async ({ page, request }) => {
           const spaceContextMenu = new SpaceContextMenu(page);
           const duplicateSpaceModal = new DuplicateSpaceModal(page);
-          const duplicatedSpaceName = "GUI TEST duplicated space";
 
-          await leftMenu.rightClickOnElement(newSpaceName);
-          await spaceContextMenu.clickOnOption("Duplicate");
-          await duplicateSpaceModal.typeSpaceName(duplicatedSpaceName);
+          await leftMenu.rightClickOnElement(SETUP.NEW_SPACE);
+          await spaceContextMenu.clickOnOption(OPTION.DUPLICATE);
+          await duplicateSpaceModal.typeSpaceName(SETUP.DUPLICATED_SPACE);
           await duplicateSpaceModal.clickOnDuplicateButton();
-          await leftMenu.assertElementIsVisible(duplicatedSpaceName);
+          await leftMenu.assertElementIsVisible(SETUP.DUPLICATED_SPACE);
 
-          await ApiHooks.deleteSpaceByName(request, duplicatedSpaceName);
+          await ApiHooks.deleteSpaceByName(request, SETUP.DUPLICATED_SPACE);
         }
       );
     });
@@ -185,38 +181,36 @@ test.describe(
         const spaceContextMenu = new SpaceContextMenu(page);
         const editSpaceNameModal = new EditSpaceNameModal(page);
         const deleteSpaceModal = new DeleteSpaceModal(page);
-        const newSpaceName = "GUI TEST new space";
-        const renamedSpaceName = "RENAMED GUI TEST new space";
 
         await page.goto("/");
         await waitForPageLoad(page);
 
         await test.step("Step: Create new space", async () => {
-          await leftMenu.clickOnElement("Create Space");
-          await createSpaceModal.typeSpaceName(newSpaceName);
+          await leftMenu.clickOnElement(ELEMENT.CREATE_SPACE);
+          await createSpaceModal.typeSpaceName(SETUP.NEW_SPACE);
           await createSpaceModal.clickOnContinueButton();
-          await createSpaceModal.clickOnButton("Create Space");
+          await createSpaceModal.clickOnButton(ELEMENT.CREATE_SPACE);
 
-          await leftMenu.assertElementIsVisible(newSpaceName);
+          await leftMenu.assertElementIsVisible(SETUP.NEW_SPACE);
         });
 
         await test.step("Step: Rename existing space", async () => {
-          await leftMenu.rightClickOnElement(newSpaceName);
-          await spaceContextMenu.clickOnOption("Rename");
-          await editSpaceNameModal.typeSpaceName(renamedSpaceName);
+          await leftMenu.rightClickOnElement(SETUP.NEW_SPACE);
+          await spaceContextMenu.clickOnOption(OPTION.RENAME);
+          await editSpaceNameModal.typeSpaceName(SETUP.RENAMED_SPACE);
           await editSpaceNameModal.clickOnSaveButton();
 
-          await leftMenu.assertElementIsVisible(renamedSpaceName);
+          await leftMenu.assertElementIsVisible(SETUP.RENAMED_SPACE);
         });
 
         await test.step("Step: Delete renamed space", async () => {
-          await leftMenu.rightClickOnElement(renamedSpaceName);
-          await spaceContextMenu.clickOnOption("Delete");
-          await deleteSpaceModal.typeSpaceName(renamedSpaceName);
+          await leftMenu.rightClickOnElement(SETUP.RENAMED_SPACE);
+          await spaceContextMenu.clickOnOption(OPTION.DELETE);
+          await deleteSpaceModal.typeSpaceName(SETUP.RENAMED_SPACE);
           await deleteSpaceModal.clickOnDeleteButton();
           await deleteSpaceModal.waitForDeleting();
 
-          await leftMenu.assertElementIsNotVisible(renamedSpaceName);
+          await leftMenu.assertElementIsNotVisible(SETUP.RENAMED_SPACE);
         });
       }
     );
