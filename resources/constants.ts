@@ -13,7 +13,11 @@ export const SETUP = {
   SPACE: "SETUP_SPACE",
   LIST: "SETUP_LIST",
   FOLDER: "GUI TEST folder",
-  SPACE_FOR_FOLDERS: "Space for Folder tests"
+  RENAMED_FOLDER: "Renamed GUI TEST folder",
+  SPACE_FOR_FOLDERS: "Space for Folder tests",
+  NEW_SPACE: "GUI TEST new space",
+  RENAMED_SPACE: "RENAMED GUI TEST new space",
+  DUPLICATED_SPACE: "GUI TEST duplicated space"
 }
 
 export const OPTION = {
@@ -22,5 +26,6 @@ export const OPTION = {
   ENTER: "Enter",
   DUPLICATE: "Duplicate",
   CREATE_NEW: "Create new",
-  DOC: "Doc"
+  DOC: "Doc",
+  FOLDER: "Folder"
 }
